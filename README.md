@@ -1,6 +1,6 @@
-# My Weather Today
+# [APP NAME]
 ## Description
-My Weather Today is a web application created to support users who are in need career clarity. Users track their daily "weather" (e.g., _sunny, foggy, storming_), and are provided with the option to follow up their log with a written reflection.
+[APP NAME] is a web application created to support users who are in need career clarity. Users track their daily "weather" (e.g., _sunny, foggy, storming_), and are provided with the option to follow up their log with a written reflection.
 
 ### Technologies Used
 MWT was created using Firebase, Next.JS, and TailWind CSS. 
