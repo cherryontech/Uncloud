@@ -1,10 +1,35 @@
-## What Was Done
+## Description
+_1) What does this PR do? 2) List out what you did._
 
-_List out the work you have done, in bullet form._
+
+## Related Issue
+_Provide a link to the related issue in Jira._
+
+
+## Related Story Card
+_Provide a link to the relevant story card._
+
+
+## Type of Changes
+_Feature update/change/addition, bug fix, styling update, etc._
+
+
+## Acceptance Criteria
+_Include the checked-off acceptance criteria from the issue._
+
+
+## Update Screenshots
+_Provide screenshots of the view before and after the changes._
+
+### Before
+
+
+### After
+
 
 ## Testing Instructions
-
 _In a list format, tell us how to test this PR._
 
-## Link to Relevant Story Card
-_Provide a link to the relevant story card._
+
+## Learnings (Optional)
+_Document any things you learned or 'gotchas' you experienced._
