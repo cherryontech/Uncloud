@@ -13,7 +13,22 @@ MWT was created using TypeScript, Next.JS, Firebase, Tailwind CSS, HTML, and Van
 <br>
 
 ## Installation Instructions
-Step-by-step instructions for setting up the development environment.
+1. Clone the repository
+   ```bash
+    git clone git@github.com:cherryontech/jupiter-jumpers.git
+    ```
+
+
+2. Install dependencies
+   ```bash    
+   $ cd jupiter-jumpers
+   $ 
+   ```
+3. Run the app
+    ```bash
+    $ 
+    ```
+
 
 ## Credits
 
