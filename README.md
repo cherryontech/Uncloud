@@ -2,8 +2,15 @@
 ## Description
 [APP NAME] is a web application created to support users who are in need career clarity. Users track their daily "weather" (e.g., _sunny, foggy, storming_), and are provided with the option to follow up their log with a written reflection.
 
-### Technologies Used
-MWT was created using Firebase, Next.JS, and TailWind CSS. 
+### Tech Stack
+MWT was created using TypeScript, Next.JS, Firebase, Tailwind CSS, HTML, and Vanilla CSS. 
+
+
+<a href="https://skillicons.dev">
+  <img src="https://skillicons.dev/icons?i=ts,nextjs,firebase,tailwind,html,css&perline=7" alt="Icons for the following skills: TypeScript, Next.JS, Firebase, Tailwind, HTML, CSS" />
+</a>
+
+<br>
 
 ## Installation Instructions
 Step-by-step instructions for setting up the development environment.
