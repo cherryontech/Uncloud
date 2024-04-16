@@ -17,12 +17,13 @@ MWT was created using TypeScript, Next.JS, Firebase, and Tailwind CSS..
 1. Clone the repository
 
    ```bash
-    git clone git@github.com:cherryontech/jupiter-jumpers.git
+    $ git clone git@github.com:cherryontech/jupiter-jumpers.git
+    $ cd jupiter-jumpers
    ```
 
 2. Install dependencies
    ```bash
-   $ cd jupiter-jumpers
+   $ npm i
    ```
 3. Run the app
    ```bash
@@ -30,6 +31,25 @@ MWT was created using TypeScript, Next.JS, Firebase, and Tailwind CSS..
    ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Scripts
+
+1. Run app in development mode
+   ```bash
+   npm run dev
+   ```
+2. Run app in production mode
+   ```bash
+   npm start
+   ```
+3. Format with prettier
+   ```bash
+   npm run format
+   ```
+4. Fix formatting with prettier
+   ```bash
+   npm run format:fix
+   ```
 
 ## Credits
 
