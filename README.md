@@ -4,6 +4,8 @@
 
 [APP NAME] is a web application created to support users who are in need career clarity. Users track their daily "weather" (e.g., _sunny, foggy, storming_), and are provided with the option to follow up their log with a written reflection.
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/69e87c78-4e64-4761-b551-4f480a3abfef/deploy-status)](https://app.netlify.com/sites/cool-sunshine-7d9707/deploys)
+
 ### Tech Stack
 
 MWT was created using TypeScript, Next.JS, Firebase, and Tailwind CSS..
