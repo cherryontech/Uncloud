@@ -121,7 +121,7 @@ const RegisterForm = () => {
 	return (
 		<div className=' bg-backgroundSecondary flex h-full w-full max-w-[500px] flex-col rounded-2xl p-4 shadow-2xl'>
 			<div className='flex  w-full flex-col items-center justify-center gap-2'>
-				<div className='text-2xl font-medium'>Welcome !</div>
+				<div className='text-2xl font-medium'>Welcome to Uncloud!</div>
 				<div className='text-center text-sm font-light'>
 					Enter your Credentials to Register an Account
 				</div>
