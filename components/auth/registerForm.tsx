@@ -8,7 +8,6 @@ import { db } from '@/app/firebase';
 import CustomInput from '../shared/customInput';
 import { setDoc, doc } from 'firebase/firestore';
 
-
 interface RegisterData {
 	displayName: string;
 	emailAddress: string;
@@ -100,8 +99,7 @@ const RegisterForm = () => {
 								displayName: displayName,
 							})
 								.then((docRef: any) => {
-									
-									router.push('/auth/login');
+									router.push('/');
 								})
 								.catch((e) => {
 									console.error('Error updating document', e);
@@ -110,7 +108,7 @@ const RegisterForm = () => {
 						.catch((error) => {
 							console.error('Error updating user display name:', error);
 						});
-				}				
+				}
 			})
 			.catch((error) => {
 				console.error(error.message);
@@ -119,7 +117,7 @@ const RegisterForm = () => {
 	};
 
 	return (
-		<div className=' bg-backgroundSecondary flex h-full w-full max-w-[500px] flex-col rounded-2xl p-4 shadow-2xl'>
+		<div className=' flex h-full w-full max-w-[500px] flex-col rounded-2xl bg-backgroundSecondary p-4 shadow-2xl'>
 			<div className='flex  w-full flex-col items-center justify-center gap-2'>
 				<div className='text-2xl font-medium'>Welcome to Uncloud!</div>
 				<div className='text-center text-sm font-light'>
@@ -155,9 +153,9 @@ const RegisterForm = () => {
 					error={errorField.displayName}
 				/>
 
-				{error && <p className='text-red-600 text-sm'>{error}</p>}
+				{error && <p className='text-sm text-red-600'>{error}</p>}
 				<button
-					className='bg-buttonColor mt-2 w-full rounded-lg py-2 text-white hover:scale-105 hover:shadow-lg'
+					className='mt-2 w-full rounded-lg bg-buttonColor py-2 text-white hover:scale-105 hover:shadow-lg'
 					type='submit'
 				>
 					Register
