@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Add Open Sans Font */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+/* Set Open Sans as Default Font */
+@layer base {
+	body {
+		font-family: 'Open Sans', sans-serif;
+	}
+}

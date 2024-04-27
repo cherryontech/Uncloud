@@ -8,6 +8,9 @@ const config: Config = {
 		'./stories/**/*.{js,ts,jsx,tsx}',
 	],
 	theme: {
+		fontFamily: {
+			sans: ['Open Sans', 'sans-serif'],
+		},
 		extend: {
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
