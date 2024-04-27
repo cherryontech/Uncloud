@@ -10,6 +10,11 @@ export function UserProvider({ children }) {
 	useEffect(() => {
 		const listen = onAuthStateChanged(auth, (fireBaseUser) => {
 			if (fireBaseUser) {
+				console.log(
+					fireBaseUser,
+					fireBaseUser.displayName,
+					fireBaseUser.closedConfirmationMessage
+				);
 				setUser(fireBaseUser);
 			} else {
 				setUser(null);

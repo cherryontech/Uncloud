@@ -97,6 +97,7 @@ const RegisterForm = () => {
 							setDoc(doc(db, 'authUsers', authUser.user.uid), {
 								email: emailAddress,
 								displayName: displayName,
+								closedConfirmationMessage: false,
 							})
 								.then((docRef: any) => {
 									router.push('/');
