@@ -53,21 +53,47 @@ export const Heading = ({ color, label, type }: HeadingProps) => {
 		weight = 'font-normal';
 	}
 
+	let margin = '';
+	// if type is h1, h2, h3, h4, h5, h6  set margin to mb-4; if type is subheadline set margin to mb-2
+	if (
+		type === 'h1' ||
+		type === 'h2' ||
+		type === 'h3' ||
+		type === 'h4' ||
+		type === 'h5' ||
+		type === 'h6'
+	) {
+		margin = 'my-7';
+	} else {
+		margin = 'my-5';
+	}
 	switch (type) {
 		case 'h1':
-			return <h1 className={['block', size, weight].join(' ')}>{label}</h1>;
+			return (
+				<h1 className={['block', size, weight, margin].join(' ')}>{label}</h1>
+			);
 		case 'h2':
 			return <h2 className={['block', size, weight].join(' ')}>{label}</h2>;
 		case 'h3':
-			return <h3 className={['block', size, weight].join(' ')}>{label}</h3>;
+			return (
+				<h3 className={['block', size, weight, margin].join(' ')}>{label}</h3>
+			);
 		case 'h4':
-			return <h4 className={['block', size, weight].join(' ')}>{label}</h4>;
+			return (
+				<h4 className={['block', size, weight, margin].join(' ')}>{label}</h4>
+			);
 		case 'h5':
-			return <h5 className={['block', size, weight].join(' ')}>{label}</h5>;
+			return (
+				<h5 className={['block', size, weight, margin].join(' ')}>{label}</h5>
+			);
 		case 'h6':
-			return <h6 className={['block', size, weight].join(' ')}>{label}</h6>;
+			return (
+				<h6 className={['block', size, weight, margin].join(' ')}>{label}</h6>
+			);
 		case 'subheadline':
-			return <p className={['block', size, weight].join(' ')}>{label}</p>;
+			return (
+				<p className={['block', size, weight, margin].join(' ')}>{label}</p>
+			);
 	}
-	return <h1 className={['block', size, weight].join(' ')}>{label}</h1>;
+	return <h1 className={['block', size, weight, margin].join(' ')}>{label}</h1>;
 };
