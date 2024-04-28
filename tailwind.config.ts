@@ -11,6 +11,21 @@ const config: Config = {
 		fontFamily: {
 			sans: ['Open Sans', 'sans-serif'],
 		},
+		fontSize: {
+			xs: '0.75rem',
+			sm: '0.875rem',
+			base: '1rem',
+			lg: '1.125rem',
+			xl: '1.25rem',
+			'2xl': '1.5rem',
+			'3xl': '2rem',
+			'4xl': '2.5rem',
+			'5xl': '3rem',
+			'6xl': '3.5rem',
+			'7xl': '3.75rem',
+			'8xl': '4.5rem',
+			caption: '0.813rem',
+		},
 		extend: {
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -25,6 +40,8 @@ const config: Config = {
 				backgroundTertiary: '#f3cab6',
 				popupBackground: '#1A1A32',
 				popupText: '#E6CCCC',
+				textPrimary: '#272E35',
+				textSecondary: '#6E757C',
 			},
 		},
 	},
