@@ -1,7 +1,7 @@
 .header {
 	font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-	padding: 15px 20px;
+	padding: 0.938rem 1.25rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -14,19 +14,19 @@
 
 .header h1 {
 	font-weight: 700;
-	font-size: 20px;
+	font-size: 1.25rem;
 	line-height: 1;
-	margin: 6px 0 6px 10px;
+	margin: 0.375px 0 0.375px 0.625px;
 	display: inline-block;
 	vertical-align: top;
 }
 
 .header button + button {
-	margin-left: 10px;
+	margin-left: 0.625rem;
 }
 
 .header .welcome {
 	color: #333;
-	font-size: 14px;
-	margin-right: 10px;
+	font-size: 0.875rem;
+	margin-right: 0.625rem;
 }

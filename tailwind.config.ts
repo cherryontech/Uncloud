@@ -42,6 +42,7 @@ const config: Config = {
 				popupText: '#E6CCCC',
 				textPrimary: '#272E35',
 				textSecondary: '#6E757C',
+				lineColor: '#D9D9D9',
 			},
 		},
 	},

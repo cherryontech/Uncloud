@@ -23,7 +23,7 @@ export const Sun: Story = {
 		label: 'Add',
 		type: 'sun',
 		size: '32',
-		iconWeight: 'regular',
+		weight: 'regular',
 	},
 };
 
@@ -32,7 +32,7 @@ export const Chart: Story = {
 		label: 'Add',
 		type: 'chart-line-up',
 		size: '32',
-		iconWeight: 'regular',
+		weight: 'regular',
 	},
 };
 
@@ -41,6 +41,6 @@ export const Bulb: Story = {
 		label: 'Add',
 		type: 'lightbulb-filament',
 		size: '32',
-		iconWeight: 'regular',
+		weight: 'regular',
 	},
 };
