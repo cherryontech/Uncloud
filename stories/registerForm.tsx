@@ -9,6 +9,7 @@ import CustomInput from './customInput';
 import PasswordInput from './passwordInput';
 import { Button } from './Button';
 import { setDoc, doc } from 'firebase/firestore';
+import { Icon } from './Icons';
 
 interface RegisterData {
 	displayName: string;
@@ -119,9 +120,9 @@ const RegisterForm = () => {
 	};
 
 	return (
-		<div className=' flex h-full w-full max-w-[500px] flex-col space-y-6 bg-backgroundSecondary p-4'>
-			<div className='flex flex-col items-center justify-center space-y-6 '>
-				<div className='h-20 w-20 bg-gray-500'></div>
+		<div className=' flex h-full w-full max-w-[500px] flex-col space-y-6 bg-backgroundSecondary p-4 py-6'>
+			<div className='flex flex-col items-center justify-center gap-2 '>
+				<Icon type='cloud-sun' size='6rem' weight='regular' />
 				<div className='flex  w-full flex-col items-center justify-center gap-2  space-y-2'>
 					<div className='text-3xl font-semibold'>Welcome to Uncloud</div>
 					<div className='text-center text-base font-light'>
@@ -156,6 +157,7 @@ const RegisterForm = () => {
 					label='Password'
 					handleChange={handleChange}
 					error={errorField.password}
+					// If there is an error, make the border red
 				/>
 
 				{error && <p className='text-sm text-red-600'>{error}</p>}

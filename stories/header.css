@@ -1,32 +1,32 @@
-.storybook-header {
-  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 15px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.header {
+	font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 0.938rem 1.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
-.storybook-header svg {
-  display: inline-block;
-  vertical-align: top;
+.header svg {
+	display: inline-block;
+	vertical-align: top;
 }
 
-.storybook-header h1 {
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 1;
-  margin: 6px 0 6px 10px;
-  display: inline-block;
-  vertical-align: top;
+.header h1 {
+	font-weight: 700;
+	font-size: 1.25rem;
+	line-height: 1;
+	margin: 0.375px 0 0.375px 0.625px;
+	display: inline-block;
+	vertical-align: top;
 }
 
-.storybook-header button + button {
-  margin-left: 10px;
+.header button + button {
+	margin-left: 0.625rem;
 }
 
-.storybook-header .welcome {
-  color: #333;
-  font-size: 14px;
-  margin-right: 10px;
+.header .welcome {
+	color: #333;
+	font-size: 0.875rem;
+	margin-right: 0.625rem;
 }

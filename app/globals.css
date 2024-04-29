@@ -11,3 +11,64 @@
 		font-family: 'Open Sans', sans-serif;
 	}
 }
+
+html {
+	font-size: 16px; /* you can chose any size here 16 is default */
+	@media screen and (max-width: 991px) {
+		font-size: 62.5%;
+	}
+	@media screen and (max-width: 767px) {
+		font-size: 50%;
+	}
+	@media screen and (max-width: 600px) {
+		font-size: 45%;
+	}
+}
+/* ------------------------------------ */
+/* ADJUSTMENTS TO TYPOGRAPHY */
+/* ------------------------------------ */
+
+/* Base size for text is 16px */
+p,
+li {
+	font-size: 1rem;
+}
+/* For cases of body-small text (see Figma) */
+.small {
+	font-size: 0.875rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 600;
+}
+
+h1 {
+	font-size: 3.5rem;
+}
+h2 {
+	font-size: 3rem;
+}
+h3 {
+	font-size: 2.5rem;
+}
+h4 {
+	font-size: 2rem;
+}
+h5 {
+	font-size: 1.5rem;
+}
+h6 {
+	font-size: 1.25rem;
+}
+.subheading {
+	font-size: 1.25rem;
+	color: textSecondary;
+}
+/* ------------------------------------ */
+/* 
+/* ------------------------------------ */
