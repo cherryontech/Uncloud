@@ -100,9 +100,10 @@ const RegisterForm = () => {
 							setDoc(doc(db, 'authUsers', authUser.user.uid), {
 								email: emailAddress,
 								displayName: displayName,
+								closedConfirmationMessage: false,
 							})
 								.then((docRef: any) => {
-									router.push('/auth/login');
+									router.push('/');
 								})
 								.catch((e) => {
 									console.error('Error updating document', e);

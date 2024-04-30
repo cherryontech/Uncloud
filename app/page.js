@@ -3,7 +3,8 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
 import { updateUser, getUser } from '@/components/utils/serverFunctions';
-import ConfirmationMessage from '@/components/ConfirmationMessage';
+// import ConfirmationMessage from '@/components/ConfirmationMessage';
+import { ConfirmationMessage } from '@/stories/Confirmation';
 import { useAuth } from './context/UserProvider';
 export default function Home() {
 	const { user } = useAuth();
@@ -24,7 +25,7 @@ export default function Home() {
 	}
 
 	return (
-		<div>
+		<div className='px-12'>
 			<h1>Home</h1>
 
 			{user ? (
