@@ -1,6 +1,6 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth'; // Assuming you have imported the necessary firebase/auth functions
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { auth } from '@/app/firebase';
@@ -9,7 +9,6 @@ import CustomInput from '../shared/customInput';
 type Props = {};
 
 interface LoginData {
-	
 	emailAddress: string;
 	password: string;
 }
@@ -22,21 +21,20 @@ const LoginForm: React.FC<Props> = (props) => {
 		emailAddress: '',
 		password: '',
 	});
-    	const [errorField, setErrorField] = useState<FormErrors>({
-				emailAddress: '',
-				password: '',
-			});
-	const [error, setError] = useState<string | null>(null); // Changed type to string | null
+	const [errorField, setErrorField] = useState<FormErrors>({
+		emailAddress: '',
+		password: '',
+	});
+	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
 	const validateField = (name: string, value: string): string => {
 		let errorMessage = '';
 
-		// Validate field
 		if (!value.trim()) {
 			errorMessage = 'This field is required';
-		}  else if (name === 'emailAddress' && !/\S+@\S+\.\S+/.test(value)) {
+		} else if (name === 'emailAddress' && !/\S+@\S+\.\S+/.test(value)) {
 			errorMessage = 'Email is invalid';
-		} 
+		}
 
 		return errorMessage;
 	};
@@ -51,13 +49,12 @@ const LoginForm: React.FC<Props> = (props) => {
 	};
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
-        	const errorMessage = validateField(name, value);
+		const errorMessage = validateField(name, value);
 
-					// Update errors state
-					setErrorField((prevErrors) => ({
-						...prevErrors,
-						[name]: errorMessage,
-					}));
+		setErrorField((prevErrors) => ({
+			...prevErrors,
+			[name]: errorMessage,
+		}));
 
 		setLoginData((prevState) => ({
 			...prevState,
@@ -70,14 +67,14 @@ const LoginForm: React.FC<Props> = (props) => {
 		setError(null);
 
 		const { emailAddress, password } = loginData;
-					const errors = validateForm(loginData);
+		const errors = validateForm(loginData);
 
-					// Check if there are any errors
-					if (Object.values(errors).some((error) => error)) {
-						// If there are errors, update the state with the errors
-						setErrorField(errors);
-						return; // Exit early, do not proceed with form submission
-					}
+		// Check if there are any errors
+		if (Object.values(errors).some((error) => error)) {
+			// If there are errors, update the state with the errors
+			setErrorField(errors);
+			return;
+		}
 
 		try {
 			const authUser = await signInWithEmailAndPassword(
@@ -87,8 +84,7 @@ const LoginForm: React.FC<Props> = (props) => {
 			); // Assuming auth is properly initialized
 			console.log(authUser);
 			console.log('Success. The user is Logged In');
-			// Redirect user to a different page upon successful login
-			router.push('/'); // Change the path to your desired destination
+			router.push('/');
 		} catch (error) {
 			console.log(error);
 			setError('Password or Email is incorrect');
@@ -122,7 +118,7 @@ const LoginForm: React.FC<Props> = (props) => {
 					handleChange={handleChange}
 					error={errorField.password}
 				/>
-				
+
 				{error && <p className='text-sm text-red-600'>{error}</p>}
 				<button
 					className='mt-2 w-full rounded-lg bg-buttonColor py-2 text-white hover:scale-105 hover:shadow-lg'
