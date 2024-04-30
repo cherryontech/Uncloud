@@ -9,6 +9,7 @@ interface ConfirmationMessageProps {
 	hideConfirmationMessage: () => void;
 }
 
+console.log('Here?');
 export const ConfirmationMessage = ({
 	userDisplayName,
 	hideConfirmationMessage,
@@ -18,7 +19,7 @@ export const ConfirmationMessage = ({
 			<div className='flex w-[23rem] flex-col items-center justify-center gap-6'>
 				<Icon type='cloud-sun' size='6rem' weight='regular' />
 				<div className='flex flex-col items-center justify-center gap-2'>
-					<h4>Welcome in {userDisplayName} </h4>
+					<h4 className='text-center'>Welcome in {userDisplayName} </h4>
 					<p className='text-center'>
 						You can now start logging your reflections. Let’s get started with
 						your first one!
@@ -26,7 +27,7 @@ export const ConfirmationMessage = ({
 				</div>
 			</div>
 			<div>
-				<hr className='bg-lineColor h-0.25'></hr>
+				<hr className='h-0.25 bg-lineColor'></hr>
 			</div>
 			<div className='flex w-[23rem] flex-col items-center justify-center gap-4'>
 				<div className='flex flex-row gap-4'>
