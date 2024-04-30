@@ -127,7 +127,8 @@ const LoginForm: React.FC<Props> = (props) => {
 					Login
 				</button>
 				<div>
-					Don't have an account? <Link href={'/auth/signUp'}>Register</Link>{' '}
+					Don&apos;t have an account?{' '}
+					<Link href={'/auth/signUp'}>Register</Link>{' '}
 				</div>
 			</form>
 		</div>
