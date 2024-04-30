@@ -1,11 +1,14 @@
-import React from 'react'
+import LoginForm from '@/components/auth/loginForm';
+import React from 'react';
 
-type Props = {}
+type Props = {};
 
 const Login = (props: Props) => {
-  return (
-    <div>Login</div>
-  )
-}
+	return (
+		<div className='mt-10 flex w-full items-center justify-center'>
+			<LoginForm />
+		</div>
+	);
+};
 
-export default Login
+export default Login;
