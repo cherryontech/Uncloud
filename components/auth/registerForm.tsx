@@ -98,6 +98,8 @@ const RegisterForm = () => {
 								email: emailAddress,
 								displayName: displayName,
 								closedConfirmationMessage: false,
+								
+
 							})
 								.then((docRef: any) => {
 									router.push('/');

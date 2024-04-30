@@ -1,10 +1,10 @@
 'use client';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { useAuth } from './auth/useAuth';
-import { UserProvider } from './context/UserProvider';
-import { updateUser, getUser } from './api';
+
+import { updateUser, getUser } from '@/components/utils/serverFunctions';
 import ConfirmationMessage from '@/components/ConfirmationMessage';
+import { useAuth } from './context/UserProvider';
 export default function Home() {
 	const { user } = useAuth();
 	const [displayConfirmationMessage, setDisplayConfirmationMessage] =
@@ -20,29 +20,27 @@ export default function Home() {
 
 	async function hideConfirmationMessage() {
 		setDisplayConfirmationMessage(false);
-		updateUser(user.uid);
+		await updateUser(user.uid);
 	}
 
 	return (
-		<UserProvider>
-			<div>
-				<h1>Home</h1>
+		<div>
+			<h1>Home</h1>
 
-				{!!user ? (
-					<>
-						{displayConfirmationMessage && (
-							<ConfirmationMessage
-								userDisplayName={user.displayName}
-								hideConfirmationMessage={hideConfirmationMessage}
-							/>
-						)}
+			{user ? (
+				<>
+					{displayConfirmationMessage && (
+						<ConfirmationMessage
+							userDisplayName={user.displayName}
+							hideConfirmationMessage={hideConfirmationMessage}
+						/>
+					)}
 
-						<div>Hi, {user.displayName}</div>
-					</>
-				) : (
-					<div>no user authenticated</div>
-				)}
-			</div>
-		</UserProvider>
+					<div>Hi, {user.displayName}</div>
+				</>
+			) : (
+				<div>no user authenticated</div>
+			)}
+		</div>
 	);
 }

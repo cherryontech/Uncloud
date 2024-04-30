@@ -1,14 +1,16 @@
+'use server';
+
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/app/firebase';
 
-export function updateUser(uid) {
+export async function updateUser(uid: string) {
 	const userDocRef = doc(db, 'authUsers', uid);
 	updateDoc(userDocRef, {
 		closedConfirmationMessage: true,
 	});
 }
 
-export function getUser(uid) {
+export async function getUser(uid: string) {
 	const userDocRef = doc(db, 'authUsers', uid);
 	return getDoc(userDocRef)
 		.then((userDocSnapshot) => {

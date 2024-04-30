@@ -1,10 +1,23 @@
 'use client';
+import { useAuth } from '@/app/context/UserProvider';
+import { auth } from '@/app/firebase';
+import { signOut } from 'firebase/auth';
 import Link from 'next/link';
 import React from 'react';
-import { useAuth } from '@/app/auth/useAuth';
+
 type Props = {};
 
 const Navbar = (props: Props) => {
+	const handleLogOut = () => {
+		signOut(auth)
+			.then(() => {
+				console.log('logged out');
+			
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
 	const { user } = useAuth();
 	return (
 		<div className='flex w-full items-center justify-between px-16 py-5'>
@@ -12,7 +25,7 @@ const Navbar = (props: Props) => {
 			<div className='flex items-center justify-center gap-5'>
 				<>
 					{user ? (
-						<div>Logout</div>
+						<div onClick={handleLogOut}>Logout</div>
 					) : (
 						<>
 							<Link href={'/auth/login'}>Login</Link>
