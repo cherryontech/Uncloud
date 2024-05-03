@@ -23,7 +23,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
 }) => {
 	const [PasswordInput, setPasswordInput] = useState(false);
 	return (
-		<div className='my-3 w-full space-y-1.5'>
+		<div className='w-full space-y-1.5'>
 			<label className='text-sm font-bold' htmlFor={name}>
 				{label}
 			</label>
@@ -85,7 +85,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
 					)}
 				</div>
 			</div>
-			{error && <p className='text-sm text-red-600'>{error}</p>}
+			{error && <p className='text-sm font-semibold text-red-600'>{error}</p>}
 		</div>
 	);
 };

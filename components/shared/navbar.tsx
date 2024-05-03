@@ -34,7 +34,10 @@ const Navbar = (props: Props) => {
 			<div className='flex items-center justify-center gap-5'>
 				<>
 					{user ? (
-						<div onClick={handleLogOut}>Logout</div>
+						// <div onClick={handleLogOut}>Logout</div>
+						<Link onClick={handleLogOut} href='/'>
+							Logout
+						</Link>
 					) : (
 						<>
 							<Link href={'/auth/login'}>Login</Link>

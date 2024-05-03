@@ -45,8 +45,8 @@ export const Button = ({
 				mode,
 				'block',
 				'w-full',
-				'mt-2',
-				'py-2',
+				'py-[0.625rem]',
+				'px-6',
 			].join(' ')}
 			{...props}
 		>
