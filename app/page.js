@@ -6,6 +6,7 @@ import { updateUser, getUser } from '@/components/utils/serverFunctions';
 // import ConfirmationMessage from '@/components/ConfirmationMessage';
 import { ConfirmationMessage } from '@/stories/Confirmation';
 import { useAuth } from './context/UserProvider';
+import AddNewLog from '@/components/home/addNewLog';
 export default function Home() {
 	const { user } = useAuth();
 	const [displayConfirmationMessage, setDisplayConfirmationMessage] =
@@ -42,6 +43,7 @@ export default function Home() {
 			) : (
 				<div>no user authenticated</div>
 			)}
+			<AddNewLog/>
 		</div>
 	);
 }
