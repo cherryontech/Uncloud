@@ -108,7 +108,7 @@ const ResetPasswordForm: React.FC<Props> = (props) => {
 				<div className='text-2xl font-medium'>Reset Your Password</div>
 				<div className='text-center text-sm font-light'>
 					Enter a new password and confirm it below. Please choose a strong
-					password that you haven't used before.
+					password that you haven&apos;t used before.
 				</div>
 			</div>
 			<form onSubmit={handleSubmit} className='flex flex-col'>

@@ -104,9 +104,9 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
 					<div className='flex  w-full flex-col items-center justify-center gap-2'>
 						<div className='text-2xl font-medium'>Forgotten Password?</div>
 						<div className='text-center text-sm font-light'>
-							Oops! Can't remember your password? No worries! Please enter your
-							email below. A secure link will be sent to your inbox for password
-							recovery.
+							Oops! Can&apos;t remember your password? No worries! Please enter
+							your email below. A secure link will be sent to your inbox for
+							password recovery.
 						</div>
 					</div>
 					<form onSubmit={handleSubmit} className='flex flex-col'>
