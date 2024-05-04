@@ -19,6 +19,7 @@ interface FormErrors {
 	emailAddress: string;
 	password: string;
 }
+
 const LoginForm: React.FC<Props> = (props) => {
 	const [loginData, setLoginData] = useState<LoginData>({
 		emailAddress: '',
@@ -92,7 +93,7 @@ const LoginForm: React.FC<Props> = (props) => {
 			router.push('/');
 		} catch (error) {
 			console.log(error);
-			setError('Password or Email is incorrect.');
+			setError('Incorrect email or password.');
 		}
 	};
 
@@ -115,7 +116,7 @@ const LoginForm: React.FC<Props> = (props) => {
 					value={loginData.emailAddress}
 					label='Email'
 					handleChange={handleChange}
-					error={errorField.emailAddress}
+					error={error}
 				/>
 				<div className='flex flex-col gap-2'>
 					<PasswordInput
@@ -125,8 +126,11 @@ const LoginForm: React.FC<Props> = (props) => {
 						value={loginData.password}
 						label='Password'
 						handleChange={handleChange}
-						error={errorField.password}
+						error={error}
 					/>
+					{/* {error && (
+						<p className='text-sm font-semibold text-red-600'>{error}</p>
+					)} */}
 					<div className='flex justify-end text-sm'>
 						<Link
 							href={'/auth/forgotPassword'}
@@ -136,7 +140,7 @@ const LoginForm: React.FC<Props> = (props) => {
 						</Link>{' '}
 					</div>
 				</div>
-				{error && <p className='text-sm text-red-600'>{error}</p>}
+				{/* {error && <p className='text-sm text-red-600'>{error}</p>} */}
 				<div className='space-y-16'>
 					<Button type='submit' label='Log in' primary />
 					<div className='flex items-center justify-center font-semibold'>
