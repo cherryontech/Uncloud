@@ -133,7 +133,7 @@ const LoginForm: React.FC<Props> = (props) => {
 					)} */}
 					<div className='flex justify-end text-sm'>
 						<Link
-							href={'/auth/forgotPassword'}
+							href={'/auth/forgetPassword'}
 							className='font-medium text-blue-500 underline'
 						>
 							Forgot Password?
