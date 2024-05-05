@@ -1,4 +1,4 @@
-import LoginForm from '@/components/auth/loginForm';
+import LoginForm from '@/stories/loginForm';
 import React from 'react';
 
 type Props = {};

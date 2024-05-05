@@ -8,7 +8,7 @@ interface CustomInputProps {
 	placeholder: string;
 	label: string;
 	type: string;
-	error?: string;
+	error?: string | null;
 	handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -28,7 +28,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 	};
 
 	return (
-		<div className='my-3 w-full space-y-1.5'>
+		<div className='w-full space-y-1.5'>
 			<label className='text-sm font-bold' htmlFor={name}>
 				{label}
 			</label>
@@ -73,8 +73,12 @@ const CustomInput: React.FC<CustomInputProps> = ({
 					</div>
 				)}
 			</div>
+			{/* If error is not "Incorrect email or password." then display the message */}
+			{error && error !== 'Incorrect email or password.' && (
+				<p className='text-sm font-semibold text-red-600'>{error}</p>
+			)}
 
-			{error && <p className='text-sm text-red-600'>{error}</p>}
+			{/* {error && <p className='text-sm font-semibold text-red-600'>{error}</p>} */}
 		</div>
 	);
 };

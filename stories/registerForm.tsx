@@ -46,7 +46,8 @@ const RegisterForm = () => {
 		} else if (name === 'emailAddress' && !/\S+@\S+\.\S+/.test(value)) {
 			errorMessage = 'This email is invalid';
 		} else if (name === 'password' && value.length < 8) {
-			errorMessage = 'Password must be greater than 8 characters';
+			errorMessage =
+				"For added security, passwords must be at least 8 characters long. Let's give it another try";
 		}
 
 		return errorMessage;
@@ -121,7 +122,7 @@ const RegisterForm = () => {
 	};
 
 	return (
-		<div className=' flex h-full w-full max-w-[500px] flex-col space-y-6 bg-backgroundSecondary p-4 py-6'>
+		<div className=' flex h-full w-full max-w-[24rem] flex-col space-y-6 bg-backgroundSecondary p-4 py-6'>
 			<div className='flex flex-col items-center justify-center gap-2 '>
 				<Icon type='cloud-sun' size='6rem' weight='regular' />
 				<div className='flex  w-full flex-col items-center justify-center gap-2  space-y-2'>
@@ -131,46 +132,53 @@ const RegisterForm = () => {
 					</div>
 				</div>
 			</div>
-			<form onSubmit={handleSubmit} className='flex flex-col'>
+			<form onSubmit={handleSubmit} className='flex flex-col gap-6'>
 				<CustomInput
 					type='email'
-					placeholder='Please type your email.'
+					placeholder='Please type your email'
 					name='emailAddress'
 					value={registerData.emailAddress}
-					label="What's your email?"
+					label='Email'
 					handleChange={handleChange}
 					error={errorField.emailAddress}
 				/>
 				<CustomInput
 					type='text'
-					placeholder='Please type your preferred name.'
+					placeholder='Please type your preferred name'
 					value={registerData.displayName}
 					name='displayName'
 					label='What should we call you?'
 					handleChange={handleChange}
 					error={errorField.displayName}
 				/>
-				<PasswordInput
-					type='password'
-					placeholder='Please type in your password.'
-					name='password'
-					value={registerData.password}
-					label='Password'
-					handleChange={handleChange}
-					error={errorField.password}
-					// If there is an error, make the border red
-				/>
-
+				<div className='flex flex-col gap-2'>
+					<PasswordInput
+						type='password'
+						placeholder='Please type in your password'
+						name='password'
+						value={registerData.password}
+						label='Password'
+						handleChange={handleChange}
+						error={errorField.password}
+						// If there is an error, make the border red
+					/>
+					{/* If there ISN'T an error, show the password requirements, otherwise show the error */}
+					{!errorField.password && (
+						<div className='text-sm font-semibold'>
+							Passwords need to have at least 8 characters.
+						</div>
+					)}
+				</div>
 				{error && <p className='text-sm text-red-600'>{error}</p>}
 				<div className='space-y-16'>
-					<Button type='submit' label='Continue' primary />
-					<div className='flex items-center justify-center font-semibold'>
+					<Button type='submit' label='Sign up' primary />
+					<div className='flex items-center justify-center text-base font-semibold'>
 						Already have an account?&nbsp;{' '}
 						<Link
 							href={'/auth/login'}
 							className='font-medium text-blue-500 underline'
 						>
-							Login
+							Log in here.
 						</Link>{' '}
 					</div>
 				</div>

@@ -8,7 +8,7 @@ interface PasswordInputProps {
 	placeholder: string;
 	label: string;
 	type: string;
-	error?: string;
+	error?: string | null;
 	handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -23,7 +23,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
 }) => {
 	const [PasswordInput, setPasswordInput] = useState(false);
 	return (
-		<div className='my-3 w-full space-y-1.5'>
+		<div className='w-full space-y-1.5'>
 			<label className='text-sm font-bold' htmlFor={name}>
 				{label}
 			</label>
@@ -58,7 +58,6 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
 						'focus:ring',
 						'focus:ring-[#D9D9D9]',
 					].join(' ')}
-					// className='block w-full rounded-md border border-[#D9D9D9] bg-transparent p-2 py-2 pl-3 pr-10 text-base font-medium hover:border-[#706f6f] focus:border-[#706f6f] focus:outline-0 focus:outline-[#706f6f] focus:ring focus:ring-[#D9D9D9]'
 				/>
 
 				<div
@@ -85,7 +84,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
 					)}
 				</div>
 			</div>
-			{error && <p className='text-sm text-red-600'>{error}</p>}
+			{error && <p className='text-sm font-semibold text-red-600'>{error}</p>}
 		</div>
 	);
 };
