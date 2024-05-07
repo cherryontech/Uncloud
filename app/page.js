@@ -39,11 +39,11 @@ export default function Home() {
 					)}
 
 					<div>Hi, {user.displayName}</div>
+					<AddNewLog/>
 				</>
 			) : (
 				<div>no user authenticated</div>
 			)}
-			<AddNewLog/>
 		</div>
 	);
 }
