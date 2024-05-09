@@ -10,7 +10,11 @@ export async function updateUser(uid: string) {
 		closedConfirmationMessage: true,
 	});
 }
-export async function addUserMood(uid: string, mood: string) {
+export async function addUserMood(
+	uid: string,
+	mood: string,
+	selectedDate: string
+) {
 	const userDocRef = doc(db, 'authUsers', uid);
 	const userDocSnap = await getDoc(userDocRef);
 	console.log(userDocSnap);
@@ -18,23 +22,24 @@ export async function addUserMood(uid: string, mood: string) {
 	if (userDocSnap.exists()) {
 		const userData = userDocSnap.data();
 		if (userData) {
-			const today = formatDateToYYYYMMDD(new Date()); // Get today's date in YYYY-MM-DD format
-
 			// Initialize 'moods' array if it doesn't exist initially
 			const moodsArray = userData.moods || [];
 
 			const existingMoodIndex = moodsArray.findIndex(
-				(moodEntry: any) => moodEntry.date === today
+				(moodEntry: any) => moodEntry.date === selectedDate
 			);
 
 			if (existingMoodIndex !== -1) {
-				// If mood entry for today exists, update it
+				// If mood entry for selectedDate exists, update it
+				console.log('Existing mood entry found for today. Updating mood...');
+				console.log('Existing mood entry:', moodsArray[existingMoodIndex]);
 				moodsArray[existingMoodIndex].mood = mood;
 			} else {
 				// If mood entry for today doesn't exist, append a new entry
-				moodsArray.push({ date: today, mood: mood });
+				moodsArray.push({ date: selectedDate, mood: mood });
 			}
-			console.log(moodsArray);
+
+			console.log('Updated moods array:', moodsArray);
 
 			// Update the document with the modified moods array
 			await updateDoc(userDocRef, { moods: moodsArray });
