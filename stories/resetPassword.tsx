@@ -106,7 +106,9 @@ const ResetPasswordForm: React.FC<Props> = (props) => {
 			setError('Password or Email is incorrect');
 		}
 	};
-
+	const handleLoginClick = () => {
+		router.push('/auth/login');
+	};
 	return (
 		<div className=' flex h-full w-full max-w-[24rem] flex-col space-y-6 bg-backgroundSecondary p-4 py-6'>
 			{successMessage ? (
@@ -125,7 +127,12 @@ const ResetPasswordForm: React.FC<Props> = (props) => {
 								</div>
 							</div>
 						</div>
-						<Button type='button' label='Log In' primary />
+						<Button
+							type='button'
+							label='Login'
+							primary
+							onClick={handleLoginClick}
+						/>
 					</div>
 					<ProgressTracker totalSteps={4} currentStep={4} />
 				</div>
