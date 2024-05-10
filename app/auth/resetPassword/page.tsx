@@ -1,4 +1,4 @@
-import ResetPasswordForm from '@/components/auth/resetPassword';
+import ResetPasswordForm from '@/stories/resetPassword';
 import React from 'react';
 
 type Props = {};
