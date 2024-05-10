@@ -17,7 +17,6 @@ export async function addUserMood(
 ) {
 	const userDocRef = doc(db, 'authUsers', uid);
 	const userDocSnap = await getDoc(userDocRef);
-	console.log(userDocSnap);
 
 	if (userDocSnap.exists()) {
 		const userData = userDocSnap.data();
@@ -53,7 +52,6 @@ export async function getUser(uid: string) {
 		.then((userDocSnapshot) => {
 			// Extract the custom fields from the document data
 			const userData = userDocSnapshot.data();
-			console.log(userData);
 			return userData;
 		})
 		.catch((error) => {

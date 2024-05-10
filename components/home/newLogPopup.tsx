@@ -11,7 +11,7 @@ type Props = {
 };
 
 const NewLogPopup = ({ showPopup, handlePopupToggle, selectedDate }: Props) => {
-	const [selectedMood, setSelectedMood] = useState<string>(''); // State to hold the selected mood
+	const [selectedMood, setSelectedMood] = useState<string>('');
 	const { user } = useAuth();
 
 	useEffect(() => {
@@ -22,16 +22,15 @@ const NewLogPopup = ({ showPopup, handlePopupToggle, selectedDate }: Props) => {
 					return;
 				}
 				console.log('All mood entries:', userData.moods);
-				
+
 				const selectedMoodEntry = userData.moods.find(
 					(entry: any) => entry.date === selectedDate
 				);
-				console.log('Selected mood entry:', selectedMoodEntry);
 
 				if (selectedMoodEntry) {
 					setSelectedMood(selectedMoodEntry.mood);
 				} else {
-					setSelectedMood(''); // Reset selected mood if no entry found for the selected date
+					setSelectedMood('');
 				}
 			});
 		}
@@ -39,9 +38,7 @@ const NewLogPopup = ({ showPopup, handlePopupToggle, selectedDate }: Props) => {
 
 	if (!showPopup) return null;
 
-	// Log the selected date prop
 	console.log('Selected Date Prop:', selectedDate);
-	// Log the selected mood
 	console.log('Selected Mood:', selectedMood);
 
 	const handleClickInside = (
