@@ -51,6 +51,7 @@ export const Header = ({
 							size='small'
 							onClick={onCreateAccount}
 							label='Sign up'
+							version='primary'
 						/>
 					</>
 				</div>

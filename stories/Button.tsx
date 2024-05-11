@@ -6,6 +6,7 @@ interface ButtonProps {
 	 * Is this the principal call to action on the page?
 	 */
 	primary?: boolean;
+	version?: string;
 	/**
 	 * What background color to use
 	 */
@@ -30,12 +31,21 @@ interface ButtonProps {
  */
 export const Button = ({
 	primary = false,
+	version,
 	size = 'medium',
 	backgroundColor,
 	label,
 	...props
 }: ButtonProps) => {
-	const mode = primary ? 'button--primary' : 'button--secondary';
+	const mode =
+		version === 'primary'
+			? 'button--primary'
+			: version === 'secondary'
+				? 'button--secondary'
+				: version === 'tertiary'
+					? 'button--tertiary'
+					: 'button--primary';
+
 	return (
 		<button
 			type={props.type || 'button'}

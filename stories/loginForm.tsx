@@ -8,6 +8,7 @@ import CustomInput from './customInput';
 import PasswordInput from './passwordInput';
 import { Button } from './Button';
 import { Icon } from './Icons';
+import Image from 'next/image';
 
 type Props = {};
 
@@ -100,7 +101,7 @@ const LoginForm: React.FC<Props> = (props) => {
 	return (
 		<div className=' flex h-full w-full max-w-[24rem] flex-col space-y-6 bg-backgroundSecondary p-4 py-6'>
 			<div className='flex flex-col items-center justify-center gap-2 '>
-				<Icon type='cloud-sun' size='6rem' weight='regular' />
+				<Image src='/uncloud.svg' alt='Uncloud' width={64} height={64} />
 				<div className='flex  w-full flex-col items-center justify-center gap-2  space-y-2'>
 					<div className='text-3xl font-semibold'>Log in to Uncloud</div>
 					<div className='text-center text-base font-light'>
@@ -142,7 +143,7 @@ const LoginForm: React.FC<Props> = (props) => {
 				</div>
 				{/* {error && <p className='text-sm text-red-600'>{error}</p>} */}
 				<div className='space-y-16'>
-					<Button type='submit' label='Log in' primary />
+					<Button type='submit' label='Log in' primary version='primary' />
 					<div className='flex items-center justify-center font-semibold'>
 						Not registered yet?&nbsp;{' '}
 						<Link

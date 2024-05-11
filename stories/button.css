@@ -12,26 +12,40 @@
 /* Primary Button, and States */
 .button--primary {
 	color: white;
-	background-color: #2c2c2c;
+	background-color: #2d81e0;
 }
 .button--primary:hover {
-	background-color: #454545;
+	background-color: #005dc7;
 }
 .button--primary:active {
-	background-color: #454545;
+	background-color: #0050b0;
+}
+.button--primary:disabled {
+	background-color: #d9d9d9;
 }
 
 /* Secondary Button, and States */
 .button--secondary {
-	color: #333;
-	background-color: transparent;
-	box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;
+	color: white;
+	background-color: #424242;
 }
 .button--secondary:hover {
-	color: #333;
+	background-color: #2a2a2a;
 }
 .button--secondary:active {
-	color: #333;
+	background-color: #2c2c2c;
+}
+
+/* Tertiary Button, and States */
+.button--tertiary {
+	color: #2d81e0;
+	background-color: white;
+}
+.button--tertiary:hover {
+	background-color: #d9d9d9;
+}
+.button--tertiary:active {
+	background-color: #dee9f5;
 }
 
 /* Button Sizing */
