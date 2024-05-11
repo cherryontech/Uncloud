@@ -33,7 +33,7 @@ const LogoutConfirmation: React.FC<Props> = (props) => {
 					<Button
 						type='button'
 						version='primary'
-						label='Login'
+						label='Log in'
 						primary
 						onClick={handleLoginClick}
 					/>
