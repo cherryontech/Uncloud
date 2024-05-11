@@ -2,21 +2,21 @@
 
 ## Description
 
-[APP NAME] is a web application created to support users who are in need career clarity. Users track their daily "weather" (e.g., _sunny, foggy, storming_), and are provided with the option to follow up their log with a written reflection.
+Uncloud is a web application created to support users who are in need career clarity. Users track their daily "weather" (e.g., _sunny, foggy, storming_), and are provided with the option to follow up their log with a written reflection.
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/69e87c78-4e64-4761-b551-4f480a3abfef/deploy-status)](https://app.netlify.com/sites/cool-sunshine-7d9707/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/69e87c78-4e64-4761-b551-4f480a3abfef/deploy-status)](https://app.netlify.com/sites/uncloud/deploys)
 
 ### Tech Stack
 
-MWT was created using TypeScript, Next.JS, Firebase, and Tailwind CSS..
+Uncloud was created using TypeScript, Next.JS, Firebase, and Tailwind CSS. We host our components via Storybook.
 
 <a href="https://skillicons.dev">
   <img src="https://skillicons.dev/icons?i=ts,nextjs,firebase,tailwind,html,css&perline=7" alt="Icons for the following skills: TypeScript, Next.JS, Firebase, Tailwind, HTML, CSS" />
 </a>
 
-## Storybook
+## 📖 Storybook
 
-Our Storybook components library can be viewed [here](https://662b31961b954f0f663b71e1-wkpluroclt.chromatic.com/).
+Our Storybook components library can be viewed [here](https://662b31961b954f0f663b71e1-pxprludygi.chromatic.com/).
 
 ## Installation Instructions
 

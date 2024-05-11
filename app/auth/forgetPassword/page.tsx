@@ -1,4 +1,4 @@
-import ForgetPasswordForm from '@/components/auth/forgetPassword';
+import ForgetPasswordForm from '@/stories/forgetPassword';
 import React from 'react';
 
 type Props = {};

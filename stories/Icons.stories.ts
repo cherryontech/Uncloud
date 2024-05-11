@@ -28,7 +28,15 @@ const meta = {
 		},
 		type: {
 			control: 'select',
-			options: ['cloud-sun', 'chart-line-up', 'lightbulb-filament', 'sun'],
+			options: [
+				'cloud-sun',
+				'chart-line-up',
+				'lightbulb-filament',
+				'sun',
+				'lock-key',
+				'envelope-open',
+				'arrow-clockwise',
+			],
 		},
 		weight: {
 			control: 'select',
