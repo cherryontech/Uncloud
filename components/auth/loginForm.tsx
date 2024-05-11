@@ -82,7 +82,7 @@ const LoginForm: React.FC<Props> = (props) => {
 				emailAddress,
 				password
 			); // Assuming auth is properly initialized
-			console.log(authUser);
+			
 			console.log('Success. The user is Logged In');
 			router.push('/');
 		} catch (error) {
