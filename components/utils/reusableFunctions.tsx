@@ -12,7 +12,7 @@ export function formatValueTypeToYYYYMMDD(value: Value): string {
 		const formattedEndDate = endDate ? formatDateToYYYYMMDD(endDate) : '';
 		return `${formattedStartDate} - ${formattedEndDate}`;
 	} else {
-		// If the value is a single date, format it directly
+		// If the value is a single date, format it as a single date
 		return formatDateToYYYYMMDD(value);
 	}
 }

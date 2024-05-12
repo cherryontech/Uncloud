@@ -31,22 +31,29 @@ const NewLogPopup = ({
 	useEffect(() => {
 		if (user && selectedDate) {
 			getUser(user.uid).then((userData) => {
-				if (!userData || !userData.moods || userData.moods.length === 0) return;
+				if (!userData || !userData.moods || userData.moods.length === 0) {
+					console.log('No mood data found for the user');
+					return;
+				}
+				console.log('All mood entries:', userData.moods);
 
 				const selectedMoodEntry = userData.moods.find(
 					(entry: any) => entry.date === selectedDate
 				);
-				console.log(userData.moods);
+
 				if (selectedMoodEntry) {
 					setSelectedMood(selectedMoodEntry.mood);
 				} else {
-					setSelectedMood(''); // Reset selected mood if no entry found for the selected date
+					setSelectedMood('');
 				}
 			});
 		}
 	}, [user, selectedDate]);
 
 	if (!showPopup) return null;
+
+	console.log('Selected Date Prop:', selectedDate);
+	console.log('Selected Mood:', selectedMood);
 
 	const handleClickInside = (
 		event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -64,7 +71,7 @@ const NewLogPopup = ({
 
 	const handleSaveMood = async () => {
 		if (!user) return;
-		await addUserMood(user.uid, selectedMood);
+		await addUserMood(user.uid, selectedMood, selectedDate);
 		handlePopupToggle();
 	};
 	console.log(selectedDate);
