@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import './newLogPopup.css';
 import Navbar from '@/components/shared/navbar';
 import 'react-calendar/dist/Calendar.css';
 const inter = Inter({ subsets: ['latin'] });

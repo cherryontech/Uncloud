@@ -20,7 +20,7 @@ Uncloud was created using TypeScript, Next.JS, Firebase, and Tailwind CSS. We ho
 
 ## 📖 Storybook
 
-Our Storybook components library can be viewed [here](https://662b31961b954f0f663b71e1-dedlwsshyc.chromatic.com/).
+Our Storybook components library can be viewed [here](https://662b31961b954f0f663b71e1-ngtvcffapz.chromatic.com/).
 
 ## Installation Instructions
 

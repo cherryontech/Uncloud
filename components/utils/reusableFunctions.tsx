@@ -1,4 +1,4 @@
-import { Value } from "../home/addNewLog";
+import { Value } from '../home/addNewLog';
 
 export function formatValueTypeToYYYYMMDD(value: Value): string {
 	if (value === null) {
@@ -21,4 +21,33 @@ export function formatDateToYYYYMMDD(date: Date): string {
 	const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed
 	const day = String(date.getDate()).padStart(2, '0');
 	return `${year}-${month}-${day}`;
+}
+
+export function formatDateToDayMonthDateYear(date: Date): string {
+	const options: Intl.DateTimeFormatOptions = {
+		weekday: 'long',
+		month: 'long',
+		day: 'numeric',
+	};
+	const optionsForToday: Intl.DateTimeFormatOptions = {
+		month: 'long',
+		day: 'numeric',
+	};
+	const formattedDate = isToday(date)
+		? new Intl.DateTimeFormat('en-US', optionsForToday).format(date)
+		: new Intl.DateTimeFormat('en-US', options).format(date);
+	if (isToday(date)) {
+		return `Today, ${formattedDate}`;
+	}
+	return formattedDate;
+}
+
+// A function that checks if the date is today
+export function isToday(date: Date): boolean {
+	const today = new Date();
+	return (
+		date.getDate() === today.getDate() &&
+		date.getMonth() === today.getMonth() &&
+		date.getFullYear() === today.getFullYear()
+	);
 }
