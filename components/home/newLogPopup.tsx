@@ -93,7 +93,7 @@ const NewLogPopup = ({
 				</button>
 				<div className='flex flex-col justify-center gap-28'>
 					<div className='flex flex-col items-center justify-center gap-4'>
-						<span className='text-xl font-semibold uppercase text-[#2D81E0]'>
+						<span className='text-xl font-semibold uppercase text-primary'>
 							Create New
 						</span>
 						<span className='text-3xl font-semibold'>
@@ -121,7 +121,7 @@ const NewLogPopup = ({
 										key={index}
 										className={`flex h-[15.1rem] w-[12rem] flex-col items-center justify-center rounded-lg border px-4 py-4 ${
 											selectedMood === moodName
-												? 'border-2 border-[#2D81E0] shadow-[0_15px_20px_0_rgba(0,0,0,0.3)]'
+												? 'border-2 border-primary shadow-[0_15px_20px_0_rgba(0,0,0,0.3)]'
 												: 'bg-white'
 										}`}
 										onClick={() => setSelectedMood(moodName)}
