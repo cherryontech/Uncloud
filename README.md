@@ -1,14 +1,21 @@
 <!-- Add image -->
-<p align="center" width="100%" style="display:flex; justify-content:center; align-items: center; flex-direction:column; gap:1rem">
-    <img width="20%" src="public/uncloud.svg">
-    <span style="font-size: 3rem">Uncloud</span>
-</p>
+<div align="center">
+        <img width="20%" src="public/uncloud.svg">
+   <h1>Uncloud</h1>
+</div>
 
+    
 ## Description
 
 Uncloud is a web application created to support users who are in need career clarity. Users track their daily "weather" (e.g., _sunny, foggy, storming_), and are provided with the option to follow up their log with a written reflection.
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/69e87c78-4e64-4761-b551-4f480a3abfef/deploy-status)](https://app.netlify.com/sites/uncloud/deploys)
+<div align="center">
+    <img width="10%" src="public/moods/cloudy.svg">
+     <img width="10%" src="public/moods/rainbow.svg">
+     <img width="10%" src="public/moods/rainy.svg">
+     <img width="10%" src="public/moods/stormy.svg">
+     <img width="10%" src="public/moods/sunny.svg">
+</div>
 
 ### Tech Stack
 
@@ -18,6 +25,7 @@ Uncloud was created using TypeScript, Next.JS, Firebase, and Tailwind CSS. We ho
   <img src="https://skillicons.dev/icons?i=ts,nextjs,firebase,tailwind,html,css&perline=7" alt="Icons for the following skills: TypeScript, Next.JS, Firebase, Tailwind, HTML, CSS" />
 </a>
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/69e87c78-4e64-4761-b551-4f480a3abfef/deploy-status)](https://app.netlify.com/sites/uncloud/deploys)
 ## 📖 Storybook
 
 Our Storybook components library can be viewed [here](https://662b31961b954f0f663b71e1-ngtvcffapz.chromatic.com/).
