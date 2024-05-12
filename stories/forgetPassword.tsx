@@ -150,7 +150,12 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
 
 								{error && <p className='text-sm text-red-600'>{error}</p>}
 								<div className='space-y-16'>
-									<Button type='submit' label='Send Link' primary />
+									<Button
+										type='submit'
+										label='Send Link'
+										primary
+										version='primary'
+									/>
 									<div className='flex items-center justify-center font-semibold'>
 										Remembered password? &nbsp;{' '}
 										<Link

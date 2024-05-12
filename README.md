@@ -1,4 +1,8 @@
-# [APP NAME]
+<!-- Add image -->
+<p align="center" width="100%" style="display:flex; justify-content:center; align-items: center; flex-direction:column; gap:1rem">
+    <img width="20%" src="public/uncloud.svg">
+    <span style="font-size: 3rem">Uncloud</span>
+</p>
 
 ## Description
 
@@ -16,7 +20,7 @@ Uncloud was created using TypeScript, Next.JS, Firebase, and Tailwind CSS. We ho
 
 ## 📖 Storybook
 
-Our Storybook components library can be viewed [here](https://662b31961b954f0f663b71e1-pxprludygi.chromatic.com/).
+Our Storybook components library can be viewed [here](https://662b31961b954f0f663b71e1-dedlwsshyc.chromatic.com/).
 
 ## Installation Instructions
 

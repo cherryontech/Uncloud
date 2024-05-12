@@ -10,6 +10,7 @@ import PasswordInput from './passwordInput';
 import { Button } from './Button';
 import { setDoc, doc } from 'firebase/firestore';
 import { Icon } from './Icons';
+import Image from 'next/image';
 
 interface RegisterData {
 	displayName: string;
@@ -124,7 +125,7 @@ const RegisterForm = () => {
 	return (
 		<div className=' flex h-full w-full max-w-[24rem] flex-col space-y-6 bg-backgroundSecondary p-4 py-6'>
 			<div className='flex flex-col items-center justify-center gap-2 '>
-				<Icon type='cloud-sun' size='6rem' weight='regular' />
+				<Image src='/uncloud.svg' alt='Uncloud' width={64} height={64} />
 				<div className='flex  w-full flex-col items-center justify-center gap-2  space-y-2'>
 					<div className='text-3xl font-semibold'>Welcome to Uncloud</div>
 					<div className='text-center text-base font-light'>
@@ -171,7 +172,7 @@ const RegisterForm = () => {
 				</div>
 				{error && <p className='text-sm text-red-600'>{error}</p>}
 				<div className='space-y-16'>
-					<Button type='submit' label='Sign up' primary />
+					<Button type='submit' label='Sign up' primary version='primary' />
 					<div className='flex items-center justify-center text-base font-semibold'>
 						Already have an account?&nbsp;{' '}
 						<Link

@@ -129,9 +129,10 @@ const ResetPasswordForm: React.FC<Props> = (props) => {
 						</div>
 						<Button
 							type='button'
-							label='Login'
+							label='Log in'
 							primary
 							onClick={handleLoginClick}
+							version='primary'
 						/>
 					</div>
 					<ProgressTracker totalSteps={4} currentStep={4} />
@@ -175,8 +176,13 @@ const ResetPasswordForm: React.FC<Props> = (props) => {
 								/>
 								{error && <p className='text-sm text-red-600'>{error}</p>}
 								<div className='space-y-16'>
-									<Button type='submit' label='Reset Password' primary />
-									<div className='flex items-center justify-center font-semibold'>
+									<Button
+										type='submit'
+										label='Reset Password'
+										primary
+										version='primary'
+									/>
+									<div className='flex flex-wrap items-center justify-center font-semibold'>
 										Remembered password? &nbsp;{' '}
 										<Link
 											href={'/auth/login'}

@@ -54,6 +54,7 @@ export const ConfirmationMessage = ({
 			onClick={hideConfirmationMessage}
 			label='Get started'
 			primary
+			version='primary'
 			size='medium'
 		/>
 	</div>
