@@ -2,7 +2,10 @@
 import React, { useState } from 'react';
 import NewLogPopup from './newLogPopup';
 import Calendar from 'react-calendar';
-import { formatValueTypeToYYYYMMDD } from '../utils/reusableFunctions';
+import {
+	formatValueTypeToYYYYMMDD,
+	formatDateToDayMonthDateYear,
+} from '../utils/reusableFunctions';
 type Props = {};
 type ValuePiece = Date | null;
 
@@ -21,6 +24,7 @@ const AddNewLog = (props: Props) => {
 				showPopup={showPopup}
 				handlePopupToggle={handlePopupToggle}
 				selectedDate={formatValueTypeToYYYYMMDD(value)}
+				displayDate={formatDateToDayMonthDateYear(value as Date)} // Type assertion added here
 			/>
 		</div>
 	);

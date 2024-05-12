@@ -22,3 +22,32 @@ export function formatDateToYYYYMMDD(date: Date): string {
 	const day = String(date.getDate()).padStart(2, '0');
 	return `${year}-${month}-${day}`;
 }
+
+export function formatDateToDayMonthDateYear(date: Date): string {
+	const options: Intl.DateTimeFormatOptions = {
+		weekday: 'long',
+		month: 'long',
+		day: 'numeric',
+	};
+	const optionsForToday: Intl.DateTimeFormatOptions = {
+		month: 'long',
+		day: 'numeric',
+	};
+	const formattedDate = isToday(date)
+		? new Intl.DateTimeFormat('en-US', optionsForToday).format(date)
+		: new Intl.DateTimeFormat('en-US', options).format(date);
+	if (isToday(date)) {
+		return `Today, ${formattedDate}`;
+	}
+	return formattedDate;
+}
+
+// A function that checks if the date is today
+export function isToday(date: Date): boolean {
+	const today = new Date();
+	return (
+		date.getDate() === today.getDate() &&
+		date.getMonth() === today.getMonth() &&
+		date.getFullYear() === today.getFullYear()
+	);
+}
