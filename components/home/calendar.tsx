@@ -69,7 +69,10 @@ const CalendarView = (props: Props) => {
 			});
 		}
 	};
-
+	const today = new Date();
+	const todayYear = today.getFullYear();
+	const todayMonth = today.getMonth();
+	const todayDate = today.getDate();
 	return (
 		<div className='flex flex-col justify-start gap-6 '>
 			<div className='flex w-full flex-row items-center justify-between font-semibold'>
@@ -115,7 +118,14 @@ const CalendarView = (props: Props) => {
 					value={value}
 					tileContent={({ date, view }) => {
 						const dateKey = formatValueTypeToYYYYMMDD(date);
-						if (new Date(dateKey) > new Date()) {
+						if (
+							date.getFullYear() > todayYear ||
+							(date.getFullYear() === todayYear &&
+								date.getMonth() > todayMonth) ||
+							(date.getFullYear() === todayYear &&
+								date.getMonth() === todayMonth &&
+								date.getDate() > todayDate)
+						) {
 							return (
 								<div className='relative h-full w-full'>
 									<Image
@@ -144,7 +154,14 @@ const CalendarView = (props: Props) => {
 							</div>
 						);
 					}}
-					tileDisabled={({ date, view }) => new Date(date) > new Date()}
+					tileDisabled={({ date, view }) =>
+						date.getFullYear() > todayYear ||
+						(date.getFullYear() === todayYear &&
+							date.getMonth() > todayMonth) ||
+						(date.getFullYear() === todayYear &&
+							date.getMonth() === todayMonth &&
+							date.getDate() > todayDate)
+					}
 				/>
 			</div>
 			{/* <button onClick={handlePopupToggle}>Add New Log</button>
