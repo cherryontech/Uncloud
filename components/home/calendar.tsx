@@ -26,12 +26,18 @@ const CalendarView = (props: Props) => {
 	const [moods, setMoods] = useState<{ [key: string]: string }>({});
 	const [selectedDate, setSelectedDate] = useState<Value>(new Date());
 
+	type MoodEntry = {
+		date: string;
+		mood: string;
+	};
+
 	useEffect(() => {
 		if (user) {
 			getUser(user.uid).then((userData) => {
 				if (userData && userData.moods) {
-					const moodMap = {};
-					userData.moods.forEach((moodEntry) => {
+					let moodMap: { [key: string]: string } = {};
+
+					userData.moods.forEach((moodEntry: MoodEntry) => {
 						moodMap[formatValueTypeToYYYYMMDD(new Date(moodEntry.date))] =
 							moodEntry.mood;
 					});
@@ -45,7 +51,7 @@ const CalendarView = (props: Props) => {
 		setShowPopup(!showPopup);
 	};
 
-	const handleDateChange = (newValue) => {
+	const handleDateChange = (newValue: Value) => {
 		setSelectedDate(newValue);
 		setValue(newValue);
 	};
@@ -55,7 +61,7 @@ const CalendarView = (props: Props) => {
 		handlePopupToggle();
 	};
 
-	const saveMood = (mood, date) => {
+	const saveMood = (mood: string, date: string) => {
 		if (user) {
 			addUserMood(user.uid, mood, date).then(() => {
 				setMoods((prev) => ({ ...prev, [date]: mood }));
