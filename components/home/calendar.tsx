@@ -38,8 +38,11 @@ const CalendarView = (props: Props) => {
 					let moodMap: { [key: string]: string } = {};
 
 					userData.moods.forEach((moodEntry: MoodEntry) => {
-						moodMap[formatValueTypeToYYYYMMDD(new Date(moodEntry.date))] =
-							moodEntry.mood;
+						const dateParts = moodEntry.date
+							.split('-')
+							.map((part) => parseInt(part, 10));
+						const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+						moodMap[formatValueTypeToYYYYMMDD(date)] = moodEntry.mood;
 					});
 					setMoods(moodMap);
 				}
@@ -164,14 +167,6 @@ const CalendarView = (props: Props) => {
 					}
 				/>
 			</div>
-			{/* <button onClick={handlePopupToggle}>Add New Log</button>
-			<NewLogPopup
-				showPopup={showPopup}
-				handlePopupToggle={handlePopupToggle}
-				selectedDate={formatValueTypeToYYYYMMDD(value)}
-				displayDate={formatDateToDayMonthDateYear(value as Date)}
-				saveMood={saveMood}
-			/> */}
 			<NewLogPopup
 				showPopup={showPopup}
 				handlePopupToggle={handlePopupToggle}
