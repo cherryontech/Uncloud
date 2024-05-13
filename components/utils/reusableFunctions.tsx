@@ -1,4 +1,4 @@
-import { Value } from '../home/addNewLog';
+import { Value } from '../home/calendar';
 
 export function formatValueTypeToYYYYMMDD(value: Value): string {
 	if (value === null) {
@@ -17,9 +17,10 @@ export function formatValueTypeToYYYYMMDD(value: Value): string {
 	}
 }
 export function formatDateToYYYYMMDD(date: Date): string {
-	const year = date.getFullYear();
-	const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed
-	const day = String(date.getDate()).padStart(2, '0');
+	// Convert the date to UTC to avoid timezone issues affecting the day part
+	const year = date.getUTCFullYear();
+	const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+	const day = date.getUTCDate().toString().padStart(2, '0');
 	return `${year}-${month}-${day}`;
 }
 
@@ -50,4 +51,16 @@ export function isToday(date: Date): boolean {
 		date.getMonth() === today.getMonth() &&
 		date.getFullYear() === today.getFullYear()
 	);
+}
+
+export function formatDateToYear(date: Date): string {
+	const year = date.getFullYear();
+	return year.toString();
+}
+
+export function formatDateToMonth(date: Date): string {
+	const options: Intl.DateTimeFormatOptions = {
+		month: 'long',
+	};
+	return new Intl.DateTimeFormat('en-US', options).format(date);
 }

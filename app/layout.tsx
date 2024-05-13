@@ -30,9 +30,8 @@ export default function RootLayout({
 		<html lang='en' className={openSans.className}>
 			<head>
 				<meta charSet='utf-8' />
-				<link rel='icon' href='./icon.ico' sizes='any' />
 			</head>
-			<body>
+			<body className='text-textPrimary'>
 				<UserProvider>
 					<Navbar />
 					{children}

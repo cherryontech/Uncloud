@@ -13,6 +13,7 @@ type Props = {
 	handlePopupToggle: () => void;
 	selectedDate: string;
 	displayDate: string;
+	saveMood: (mood: string, date: string) => void;
 };
 
 type Mood = {
@@ -24,6 +25,7 @@ const NewLogPopup = ({
 	handlePopupToggle,
 	selectedDate,
 	displayDate,
+	saveMood,
 }: Props) => {
 	const [selectedMood, setSelectedMood] = useState<string>(''); // State to hold the selected mood
 	const { user } = useAuth();
@@ -60,7 +62,7 @@ const NewLogPopup = ({
 	) => {
 		event.stopPropagation();
 	};
-	// const moods = ['rainbow', 'sunny', 'cloudy', 'rainy', 'stormy'];
+
 	const moods: Mood[] = [
 		{ Rainbow: 'Proud' },
 		{ Sunny: 'Confident' },
@@ -73,6 +75,7 @@ const NewLogPopup = ({
 		if (!user) return;
 		await addUserMood(user.uid, selectedMood, selectedDate);
 		handlePopupToggle();
+		saveMood(selectedMood, selectedDate);
 	};
 	console.log(selectedDate);
 	return (
@@ -111,7 +114,7 @@ const NewLogPopup = ({
 						</div>
 					</div>
 					<div className='flex flex-col items-center justify-center gap-24'>
-						<div className='flex  flex-row items-center gap-2'>
+						<div className='flex  flex-row items-center gap-8'>
 							{moods.map((mood, index) => {
 								const moodName = Object.keys(mood)[0];
 								const moodDescription = mood[moodName];
@@ -121,12 +124,11 @@ const NewLogPopup = ({
 										key={index}
 										className={`flex h-[15.1rem] w-[12rem] flex-col items-center justify-center rounded-lg border px-4 py-4 ${
 											selectedMood === moodName
-												? 'border-2 border-primary shadow-[0_15px_20px_0_rgba(0,0,0,0.3)]'
-												: 'bg-white'
+												? 'border-2 border-primary bg-white shadow-[0_15px_20px_0_rgba(0,0,0,0.3)]'
+												: 'bg-white opacity-85'
 										}`}
 										onClick={() => setSelectedMood(moodName)}
 									>
-										{/* in public/moods/ I have logos to correspond to each mood (moodName in lower case (e.g., cloudy.svg); add the mood's logo here) */}
 										<div className='align-center relative flex flex-col items-center justify-center'>
 											<label className='checkbox-container'>
 												<input

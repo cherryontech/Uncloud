@@ -6,7 +6,7 @@ import { updateUser, getUser } from '@/components/utils/serverFunctions';
 // import ConfirmationMessage from '@/components/ConfirmationMessage';
 import { ConfirmationMessage } from '@/stories/Confirmation';
 import { useAuth } from './context/UserProvider';
-import AddNewLog from '@/components/home/addNewLog';
+import CalendarView from '@/components/home/calendar';
 export default function Home() {
 	const { user } = useAuth();
 	const [displayConfirmationMessage, setDisplayConfirmationMessage] =
@@ -27,8 +27,6 @@ export default function Home() {
 
 	return (
 		<div className='px-12'>
-			<h1>Home</h1>
-
 			{user ? (
 				<>
 					{displayConfirmationMessage && (
@@ -38,8 +36,8 @@ export default function Home() {
 						/>
 					)}
 
-					<div>Hi, {user.displayName}</div>
-					<AddNewLog/>
+					{/* <div>Hi, {user.displayName}</div> */}
+					<CalendarView />
 				</>
 			) : (
 				<div>no user authenticated</div>
