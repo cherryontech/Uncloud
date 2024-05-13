@@ -40,7 +40,7 @@ const config: Config = {
 				backgroundTertiary: '#f3cab6',
 				popupBackground: '#1A1A32',
 				popupText: '#E6CCCC',
-				textPrimary: '#272E35',
+				textPrimary: '#2C2C2C',
 				textSecondary: '#6E757C',
 				lineColor: '#D9D9D9',
 			},

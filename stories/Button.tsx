@@ -18,7 +18,7 @@ interface ButtonProps {
 	/**
 	 * Button contents
 	 */
-	label: string;
+	label: React.ReactNode;
 	/**
 	 * Optional click handler
 	 */
@@ -29,14 +29,14 @@ interface ButtonProps {
 /**
  * Primary UI component for user interaction
  */
-export const Button = ({
+export const Button: React.FC<ButtonProps> = ({
 	primary = false,
 	version,
 	size = 'medium',
 	backgroundColor,
 	label,
 	...props
-}: ButtonProps) => {
+}) => {
 	const mode =
 		version === 'primary'
 			? 'button--primary'
