@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 
 type Props = {
 	// src: string;
@@ -15,7 +15,7 @@ const Avatar: React.FC<Props> = ({
 		style={{ width: size, height: size }}
 	>
 		<Image
-			src='./moods/sunny.svg'
+			src='/moods/sunny.svg'
 			alt='User Avatar'
 			layout='fill'
 			className='avatar'

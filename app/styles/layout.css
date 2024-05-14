@@ -10,7 +10,7 @@
 
 .main-container {
 	display: grid;
-	grid-template-columns: 3fr min-content;
+	grid-template-columns: 3fr 1fr;
 	grid-template-rows: min-content 1fr;
 	height: 100%;
 	/* vertical gap 2rem, horizontal gap 1rem */

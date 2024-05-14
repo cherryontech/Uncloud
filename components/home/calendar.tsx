@@ -10,7 +10,7 @@ import {
 	formatDateToMonth,
 	isToday,
 } from '../utils/reusableFunctions';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { useAuth } from '@/app/context/UserProvider';
 import { Button } from '@/stories/Button';
 import { Plus } from '@phosphor-icons/react';

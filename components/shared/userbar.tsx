@@ -29,13 +29,11 @@ const Userbar = (props: Props) => {
 	const { user } = useAuth();
 	return (
 		<div className='nav-container flex w-full items-center justify-between bg-[#F3F5F9] pr-6'>
-			<div>
-				{user && (
-					<div className='flex flex-row items-center gap-4'>
-						<Dropdown user={user} />
-					</div>
-				)}
-			</div>
+			{user && (
+				<div className='flex w-full flex-row items-center gap-4'>
+					<Dropdown user={user} />
+				</div>
+			)}
 		</div>
 	);
 };

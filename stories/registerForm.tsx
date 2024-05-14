@@ -10,7 +10,7 @@ import PasswordInput from './passwordInput';
 import { Button } from './Button';
 import { setDoc, doc } from 'firebase/firestore';
 import { Icon } from './Icons';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 
 interface RegisterData {
 	displayName: string;

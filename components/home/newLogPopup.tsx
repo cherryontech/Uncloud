@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { addUserMood, getUser } from '../utils/serverFunctions';
 import { useAuth } from '@/app/context/UserProvider';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { Check, CalendarBlank } from '@phosphor-icons/react';
 import { Button } from '@/stories/Button';
 import ProgressBar from '@/stories/progressBar';

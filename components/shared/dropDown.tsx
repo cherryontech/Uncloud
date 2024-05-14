@@ -39,7 +39,7 @@ export default function Dropdown({ user }: DropdownProps) {
 		<div className='dropdown w-full'>
 			<button
 				onClick={() => setIsOpen(!isOpen)}
-				className={`dropdown-button flex w-fit flex-row items-center justify-evenly gap-4 bg-[#F3F5F9] py-2 ${isOpen ? '' : ''}`}
+				className={`dropdown-button flex w-full flex-row items-center justify-end gap-6 bg-[#F3F5F9] py-2 pr-2 ${isOpen ? '' : ''}`}
 			>
 				<Avatar />
 				<div className='flex flex-col items-start justify-center'>
