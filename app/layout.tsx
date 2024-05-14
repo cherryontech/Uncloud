@@ -10,6 +10,7 @@ import './styles/design_tokens.css';
 import './styles/globals.css';
 import './styles/newLogPopup.css';
 import './styles/calendar.css';
+import './styles/layout.css';
 
 // Set font
 import { Open_Sans } from 'next/font/google';

@@ -24,5 +24,4 @@
 .hidden-checkbox:checked + .custom-checkbox {
 	background-color: #2d81e0;
 	color: white;
-	/* font-weight: 800; */
 }

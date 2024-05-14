@@ -11,13 +11,13 @@ import { Heading } from '@/stories/Heading';
 type Props = {};
 
 const Navbar = (props: Props) => {
-	const router = useRouter(); // Use the useRouter hook
+	const router = useRouter();
 
 	const handleLogOut = () => {
 		signOut(auth)
 			.then(() => {
 				console.log('logged out');
-				router.push('/auth/confirmLogout'); // Redirect to confirmLogout page
+				router.push('/auth/confirmLogout');
 			})
 			.catch((error) => {
 				console.log(error);
@@ -25,31 +25,27 @@ const Navbar = (props: Props) => {
 	};
 
 	const { user } = useAuth();
-	return (
-		<div className='flex w-full items-center justify-between px-12 py-2'>
-			<div className='flex flex-row items-center justify-start gap-2'>
-				<Link href='/'>
-					<CloudSun className='h-8 w-8' />
-				</Link>
-				<Link href='/'>
-					<Heading label='Uncloud' type='h5' />
-				</Link>
-			</div>
-			<div className='flex items-center justify-center gap-5'>
-				{user ? (
-					// Change the onClick event to just a normal Link component
-					<Link href='#' onClick={handleLogOut}>
-						Logout
+
+	if (!user) {
+		return (
+			<div className='flex w-full items-center justify-between px-12 py-2'>
+				<div className='flex flex-row items-center justify-start gap-2'>
+					<Link href='/'>
+						<CloudSun className='h-8 w-8' />
 					</Link>
-				) : (
-					<>
-						<Link href={'/auth/login'}>Login</Link>
-						<Link href={'/auth/signUp'}>Sign Up</Link>
-					</>
-				)}
+					<Link href='/'>
+						<Heading label='Uncloud' type='h5' />
+					</Link>
+				</div>
+				<div className='flex items-center justify-center gap-5'>
+					<Link href={'/auth/login'}>Login</Link>
+					<Link href={'/auth/signUp'}>Sign Up</Link>
+				</div>
 			</div>
-		</div>
-	);
+		);
+	}
+
+	return null;
 };
 
 export default Navbar;

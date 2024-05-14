@@ -8,7 +8,7 @@ import CustomInput from './customInput';
 import PasswordInput from './passwordInput';
 import { Button } from './Button';
 import { Icon } from './Icons';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 
 type Props = {};
 
