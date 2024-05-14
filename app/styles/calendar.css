@@ -184,7 +184,7 @@ abbr {
 
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-	/* background: #1087ff; */
+	background: white;
 }
 
 .react-calendar--selectRange .react-calendar__tile--hover {

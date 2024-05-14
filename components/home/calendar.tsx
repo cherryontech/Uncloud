@@ -77,7 +77,7 @@ const CalendarView = (props: Props) => {
 	const todayMonth = today.getMonth();
 	const todayDate = today.getDate();
 	return (
-		<div className='flex flex-col justify-start gap-6 '>
+		<div className='flex flex-col justify-start gap-6'>
 			<div className='flex w-full flex-row items-center justify-between font-semibold'>
 				<span className='text-2xl'>
 					{formatDateToMonth(value as Date)} {formatDateToYear(value as Date)}

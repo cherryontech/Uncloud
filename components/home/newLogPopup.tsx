@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { FaCross } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
 import { addUserMood, getUser } from '../utils/serverFunctions';
 import { useAuth } from '@/app/context/UserProvider';
@@ -159,12 +158,7 @@ const NewLogPopup = ({
 								);
 							})}
 						</div>
-						{/* <button
-							onClick={handleSaveMood}
-							className='w-1/2 rounded-full bg-slate-400 p-2'
-						>
-							Save Mood
-						</button> */}
+
 						<div className='flex w-[22.5rem] justify-center'>
 							<Button
 								type='button'
