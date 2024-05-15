@@ -28,6 +28,7 @@ export default function MainComponent({
 		default:
 			Component = CalendarView;
 	}
+	console.log(user);
 	return (
 		<div className='grid-container'>
 			<div className='sidebar'>
@@ -40,14 +41,12 @@ export default function MainComponent({
 				<div className='col-span-1 flex h-16 w-full flex-row items-center justify-start'>
 					<span className='text-3xl font-semibold'>My Log</span>
 				</div>
-				<UserProvider>
-					<Userbar />
-				</UserProvider>
+
+				<Userbar />
+
 				<div className='main-content flex flex-col items-center  bg-[#F3F5F9] pb-6'>
 					<div className='h-full w-full rounded-2xl bg-white p-6'>
-						<UserProvider>
-							<Component />
-						</UserProvider>
+						<Component />
 					</div>
 				</div>
 				<div className='mainRightBar'>

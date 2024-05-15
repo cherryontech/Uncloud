@@ -10,7 +10,7 @@ import {
 	formatDateToMonth,
 	isToday,
 } from '../utils/reusableFunctions';
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image';
 import { useAuth } from '@/app/context/UserProvider';
 import { Button } from '@/stories/Button';
 import { Plus } from '@phosphor-icons/react';
@@ -19,18 +19,17 @@ type Props = {};
 type ValuePiece = Date | null;
 
 export type Value = ValuePiece | [ValuePiece, ValuePiece];
+export type MoodEntry = {
+	date: string;
+	mood: string;
+};
 const CalendarView = (props: Props) => {
-	const { user } = useAuth();
+	const { user, updateData, isUpdated } = useAuth();
+	const [moods, setMoods] = useState<{ [key: string]: string }>({});
 	const [showPopup, setShowPopup] = useState(false);
 	const [value, setValue] = useState<Value>(new Date());
-	const [moods, setMoods] = useState<{ [key: string]: string }>({});
 	const [selectedDate, setSelectedDate] = useState<Value>(new Date());
-
-	type MoodEntry = {
-		date: string;
-		mood: string;
-	};
-
+	console.log(isUpdated);
 	useEffect(() => {
 		if (user) {
 			getUser(user.uid).then((userData) => {
@@ -49,7 +48,7 @@ const CalendarView = (props: Props) => {
 			});
 		}
 	}, [user]);
-
+	console.log(moods);
 	const handlePopupToggle = () => {
 		setShowPopup(!showPopup);
 	};
@@ -69,6 +68,7 @@ const CalendarView = (props: Props) => {
 			addUserMood(user.uid, mood, date).then(() => {
 				setMoods((prev) => ({ ...prev, [date]: mood }));
 				setShowPopup(false);
+				updateData();
 			});
 		}
 	};
