@@ -43,6 +43,8 @@ const config: Config = {
 				textPrimary: '#2C2C2C',
 				textSecondary: '#6E757C',
 				lineColor: '#D9D9D9',
+				boxBackground: '#f5f8fc',
+				hoverColor: '#DEE9F5',
 			},
 		},
 	},

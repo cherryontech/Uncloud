@@ -36,7 +36,7 @@ const Rightbar = (props: Props) => {
 			});
 		}
 	}, [user, isUpdated]);
-	console.log(moods);
+	
 
 	const moodNames: MoodNames = {
 		Rainbow: 'Proud',
@@ -45,12 +45,12 @@ const Rightbar = (props: Props) => {
 		Rainy: 'Disappointed',
 		Stormy: 'Stressed',
 	};
-	// Get the current month and year in UTC
+
 	const currentDate = new Date();
 	const currentMonth = currentDate.getUTCMonth();
 	const currentYear = currentDate.getUTCFullYear();
 
-	// Filter moods based on the current month and year in UTC
+
 	const currentMonthMoods = Object.entries(moods).filter(([date, mood]) => {
 		const dateObj = new Date(`${date}T00:00:00Z`);
 		return (
@@ -72,10 +72,10 @@ const Rightbar = (props: Props) => {
 					([date1], [date2]) =>
 						new Date(date2).getDate() - new Date(date1).getDate()
 				)
-				.slice(0,7);
+				.slice(0, 7);
 	return (
 		<div className='flex h-full w-full flex-col gap-4 bg-[#F3F5F9] pb-6 '>
-			<div className='flex h-full flex-col justify-start gap-2 rounded-2xl bg-white p-6'>
+			<div className='flex h-full flex-col justify-start gap-2 rounded-2xl bg-white p-6 space-y-4 '>
 				<div className='flex h-fit flex-row items-center justify-between text-base font-semibold'>
 					<p>Summary Page</p>
 					<div className=''>
@@ -102,12 +102,13 @@ const Rightbar = (props: Props) => {
 					return (
 						<div
 							key={date}
-							className='group flex h-fit w-full cursor-pointer items-center justify-between gap-2 rounded-lg bg-white p-2 text-textPrimary hover:bg-blue-200'
+							className='bg-boxBackground hover:bg-hoverColor group flex h-fit w-full cursor-pointer items-center justify-between gap-2 rounded-lg border  border-blue-100 p-2 text-textPrimary '
 						>
 							<div>
 								<p className='text-xl font-medium text-gray-600'>{day}</p>
 								<p className='text-sm text-gray-600'>{month}</p>
 							</div>
+							<div className='border border-blue-100 hover:border-white h-20 border-r'></div>
 							<div className='w-1/3'>
 								<Image
 									src={`/moods/${mood.toLowerCase()}.svg`}
