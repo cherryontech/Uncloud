@@ -22,6 +22,8 @@ import {
 } from '@phosphor-icons/react';
 
 type Props = {
+	month: number;
+	setMonth: React.Dispatch<React.SetStateAction<number>>;
 	handleAddLogClick: () => void;
 	selectedDate: Value;
 	value: Value | null;
@@ -36,6 +38,8 @@ type ValuePiece = Date | null;
 export type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const CalendarView = ({
+	month,
+	setMonth,
 	handleAddLogClick,
 	selectedDate,
 	value,
@@ -141,6 +145,7 @@ const CalendarView = ({
 		newDate.setFullYear(displayedYear);
 		handleDateChange(newDate);
 		setYearDropdownOpen(false);
+		setMonth(month);
 	};
 
 	const incrementYear = (event: React.MouseEvent) => {
@@ -217,7 +222,11 @@ const CalendarView = ({
 				<div className='flex w-fit cursor-pointer flex-row items-center justify-center gap-4'>
 					<div
 						className='background-white flex min-w-fit items-center justify-center rounded-[1.25rem] border border-[#2D81E0] px-6 py-1 text-sm font-bold text-primary '
-						onClick={() => handleDateChange(new Date())}
+						onClick={() => {
+							const today = new Date();
+							handleDateChange(today);
+							setMonth(today.getMonth());
+						}}
 					>
 						Today
 						{/* {isToday(selectedDate as Date)
@@ -229,6 +238,7 @@ const CalendarView = ({
 			<div className=' mb-[0.5rem] mt-[0.1rem] h-[0.125rem] bg-[#dee9f5]'></div>
 			<div>
 				<Calendar
+					key={`${(selectedDate instanceof Date ? selectedDate : new Date()).getMonth()}-${(selectedDate instanceof Date ? selectedDate : new Date()).getFullYear()}`}
 					calendarType='gregory'
 					onChange={handleDateChange}
 					showNeighboringMonth={true}

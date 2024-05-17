@@ -22,6 +22,7 @@ export default function MainComponent({
 	const [selectedDate, setSelectedDate] = useState<Value>(new Date());
 	const [value, setValue] = useState<Value | null>(new Date());
 	const [isPopupOpen, setPopupOpen] = useState(false);
+	const [month, setMonth] = useState(new Date().getMonth());
 
 	const handlePopupToggle = useCallback(() => {
 		setPopupOpen((prev) => !prev);
@@ -44,6 +45,9 @@ export default function MainComponent({
 		case 'Calendar':
 			component = (
 				<CalendarView
+					// key={selectedDate ? selectedDate.toString() : 'default-key'}
+					month={month}
+					setMonth={setMonth}
 					handleAddLogClick={handleAddLogClick}
 					selectedDate={selectedDate}
 					value={value}
@@ -70,6 +74,8 @@ export default function MainComponent({
 		default:
 			component = (
 				<CalendarView
+					month={month}
+					setMonth={setMonth}
 					handleAddLogClick={handleAddLogClick}
 					selectedDate={selectedDate}
 					value={value}
