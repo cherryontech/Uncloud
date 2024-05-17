@@ -13,7 +13,13 @@ import {
 import Image from 'next/legacy/image';
 import { useAuth } from '@/app/context/UserProvider';
 import { Button } from '@/stories/Button';
-import { Plus, CaretLeft, CaretRight } from '@phosphor-icons/react';
+import {
+	Plus,
+	CaretLeft,
+	CaretRight,
+	ArrowUp,
+	ArrowDown,
+} from '@phosphor-icons/react';
 
 type Props = {
 	handleAddLogClick: () => void;
@@ -68,6 +74,35 @@ const CalendarView = ({
 		}
 	}, [user]);
 
+	useEffect(() => {
+		// Function to check if clicked outside of dropdown
+		const handleClickOutside = (event: MouseEvent) => {
+			const dropdownElement = document.querySelector('.calendar-dropdown');
+			const headingElement = document.querySelector('.calendar-heading');
+			if (
+				dropdownElement &&
+				!dropdownElement.contains(event.target as Node) &&
+				headingElement !== event.target
+			) {
+				setYearDropdownOpen(false);
+			}
+		};
+
+		// Add event listener when dropdown is open
+		if (isYearDropdownOpen) {
+			document.addEventListener('mousedown', handleClickOutside);
+		}
+
+		// Cleanup function to remove event listener when dropdown is closed
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, [isYearDropdownOpen]);
+
+	useEffect(() => {
+		setDisplayedYear((selectedDate as Date).getFullYear());
+	}, [selectedDate]);
+
 	const saveMood = (mood: string, date: string) => {
 		if (user) {
 			addUserMood(user.uid, mood, date).then(() => {
@@ -111,50 +146,68 @@ const CalendarView = ({
 	const incrementYear = (event: React.MouseEvent) => {
 		event.stopPropagation();
 		setDisplayedYear((prevYear) => prevYear + 1);
+		const newDate = new Date(selectedDate as Date);
+		newDate.setFullYear(newDate.getFullYear() + 1);
+		handleDateChange(newDate);
 	};
 
 	const decrementYear = (event: React.MouseEvent) => {
 		event.stopPropagation();
 		setDisplayedYear((prevYear) => prevYear - 1);
+		const newDate = new Date(selectedDate as Date);
+		newDate.setFullYear(newDate.getFullYear() - 1);
+		handleDateChange(newDate);
 	};
 
 	return (
 		<div className='flex flex-col justify-start gap-6'>
 			<div className='flex w-full flex-row items-center justify-between font-semibold'>
-				<div className='calendar-nav flex flex-row gap-6'>
+				<div className='calendar-nav flex flex-row gap-2'>
 					<button onClick={() => changeMonth(-1)}>
 						<CaretLeft weight='bold' className='text-primary' />
 					</button>
-					<span className='text-2xl' onClick={changeYear}>
+					<span
+						className={`calendar-heading align-center flex cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-2xl ${isYearDropdownOpen ? 'bg-[#dee9f5]' : ''}`}
+						onClick={changeYear}
+					>
 						{formatDateToMonth(selectedDate as Date)}{' '}
+						{formatDateToYear(selectedDate as Date)}
 						{isYearDropdownOpen ? (
 							<div className='calendar-dropdown'>
 								<div className='calendar-dropdown-year'>
-									<button onClick={(event) => decrementYear(event)}>
-										<CaretLeft size={16} />
-									</button>
-									<span>{displayedYear}</span>
-									<button onClick={(event) => incrementYear(event)}>
-										<CaretRight size={16} />
-									</button>
+									<span className='text-sm font-semibold text-black'>
+										{displayedYear}
+									</span>
+									<div className='flex items-center justify-center gap-3 text-[#706F6F]'>
+										<button
+											className='hover:text-primary'
+											onClick={(event) => incrementYear(event)}
+										>
+											<ArrowUp size={16} />
+										</button>
+										<button
+											className='hover:text-primary'
+											onClick={(event) => decrementYear(event)}
+										>
+											<ArrowDown size={16} />
+										</button>
+									</div>
 								</div>
 								<div className='calendar-dropdown-months'>
 									{Array.from({ length: 12 }, (_, i) => i).map((month) => (
 										<button
 											key={month}
-											className='calendar-dropdown-item'
+											className={`calendar-dropdown-item ${new Date(selectedDate as Date).getMonth() === month ? 'selected-month' : ''}`}
 											onClick={(event) => handleMonthSelect(month, event)}
 										>
 											{new Date(0, month).toLocaleString('default', {
-												month: 'long',
+												month: 'short',
 											})}
 										</button>
 									))}
 								</div>
 							</div>
-						) : (
-							formatDateToYear(selectedDate as Date)
-						)}
+						) : null}
 					</span>
 					<button onClick={() => changeMonth(1)}>
 						<CaretRight weight='bold' className='text-primary' />
