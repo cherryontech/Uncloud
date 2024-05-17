@@ -11,6 +11,7 @@ import CalendarView from '@/components/home/calendar';
 import Userbar from '@/components/shared/userbar';
 import Leftbar from '@/components/shared/leftbar';
 import Rightbar from '@/components/shared/rightbar';
+import MiniCalendarView from '@/components/shared/miniCalendar';
 
 export default function MainComponent({
 	children,
@@ -94,6 +95,16 @@ export default function MainComponent({
 					setSelectedMenuItem={setSelectedMenuItem}
 					selectedMenuItem={selectedMenuItem}
 					handleAddLogClick={handleAddLogClick}
+					MiniCalendar={
+						<MiniCalendarView
+							month={month}
+							setMonth={setMonth}
+							selectedDate={selectedDate}
+							value={value}
+							setValue={setValue}
+							handleDateChange={handleDateChange}
+						/>
+					}
 				/>
 			</div>
 			<div className='main-container bg-[#F3F5F9] py-2'>

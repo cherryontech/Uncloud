@@ -21,6 +21,8 @@ import {
 	ArrowDown,
 } from '@phosphor-icons/react';
 
+import '/app/styles/calendar.css';
+
 type Props = {
 	month: number;
 	setMonth: React.Dispatch<React.SetStateAction<number>>;
@@ -120,6 +122,7 @@ const CalendarView = ({
 	const todayYear = today.getFullYear();
 	const todayMonth = today.getMonth();
 	const todayDate = today.getDate();
+
 	const changeMonth = (offset: number) => {
 		const newDate = new Date(selectedDate as Date);
 		newDate.setMonth(newDate.getMonth() + offset);
