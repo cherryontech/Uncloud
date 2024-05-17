@@ -29,7 +29,7 @@ const CalendarView = (props: Props) => {
 	const [showPopup, setShowPopup] = useState(false);
 	const [value, setValue] = useState<Value>(new Date());
 	const [selectedDate, setSelectedDate] = useState<Value>(new Date());
-	console.log(isUpdated);
+
 	useEffect(() => {
 		if (user) {
 			getUser(user.uid).then((userData) => {
@@ -48,7 +48,7 @@ const CalendarView = (props: Props) => {
 			});
 		}
 	}, [user]);
-	console.log(moods);
+	// console.log(moods);
 	const handlePopupToggle = () => {
 		setShowPopup(!showPopup);
 	};
@@ -59,7 +59,7 @@ const CalendarView = (props: Props) => {
 	};
 
 	const handleAddLogClick = () => {
-		setValue(selectedDate); // Use the selected date here
+		setValue(selectedDate);
 		handlePopupToggle();
 	};
 
