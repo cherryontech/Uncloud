@@ -37,9 +37,7 @@ const Home: React.FC = () => {
 							hideConfirmationMessage={hideConfirmationMessage}
 						/>
 					)}
-					<MainComponent>
-						<CalendarView />
-					</MainComponent>
+					<MainComponent />
 				</>
 			) : (
 				<>

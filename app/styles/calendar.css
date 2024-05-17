@@ -1,5 +1,7 @@
 :root {
-	--weekend-color: #2c2c2c;
+	--primary-text-color: #2c2c2c;
+	--light-grey: #d9d9d9;
+	--dark-grey: #706f6f;
 }
 .react-calendar {
 	width: 100%;
@@ -63,26 +65,22 @@
 .react-calendar__month-view__weekdays {
 	text-align: center;
 	font: inherit;
-	font-size: theme(fontSize.2xl);
 	font-weight: 400;
-	/* color: #706f6f; */
 }
 
 abbr {
 	text-decoration: none;
 }
+
 .react-calendar__tile abbr {
-	position: absolute;
-	top: 1rem; /* Adjust as needed */
-	right: 1rem; /* Adjust as needed */
-	display: inline-block;
-	width: 25px; /* Adjust as needed */
-	height: 25px; /* Adjust as needed */
-	line-height: 25px; /* Adjust as needed */
+	position: relative;
+	width: 25px;
+	height: 25px;
+	line-height: 25px;
 	text-align: center;
 	border-radius: 50%;
 	background: transparent;
-	color: black;
+	bottom: 1rem;
 }
 .react-calendar__tile--active abbr {
 	background: #2d81e0;
@@ -90,8 +88,10 @@ abbr {
 }
 
 .react-calendar__month-view__weekdays__weekday {
-	padding: 0.5em;
-	font-size: 1rem;
+	font-size: 0.875rem;
+	font-weight: 600;
+	line-height: 1.5rem;
+	color: var(--dark-grey);
 }
 
 .react-calendar__month-view__weekdays__weekday--active {
@@ -107,14 +107,19 @@ abbr {
 	font-weight: bold;
 }
 
+.react-calendar__month-view__days__day {
+	font-weight: 400;
+	color: var(--primary-text-color);
+}
+
 .react-calendar__month-view__days__day--weekend {
-	color: var(--weekend-color);
+	color: var(--primary-text-color);
 }
 
 .react-calendar__month-view__days__day--neighboringMonth,
 .react-calendar__decade-view__years__year--neighboringDecade,
 .react-calendar__century-view__decades__decade--neighboringCentury {
-	color: #757575;
+	color: var(--light-grey);
 }
 
 .react-calendar__year-view .react-calendar__tile,
@@ -124,18 +129,30 @@ abbr {
 }
 
 .react-calendar__tile {
-	position: relative;
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: center;
+	justify-content: center;
 	width: 5.2rem;
 	height: 9rem;
-	padding: 1rem;
 	background: none;
-	text-align: center;
 	line-height: 16px;
 	font: inherit;
 	font-size: 0.833em;
-	border: 1px solid #d9d9d9;
-	margin-left: -1px;
-	margin-top: -1px;
+}
+
+.react-calendar__tile:not(:last-child) {
+	/* existing styles */
+	margin-bottom: 0.75rem;
+}
+
+.react-calendar__tile:nth-child(7n + 1),
+.react-calendar__tile:nth-child(7n + 2),
+.react-calendar__tile:nth-child(7n + 3),
+.react-calendar__tile:nth-child(7n + 4),
+.react-calendar__tile:nth-child(7n + 5),
+.react-calendar__tile:nth-child(7n + 6) {
+	margin-right: 0.75rem;
 }
 
 .react-calendar__tile:disabled {
@@ -143,6 +160,12 @@ abbr {
 	color: #ababab;
 }
 
+/*  The actual calendar container */
+.react-calendar__month-view__days {
+	display: flex;
+	flex-wrap: wrap;
+	/* justify-content: space-between; */
+}
 .react-calendar__month-view__days__day--neighboringMonth:disabled,
 .react-calendar__decade-view__years__year--neighboringDecade:disabled,
 .react-calendar__century-view__decades__decade--neighboringCentury:disabled {
@@ -189,4 +212,52 @@ abbr {
 
 .react-calendar--selectRange .react-calendar__tile--hover {
 	background-color: #e6e6e6;
+}
+
+/* Dropdown */
+
+.text-2xl {
+	position: relative;
+}
+.calendar-dropdown {
+	position: absolute;
+	top: 100%; /* position it right under the span */
+	left: 50%; /* center it horizontally */
+	transform: translateX(-50%);
+	background-color: white;
+	border: 1px solid #ccc;
+	padding: 1rem;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem; /* space between items */
+	width: fit-content; /* adjust as needed */
+	border-radius: 0.3rem;
+}
+.calendar-dropdown-year {
+	display: flex;
+	flex-direction: row;
+	gap: 0.8rem;
+	font-size: 0.875rem;
+}
+.calendar-dropdown-months {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 0.3rem;
+}
+.calendar-dropdown-item {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 5px 10px;
+	cursor: pointer;
+	border: 1px solid #ccc;
+	border-radius: 0.2rem;
+	font-size: 0.75rem;
+	font-weight: 400;
+}
+
+.calendar-dropdown-item:hover {
+	background-color: #f0f0f0;
 }

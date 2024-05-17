@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { addUserMood, getUser } from '../utils/serverFunctions';
 import { useAuth } from '@/app/context/UserProvider';
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image';
 import { Check, CalendarBlank } from '@phosphor-icons/react';
 import { Button } from '@/stories/Button';
 import ProgressBar from '@/stories/progressBar';
 
 type Props = {
-	showPopup: boolean;
+	isPopupOpen: boolean;
 	handlePopupToggle: () => void;
 	selectedDate: string;
 	displayDate: string;
 	saveMood: (mood: string, date: string) => void;
+	setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type Mood = {
@@ -20,11 +21,12 @@ type Mood = {
 };
 
 const NewLogPopup = ({
-	showPopup,
+	isPopupOpen,
 	handlePopupToggle,
 	selectedDate,
 	displayDate,
 	saveMood,
+	setPopupOpen,
 }: Props) => {
 	const [selectedMood, setSelectedMood] = useState<string>(''); // State to hold the selected mood
 	const { user } = useAuth();
@@ -51,7 +53,7 @@ const NewLogPopup = ({
 		}
 	}, [user, selectedDate]);
 
-	if (!showPopup) return null;
+	if (!isPopupOpen) return null;
 
 	console.log('Selected Date Prop:', selectedDate);
 	console.log('Selected Mood:', selectedMood);
@@ -73,10 +75,13 @@ const NewLogPopup = ({
 	const handleSaveMood = async () => {
 		if (!user) return;
 		await addUserMood(user.uid, selectedMood, selectedDate);
-		handlePopupToggle();
 		saveMood(selectedMood, selectedDate);
+		setPopupOpen(false);
+		console.log('handleSaveMood: Closing popup');
 	};
+
 	console.log(selectedDate);
+
 	return (
 		<div
 			onClick={handlePopupToggle}
@@ -105,7 +110,6 @@ const NewLogPopup = ({
 							<div className='flex items-center justify-center '>
 								<CalendarBlank size={24} />
 							</div>
-
 							<span className='align-items justify-content flex items-center text-2xl'>
 								{' '}
 								{displayDate}
@@ -158,7 +162,6 @@ const NewLogPopup = ({
 								);
 							})}
 						</div>
-
 						<div className='flex w-[22.5rem] justify-center'>
 							<Button
 								type='button'
