@@ -5,7 +5,8 @@ import { useAuth } from '@/app/context/UserProvider';
 import { getUser, addUserMood } from '../utils/serverFunctions';
 import '/app/styles/miniCalendar.css';
 import {
-	Plus,
+	CaretUp,
+	CaretDown,
 	CaretLeft,
 	CaretRight,
 	ArrowUp,
@@ -172,13 +173,13 @@ const MiniCalendarView = ({
 										className='hover:text-primary'
 										onClick={(event) => incrementYear(event)}
 									>
-										<ArrowUp size={16} />
+										<CaretUp size={16} />
 									</button>
 									<button
 										className='hover:text-primary'
 										onClick={(event) => decrementYear(event)}
 									>
-										<ArrowDown size={16} />
+										<CaretDown size={16} />
 									</button>
 								</div>
 							</div>
