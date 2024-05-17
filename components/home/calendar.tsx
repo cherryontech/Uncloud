@@ -214,11 +214,15 @@ const CalendarView = ({
 					</button>
 				</div>
 
-				<div className='flex w-fit flex-row items-center justify-center gap-4'>
-					<div className='background-white flex min-w-fit items-center justify-center rounded-[1.25rem] border border-[#2D81E0] px-6 py-1 text-sm font-bold text-primary '>
-						{isToday(selectedDate as Date)
+				<div className='flex w-fit cursor-pointer flex-row items-center justify-center gap-4'>
+					<div
+						className='background-white flex min-w-fit items-center justify-center rounded-[1.25rem] border border-[#2D81E0] px-6 py-1 text-sm font-bold text-primary '
+						onClick={() => handleDateChange(new Date())}
+					>
+						Today
+						{/* {isToday(selectedDate as Date)
 							? 'Today'
-							: formatDateToDayMonthDateYear(selectedDate as Date)}
+							: formatDateToDayMonthDateYear(selectedDate as Date)} */}
 					</div>
 				</div>
 			</div>
