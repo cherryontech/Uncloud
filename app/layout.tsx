@@ -6,7 +6,6 @@ export const metadata: Metadata = {
 };
 
 // Styles
-import './styles/design_tokens.css';
 import './styles/globals.css';
 import './styles/newLogPopup.css';
 import './styles/calendar.css';
