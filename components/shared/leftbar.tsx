@@ -18,12 +18,14 @@ type Props = {
 	setSelectedMenuItem: (menuItem: string) => void;
 	selectedMenuItem: string;
 	handleAddLogClick: () => void;
+	MiniCalendar: React.ReactNode;
 };
 
 const Leftbar = ({
 	setSelectedMenuItem,
 	selectedMenuItem,
 	handleAddLogClick,
+	MiniCalendar,
 }: Props) => {
 	return (
 		<div className='flex h-full w-full flex-col gap-4 bg-[#FAFCFF] px-6 py-2'>
@@ -43,7 +45,8 @@ const Leftbar = ({
 			</div>
 
 			{/* Calendar */}
-			<div className='flex h-[15rem] w-full rounded-lg border border-[#D9D9D9] bg-white'></div>
+			{/* <div className='flex h-[15rem] w-full rounded-lg border border-[#D9D9D9] bg-white'></div> */}
+			{MiniCalendar}
 			<Button
 				type='button'
 				label={
