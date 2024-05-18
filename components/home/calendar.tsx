@@ -113,7 +113,6 @@ const CalendarView = ({
 		if (user) {
 			addUserMood(user.uid, mood, date).then(() => {
 				setMoods((prev) => ({ ...prev, [date]: mood }));
-				setShowPopup(false);
 				updateData();
 			});
 		}

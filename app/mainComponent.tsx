@@ -117,7 +117,7 @@ export default function MainComponent({
 
 				<div className='main-content flex flex-col items-center  bg-[#F3F5F9] pb-6'>
 					<div className='h-full w-full rounded-2xl bg-white p-6'>
-						<Component />
+						<UserProvider>{component}</UserProvider>
 					</div>
 				</div>
 				<div className='mainRightBar'>
