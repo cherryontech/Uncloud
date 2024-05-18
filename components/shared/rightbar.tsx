@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import FilterDropdown from './filterDropdown';
 import CustomPagination from './customPagination';
+import { CaretRight } from '@phosphor-icons/react';
 
 type Props = {};
 export type MoodNames = {
@@ -106,7 +107,7 @@ const Rightbar = (props: Props) => {
 						selectedFilters={selectedFilters}
 					/>
 				</div>
-				<hr className='my-2 w-full border-t-3 border-blue-100' />
+				<hr className='border-t-3 my-2 w-full border-blue-100' />
 				{currentMoods.length > 0 ? (
 					currentMoods.map(([date, mood], index) => {
 						const dateObj = new Date(`${date}T00:00:00Z`);
@@ -119,9 +120,9 @@ const Rightbar = (props: Props) => {
 						return (
 							<div
 								key={date}
-								className='bg-boxBackground hover:bg-hoverColor group flex h-[4.5rem] w-full cursor-pointer items-center justify-between gap-2 rounded-lg border  border-blue-100 px-4 text-textPrimary '
+								className='group flex h-[4.5rem] w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-blue-100 bg-boxBackground  px-4 text-textPrimary hover:bg-hoverColor '
 							>
-								<div>
+								<div className='justify-content flex flex-col items-center'>
 									<p className='text-xl font-medium text-gray-600'>{day}</p>
 									<p className='text-sm text-gray-600'>{month}</p>
 								</div>
@@ -142,9 +143,10 @@ const Rightbar = (props: Props) => {
 									</p>
 									<p className='text-sm text-gray-500'>{moodNames[mood]}</p>
 								</div>
-								<MdOutlineKeyboardArrowRight
+								<CaretRight
 									className='text-black group-hover:text-blue-500'
-									size={30}
+									size={16}
+									weight='bold'
 								/>
 							</div>
 						);
@@ -164,17 +166,17 @@ const Rightbar = (props: Props) => {
 						</p>
 					</div>
 				)}
-				<hr className='my-2 w-full border-t-3 border-blue-100' />
+				<hr className='border-t-3 my-2 w-full border-blue-100' />
 				<div className='!mb-10 !mt-auto flex items-center justify-between '>
 					<div>clo</div>
 					{filteredMoods.length > pageSize && (
 						<CustomPagination
 							breakLabel='...'
-							nextLabel='Next >'
+							nextLabel='Next'
 							onPageChange={handlePagination}
 							pageRangeDisplayed={5}
 							pageCount={Math.ceil(filteredMoods.length / pageSize)}
-							previousLabel='< Prev'
+							previousLabel='Prev'
 							containerClassName='flex items-end gap-1 py-2  px-5'
 							activeClassName='button--primary rounded-full text-white'
 							pageLinkClassName='px-3 pt-[2px]'

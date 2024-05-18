@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { IoMdFunnel } from 'react-icons/io';
 import { MoodNames } from './rightbar';
+
 type props = {
 	handleCheckboxChange: (filter: string) => void;
 	selectedFilters: {
@@ -34,12 +35,12 @@ const FilterDropdown = ({ handleCheckboxChange, selectedFilters }: props) => {
 				</button>
 			</div>
 			{isOpen && (
-				<div className='absolute right-0 mt-2 w-56 text-[#706F6F] origin-top-right rounded-md border border-lineColor bg-white shadow-lg ring-1 ring-black ring-opacity-5'>
-					<div className='py-1'>
+				<div className='absolute right-0 mt-2 w-fit origin-top-right rounded-md border border-lineColor bg-white text-[#706F6F] shadow-lg ring-1 ring-black ring-opacity-5'>
+					<div className='p-2'>
 						{Object.keys(selectedFilters).map((filter) => (
 							<label
 								key={filter}
-								className='flex items-center gap-2 px-4 py-2  hover:bg-[#E0F1FF]'
+								className='flex items-center gap-3 p-3  hover:bg-[#E0F1FF]'
 							>
 								<input
 									type='checkbox'

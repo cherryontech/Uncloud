@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { CaretRight, CaretLeft } from '@phosphor-icons/react';
 
 interface Props {
 	previousLabel?: string;
@@ -84,11 +85,13 @@ const CustomPagination = ({
 
 		return pages;
 	}, [
-		currentPage,
-		pageCount,
 		pageRangeDisplayed,
+		pageCount,
 		pageLinkClassName,
+		currentPage,
 		activeClassName,
+		gap,
+		handlePageClick,
 		breakClassName,
 		breakLabel,
 	]);
@@ -105,7 +108,11 @@ const CustomPagination = ({
 				disabled={currentPage === 0}
 				style={gap}
 			>
-				{previousLabel}
+				<div className='justify-content flex flex-row items-center gap-2'>
+					{' '}
+					<CaretLeft size={12} />
+					{previousLabel}
+				</div>
 			</button>
 
 			{pages}
@@ -120,7 +127,10 @@ const CustomPagination = ({
 				disabled={currentPage === pageCount - 1}
 				style={gap}
 			>
-				{nextLabel}
+				<div className='justify-content flex flex-row items-center gap-2'>
+					{nextLabel}
+					<CaretRight size={12} />
+				</div>
 			</button>
 		</div>
 	);
