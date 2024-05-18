@@ -39,6 +39,11 @@ type ValuePiece = Date | null;
 
 export type Value = ValuePiece | [ValuePiece, ValuePiece];
 
+export type MoodEntry = {
+	date: string;
+	mood: string;
+};
+
 const CalendarView = ({
 	month,
 	setMonth,
@@ -51,15 +56,10 @@ const CalendarView = ({
 	setPopupOpen,
 	handleDateChange,
 }: Props) => {
-	const { user } = useAuth();
+	const { user, updateData, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{ [key: string]: string }>({});
 	const [isYearDropdownOpen, setYearDropdownOpen] = useState(false);
 	const [displayedYear, setDisplayedYear] = useState(new Date().getFullYear());
-
-	type MoodEntry = {
-		date: string;
-		mood: string;
-	};
 
 	useEffect(() => {
 		if (user) {
@@ -113,7 +113,7 @@ const CalendarView = ({
 		if (user) {
 			addUserMood(user.uid, mood, date).then(() => {
 				setMoods((prev) => ({ ...prev, [date]: mood }));
-				setPopupOpen(false); // Explicitly close the popup
+				updateData();
 			});
 		}
 	};

@@ -12,6 +12,8 @@ import { auth } from '@/app/firebase';
 interface AuthContextType {
 	user: User | null;
 	setUser: React.Dispatch<React.SetStateAction<User | null>>;
+	updateData: () => void;
+	isUpdated: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,6 +33,7 @@ interface UserProviderProps {
 export function UserProvider({ children }: UserProviderProps): JSX.Element {
 	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(true);
+	const [isUpdated, setIsUpdated] = useState(false);
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -44,10 +47,12 @@ export function UserProvider({ children }: UserProviderProps): JSX.Element {
 		});
 
 		return () => unsubscribe();
-	}, []);
-
+	}, [isUpdated]);
+	const updateData = () => {
+		setIsUpdated((prev) => !prev);
+	};
 	return (
-		<AuthContext.Provider value={{ user, setUser }}>
+		<AuthContext.Provider value={{ user, setUser, updateData, isUpdated }}>
 			{loading ? null : children}
 		</AuthContext.Provider>
 	);

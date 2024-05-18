@@ -11,6 +11,7 @@ const config: Config = {
 		fontFamily: {
 			sans: ['Open Sans', 'sans-serif'],
 		},
+		
 		fontSize: {
 			xs: '0.75rem',
 			sm: '0.875rem',
@@ -43,6 +44,8 @@ const config: Config = {
 				textPrimary: '#2C2C2C',
 				textSecondary: '#6E757C',
 				lineColor: '#D9D9D9',
+				boxBackground: '#FAFCFF',
+				hoverColor: '#DEE9F5',
 			},
 		},
 	},
