@@ -11,11 +11,24 @@
 		font-family: 'Open Sans', sans-serif;
 	}
 } */
+html,
+body {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+	user-select: none;
+	background-color: white;
+}
 
 html {
 	font-size: 16px; /* you can chose any size here 16 is default */
-	@media screen and (max-width: 991px) {
+	@media screen and (max-width: 1200px) {
 		font-size: 62.5%;
+	}
+	@media screen and (max-width: 991px) {
+		font-size: 55%;
 	}
 	@media screen and (max-width: 767px) {
 		font-size: 50%;

@@ -9,12 +9,26 @@ import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import FilterDropdown from './filterDropdown';
 import CustomPagination from './customPagination';
 import { CaretRight } from '@phosphor-icons/react';
+import LogSummaryList from './logSummaryList';
 
-type Props = {};
+type Props = {
+	isRightBarOpen: boolean;
+	onToggle: (isOpen: boolean) => void;
+};
+interface RightbarProps {
+	isRightBarOpen: boolean;
+	onToggle: (open: boolean) => void;
+	children?: React.ReactNode; // Add this line
+}
+
 export type MoodNames = {
 	[key: string]: string;
 };
-const Rightbar = (props: Props) => {
+const Rightbar: React.FC<RightbarProps> = ({
+	isRightBarOpen,
+	onToggle,
+	children,
+}) => {
 	const { user, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{ [key: string]: string }>({});
 	const [selectedFilters, setSelectedFilters] = useState({
@@ -98,93 +112,77 @@ const Rightbar = (props: Props) => {
 	};
 
 	return (
-		<div className='flex h-full w-full flex-col gap-4 bg-[#F3F5F9] pb-6 '>
-			<div className='flex h-full flex-col justify-start gap-2 space-y-4 rounded-2xl bg-white px-2 py-6 '>
-				<div className='flex h-fit flex-row items-center justify-between px-4 text-base font-semibold'>
-					<p>Summary Page</p>
-					<FilterDropdown
-						handleCheckboxChange={handleCheckboxChange}
-						selectedFilters={selectedFilters}
-					/>
-				</div>
-				<hr className='border-t-3 my-2 w-full border-blue-100' />
-				{currentMoods.length > 0 ? (
-					currentMoods.map(([date, mood], index) => {
-						const dateObj = new Date(`${date}T00:00:00Z`);
-						const day = dateObj.getUTCDate();
-						const month = dateObj.toLocaleString('default', {
-							month: 'short',
-							timeZone: 'UTC',
-						});
-						// console.log(mood);
-						return (
-							<div
-								key={date}
-								className='group flex h-[4.5rem] w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-blue-100 bg-boxBackground  px-4 text-textPrimary hover:bg-hoverColor '
-							>
-								<div className='justify-content flex flex-col items-center'>
-									<p className='text-xl font-medium text-gray-600'>{day}</p>
-									<p className='text-sm text-gray-600'>{month}</p>
-								</div>
-
-								<div className='h-10 border border-r border-blue-100 group-hover:border-white'></div>
-								<div className='w-1/4'>
-									<Image
-										src={`/moods/${mood.toLowerCase()}.svg`}
-										alt='Mood'
-										width={200}
-										height={200}
-										className='w-full'
-									/>
-								</div>
-								<div>
-									<p className='text-xl font-medium text-black'>
-										{mood.charAt(0).toUpperCase() + mood.slice(1)}
-									</p>
-									<p className='text-sm text-gray-500'>{moodNames[mood]}</p>
-								</div>
-								<CaretRight
-									className='text-black group-hover:text-blue-500'
-									size={16}
-									weight='bold'
-								/>
-							</div>
-						);
-					})
-				) : (
-					<div className='flex h-full w-full flex-col items-center justify-center'>
-						<p className='text-base font-medium text-black'>No summaries yet</p>
-						<Image
-							src='/moods/greyWithFace.svg'
-							alt='Empty'
-							width={200}
-							height={200}
-							className='w-full'
-						/>
-						<p className='text-base font-medium text-gray-500'>
-							Add a log to get started!
-						</p>
-					</div>
-				)}
-				<hr className='border-t-3 my-2 w-full border-blue-100' />
-				<div className='!mb-10 !mt-auto flex items-center justify-between '>
-					<div>clo</div>
-					{filteredMoods.length > pageSize && (
-						<CustomPagination
-							breakLabel='...'
-							nextLabel='Next'
-							onPageChange={handlePagination}
-							pageRangeDisplayed={5}
-							pageCount={Math.ceil(filteredMoods.length / pageSize)}
-							previousLabel='Prev'
-							containerClassName='flex items-end gap-1 py-2  px-5'
-							activeClassName='button--primary rounded-full text-white'
-							pageLinkClassName='px-3 pt-[2px]'
-							disabledClassName='opacity-50 cursor-not-allowed'
+		<div
+			className={`right-bar flex h-full w-full flex-col gap-4 rounded-2xl bg-white  py-6 ${isRightBarOpen ? 'px-5' : 'px-2'}`}
+		>
+			{isRightBarOpen ? (
+				<div className='right-bar-container h-full'>
+					{/* Content */}
+					{children ? (
+						children
+					) : (
+						<LogSummaryList
+							currentMoods={currentMoods}
+							handleCheckboxChange={handleCheckboxChange}
+							selectedFilters={selectedFilters}
+							moodNames={moodNames}
+							handlePagination={handlePagination}
+							filteredMoods={filteredMoods}
+							pageSize={pageSize}
+							onToggle={onToggle}
+							isRightBarOpen={isRightBarOpen}
 						/>
 					)}
+
+					{/* Bottom Bar */}
+					<div className='flex flex-col gap-2 pt-4'>
+						<div className='h-[0.125rem] bg-[#dee9f5]'></div>
+						<div className='flex min-h-8 items-center justify-between'>
+							<button onClick={() => onToggle(!isRightBarOpen)}>
+								<Image
+									src='/phosphor-icons/SidebarSimple.svg'
+									alt='Sidebar Icon'
+									width={24}
+									height={24}
+									color='white'
+								/>
+							</button>
+
+							{filteredMoods.length > pageSize && (
+								<CustomPagination
+									breakLabel='...'
+									nextLabel='Next'
+									onPageChange={handlePagination}
+									pageRangeDisplayed={5}
+									pageCount={Math.ceil(filteredMoods.length / pageSize)}
+									previousLabel='Prev'
+									containerClassName='flex items-end gap-2 py-2  px-5 h-fit w-full justify-end items-center'
+									activeClassName='button--primary rounded-full text-white w-8 h-8'
+									pageLinkClassName='flex items-center justify-center text-sm'
+									disabledClassName='opacity-50 cursor-not-allowed'
+									previousClassName='text-sm'
+									nextClassName='text-sm'
+								/>
+							)}
+						</div>
+					</div>
 				</div>
-			</div>
+			) : (
+				<div className='flex h-full w-full min-w-8 items-end justify-center'>
+					<div className='h-[0.125rem] bg-[#dee9f5]'></div>
+					<div className='flex min-h-8 items-center justify-between'>
+						<button onClick={() => onToggle(!isRightBarOpen)}>
+							<Image
+								src='/phosphor-icons/SidebarSimple.svg'
+								alt='Sidebar Icon'
+								width={24}
+								height={24}
+								color='white'
+							/>
+						</button>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

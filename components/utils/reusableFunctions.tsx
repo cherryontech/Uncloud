@@ -63,3 +63,13 @@ export function formatDateToMonth(date: Date): string {
 	};
 	return new Intl.DateTimeFormat('en-US', options).format(date);
 }
+
+// reusableFunctions.tsx
+export function formatDateToMonthDayYear(date: Date): string {
+	const options: Intl.DateTimeFormatOptions = {
+		month: 'long',
+		day: 'numeric',
+		year: 'numeric',
+	};
+	return new Intl.DateTimeFormat('en-US', options).format(date);
+}

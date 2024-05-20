@@ -30,7 +30,7 @@ export default function RootLayout({
 			<head>
 				<meta charSet='utf-8' />
 			</head>
-			<body className='text-textPrimary'>
+			<body className='bg-[#F3F5F9] text-textPrimary'>
 				<UserProvider>
 					<Navbar />
 					{children}

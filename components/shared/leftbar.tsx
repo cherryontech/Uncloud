@@ -10,6 +10,7 @@ import {
 	Target,
 	ChartBar,
 	Chats,
+	ClipboardText,
 } from '@phosphor-icons/react';
 import { Button } from '@/stories/Button';
 // import Image from 'next/image';
@@ -45,7 +46,6 @@ const Leftbar = ({
 			</div>
 
 			{/* Calendar */}
-			{/* <div className='flex h-[15rem] w-full rounded-lg border border-[#D9D9D9] bg-white'></div> */}
 			{MiniCalendar}
 			<Button
 				type='button'
@@ -79,6 +79,15 @@ const Leftbar = ({
 					<CalendarBlank size={24} />
 					<span className='leading-6'>Calendar</span>
 				</div>
+				{/* Summaries Link */}
+				<div
+					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:bg-[#DEE3E6] ${selectedMenuItem === 'Summary' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+					onClick={() => setSelectedMenuItem('Log Summary')}
+				>
+					<ClipboardText size={24} />
+					<span className='leading-6'>Summary</span>
+				</div>
+
 				{/* Goal Link */}
 				<div
 					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:bg-[#DEE3E6] ${selectedMenuItem === 'Goals' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}

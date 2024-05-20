@@ -28,7 +28,7 @@ const Home: React.FC = () => {
 	};
 
 	return (
-		<div>
+		<>
 			{user ? (
 				<>
 					{displayConfirmationMessage && (
@@ -45,7 +45,7 @@ const Home: React.FC = () => {
 					<div>no user authenticated</div>
 				</>
 			)}
-		</div>
+		</>
 	);
 };
 
