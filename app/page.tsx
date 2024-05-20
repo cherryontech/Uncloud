@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { updateUser, getUser } from '@/components/utils/serverFunctions';
 import { ConfirmationMessage } from '@/stories/Confirmation';
 import { useAuth } from './context/UserProvider';
-import CalendarView from '@/components/home/calendar';
 import MainComponent from './mainComponent';
 
 const Home: React.FC = () => {

@@ -87,7 +87,6 @@ export default function MainComponent({
 					value={value}
 					setValue={setValue}
 					isPopupOpen={isPopupOpen}
-					handlePopupToggle={handlePopupToggle}
 					setPopupOpen={setPopupOpen}
 					handleDateChange={handleDateChange}
 					handleLogClick={handleLogClick}
@@ -116,8 +115,7 @@ export default function MainComponent({
 					value={value}
 					setValue={setValue}
 					isPopupOpen={isPopupOpen}
-					handlePopupToggle={handlePopupToggle}
-					setPopupOpen={setPopupOpen}
+				setPopupOpen={setPopupOpen}
 					handleDateChange={handleDateChange}
 					handleLogClick={handleLogClick}
 				/>
