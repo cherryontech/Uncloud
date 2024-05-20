@@ -48,7 +48,7 @@ export default function Dropdown({ user }: DropdownProps) {
 						{user.email}
 					</span>
 				</div>
-				{isOpen ? <CaretUp size={24} /> : <CaretDown size={24} />}
+				{isOpen ? <CaretUp size={16} /> : <CaretDown size={16} />}
 			</button>
 
 			{isOpen && (

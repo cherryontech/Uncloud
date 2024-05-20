@@ -28,7 +28,7 @@ const FilterDropdown = ({ handleCheckboxChange, selectedFilters }: props) => {
 				<button
 					onClick={toggleDropdown}
 					type='button'
-					className='inline-flex w-full items-center justify-center gap-1 rounded-full border border-gray-300 bg-lineColor px-4 py-2 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100'
+					className='inline-flex w-fit items-center justify-center gap-2 rounded-full border border-gray-300 bg-lineColor font-medium text-gray-500 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100 sm:px-2 sm:py-1 sm:text-xs md:px-4 md:py-2 md:text-sm'
 				>
 					<IoMdFunnel />
 					<span>Filters</span>

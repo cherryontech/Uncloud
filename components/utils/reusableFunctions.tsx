@@ -2,17 +2,15 @@ import { Value } from '../home/calendar';
 
 export function formatValueTypeToYYYYMMDD(value: Value): string {
 	if (value === null) {
-		return ''; // Return an empty string if the value is null
+		return '';
 	}
 
 	if (Array.isArray(value)) {
-		// If the value is an array, handle each piece separately
 		const [startDate, endDate] = value;
 		const formattedStartDate = startDate ? formatDateToYYYYMMDD(startDate) : '';
 		const formattedEndDate = endDate ? formatDateToYYYYMMDD(endDate) : '';
 		return `${formattedStartDate} - ${formattedEndDate}`;
 	} else {
-		// If the value is a single date, format it as a single date
 		return formatDateToYYYYMMDD(value);
 	}
 }
@@ -42,7 +40,6 @@ export function formatDateToDayMonthDateYear(date: Date): string {
 	return formattedDate;
 }
 
-// A function that checks if the date is today
 export function isToday(date: Date): boolean {
 	const today = new Date();
 	return (
@@ -60,6 +57,15 @@ export function formatDateToYear(date: Date): string {
 export function formatDateToMonth(date: Date): string {
 	const options: Intl.DateTimeFormatOptions = {
 		month: 'long',
+	};
+	return new Intl.DateTimeFormat('en-US', options).format(date);
+}
+
+export function formatDateToMonthDayYear(date: Date): string {
+	const options: Intl.DateTimeFormatOptions = {
+		month: 'long',
+		day: 'numeric',
+		year: 'numeric',
 	};
 	return new Intl.DateTimeFormat('en-US', options).format(date);
 }

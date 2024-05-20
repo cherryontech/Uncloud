@@ -102,7 +102,7 @@ const CustomPagination = ({
 				onClick={() => handlePageClick(currentPage - 1)}
 				className={
 					currentPage === 0
-						? `${previousClassName} ${disabledClassName}`
+						? `${previousClassName} ${disabledClassName} text-[#D9D9D9]`
 						: previousClassName
 				}
 				disabled={currentPage === 0}
@@ -121,7 +121,7 @@ const CustomPagination = ({
 				onClick={() => handlePageClick(currentPage + 1)}
 				className={
 					currentPage === pageCount - 1
-						? `${nextClassName} ${disabledClassName}`
+						? `${nextClassName} ${disabledClassName} text-[#D9D9D9]`
 						: nextClassName
 				}
 				disabled={currentPage === pageCount - 1}

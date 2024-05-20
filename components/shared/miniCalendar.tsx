@@ -27,6 +27,7 @@ type Props = {
 	value: Value | null;
 	setValue: React.Dispatch<React.SetStateAction<Value | null>>;
 	handleDateChange: (newValue: Value) => void;
+	handleLogClick: (log: { date: Date; mood: string; icon: string }) => void;
 };
 
 type ValuePiece = Date | null;
@@ -40,6 +41,7 @@ const MiniCalendarView = ({
 	value,
 	setValue,
 	handleDateChange,
+	handleLogClick,
 }: Props) => {
 	const { user } = useAuth();
 	const [moods, setMoods] = useState<{ [key: string]: string }>({});
@@ -154,7 +156,7 @@ const MiniCalendarView = ({
 	};
 
 	return (
-		<div className='mini-calendar flex flex-col gap-4 rounded-xl border-[1px] border-[#DEE9F5] bg-white p-3'>
+		<div className='mini-calendar flex w-full flex-col gap-4 rounded-xl border-[1px] border-[#DEE9F5] bg-white p-3'>
 			<div className='calendar-nav flex flex-row justify-between gap-2 pr-2'>
 				<span
 					className={`calendar-heading align-center flex cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-base font-semibold ${isYearDropdownOpen ? 'bg-[#dee9f5]' : ''}`}
@@ -218,19 +220,32 @@ const MiniCalendarView = ({
 				showNeighboringMonth={true}
 				showNavigation={false}
 				value={selectedDate}
+				onClickDay={(value: Date) => {
+					const dateKey = formatValueTypeToYYYYMMDD(value);
+					const mood = moods[dateKey];
+					const icon = mood
+						? `/moods/${mood.toLowerCase()}.svg`
+						: '/moods/greyWithFace.svg';
+					if (mood) {
+						handleLogClick({ date: value, mood, icon });
+					}
+				}}
 				tileContent={({ date, view }) => {
 					const dateKey = formatValueTypeToYYYYMMDD(date);
 					const mood = moods[dateKey]; // Check if a mood is logged for this date
-					if (mood && colors.hasOwnProperty(mood)) {
-						return (
-							<span
-								className='mb-1 flex h-[0.25rem] w-[0.25rem] rounded-full'
-								style={{ backgroundColor: colors[mood as Mood] }}
-							></span>
-						);
-					} else {
-						return null;
-					}
+					const backgroundColor =
+						mood && colors.hasOwnProperty(mood)
+							? colors[mood as Mood]
+							: 'transparent';
+					const icon = mood
+						? `/moods/${mood.toLowerCase()}.svg`
+						: '/moods/greyWithFace.svg';
+					return (
+						<span
+							className='mb-1 flex h-[0.25rem] w-[0.25rem] rounded-full'
+							style={{ backgroundColor }}
+						></span>
+					);
 				}}
 				tileDisabled={({ date, view }) =>
 					date.getFullYear() > todayYear ||

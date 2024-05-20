@@ -34,6 +34,7 @@ type Props = {
 	handlePopupToggle: () => void;
 	setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	handleDateChange: (newValue: Value) => void;
+	handleLogClick: (log: { date: Date; mood: string; icon: string }) => void;
 };
 type ValuePiece = Date | null;
 
@@ -55,6 +56,7 @@ const CalendarView = ({
 	handlePopupToggle,
 	setPopupOpen,
 	handleDateChange,
+	handleLogClick,
 }: Props) => {
 	const { user, updateData, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{ [key: string]: string }>({});
@@ -81,7 +83,6 @@ const CalendarView = ({
 	}, [user]);
 
 	useEffect(() => {
-		// Function to check if clicked outside of dropdown
 		const handleClickOutside = (event: MouseEvent) => {
 			const dropdownElement = document.querySelector('.calendar-dropdown');
 			const headingElement = document.querySelector('.calendar-heading');
@@ -94,12 +95,10 @@ const CalendarView = ({
 			}
 		};
 
-		// Add event listener when dropdown is open
 		if (isYearDropdownOpen) {
 			document.addEventListener('mousedown', handleClickOutside);
 		}
 
-		// Cleanup function to remove event listener when dropdown is closed
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
@@ -168,134 +167,156 @@ const CalendarView = ({
 	};
 
 	return (
-		<div className='flex flex-col justify-start gap-6'>
-			<div className='flex w-full flex-row items-center justify-between font-semibold'>
-				<div className='calendar-nav flex flex-row gap-2'>
-					<button onClick={() => changeMonth(-1)}>
-						<CaretLeft weight='bold' className='text-primary' />
-					</button>
-					<span
-						className={`calendar-heading align-center flex cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-2xl ${isYearDropdownOpen ? 'bg-[#dee9f5]' : ''}`}
-						onClick={changeYear}
-					>
-						{formatDateToMonth(selectedDate as Date)}{' '}
-						{formatDateToYear(selectedDate as Date)}
-						{isYearDropdownOpen ? (
-							<div className='calendar-dropdown'>
-								<div className='calendar-dropdown-year'>
-									<span className='text-sm font-semibold text-black'>
-										{displayedYear}
-									</span>
-									<div className='flex items-center justify-center gap-3 text-[#706F6F]'>
-										<button
-											className='hover:text-primary'
-											onClick={(event) => incrementYear(event)}
-										>
-											<ArrowUp size={16} />
-										</button>
-										<button
-											className='hover:text-primary'
-											onClick={(event) => decrementYear(event)}
-										>
-											<ArrowDown size={16} />
-										</button>
+		<div className='cal-container'>
+			<div className='flex max-h-24 flex-col gap-5'>
+				<div className='flex min-h-12 w-full flex-row items-center justify-between font-semibold'>
+					<div className='calendar-nav flex flex-row gap-2'>
+						<button onClick={() => changeMonth(-1)}>
+							<CaretLeft weight='bold' className='text-primary' />
+						</button>
+						<span
+							className={`calendar-heading align-center flex cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-2xl ${isYearDropdownOpen ? 'bg-[#dee9f5]' : ''}`}
+							onClick={changeYear}
+						>
+							{formatDateToMonth(selectedDate as Date)}{' '}
+							{formatDateToYear(selectedDate as Date)}
+							{isYearDropdownOpen ? (
+								<div className='calendar-dropdown'>
+									<div className='calendar-dropdown-year'>
+										<span className='text-sm font-semibold text-black'>
+											{displayedYear}
+										</span>
+										<div className='flex items-center justify-center gap-3 text-[#706F6F]'>
+											<button
+												className='hover:text-primary'
+												onClick={(event) => incrementYear(event)}
+											>
+												<ArrowUp size={16} />
+											</button>
+											<button
+												className='hover:text-primary'
+												onClick={(event) => decrementYear(event)}
+											>
+												<ArrowDown size={16} />
+											</button>
+										</div>
+									</div>
+									<div className='calendar-dropdown-months'>
+										{Array.from({ length: 12 }, (_, i) => i).map((month) => (
+											<button
+												key={month}
+												className={`calendar-dropdown-item ${new Date(selectedDate as Date).getMonth() === month ? 'selected-month' : ''}`}
+												onClick={(event) => handleMonthSelect(month, event)}
+											>
+												{new Date(0, month).toLocaleString('default', {
+													month: 'short',
+												})}
+											</button>
+										))}
 									</div>
 								</div>
-								<div className='calendar-dropdown-months'>
-									{Array.from({ length: 12 }, (_, i) => i).map((month) => (
-										<button
-											key={month}
-											className={`calendar-dropdown-item ${new Date(selectedDate as Date).getMonth() === month ? 'selected-month' : ''}`}
-											onClick={(event) => handleMonthSelect(month, event)}
-										>
-											{new Date(0, month).toLocaleString('default', {
-												month: 'short',
-											})}
-										</button>
-									))}
-								</div>
-							</div>
-						) : null}
-					</span>
-					<button onClick={() => changeMonth(1)}>
-						<CaretRight weight='bold' className='text-primary' />
-					</button>
-				</div>
+							) : null}
+						</span>
+						<button onClick={() => changeMonth(1)}>
+							<CaretRight weight='bold' className='text-primary' />
+						</button>
+					</div>
 
-				<div className='flex w-fit cursor-pointer flex-row items-center justify-center gap-4'>
-					<div
-						className='background-white flex min-w-fit items-center justify-center rounded-[1.25rem] border border-[#2D81E0] px-6 py-1 text-sm font-bold text-primary '
-						onClick={() => {
-							const today = new Date();
-							handleDateChange(today);
-							setMonth(today.getMonth());
-						}}
-					>
-						Today
-						{/* {isToday(selectedDate as Date)
-							? 'Today'
-							: formatDateToDayMonthDateYear(selectedDate as Date)} */}
+					<div className='flex w-fit cursor-pointer flex-row items-center justify-center gap-4'>
+						<div
+							className='background-white flex min-w-fit items-center justify-center rounded-[1.25rem] border border-[#2D81E0] px-6 py-1 text-sm font-bold text-primary '
+							onClick={() => {
+								const today = new Date();
+								handleDateChange(today);
+								setMonth(today.getMonth());
+								const todayKey = formatValueTypeToYYYYMMDD(today);
+								handleLogClick({
+									date: today,
+									mood: moods[todayKey],
+									icon: moods[todayKey]
+										? `/moods/${moods[todayKey].toLowerCase()}.svg`
+										: '/moods/greyWithFace.svg',
+								});
+							}}
+						>
+							Today
+						</div>
 					</div>
 				</div>
+				<div className=' h-[0.125rem] bg-[#dee9f5]'></div>
 			</div>
-			<div className=' mb-[0.5rem] mt-[0.1rem] h-[0.125rem] bg-[#dee9f5]'></div>
-			<div>
-				<Calendar
-					key={`${(selectedDate instanceof Date ? selectedDate : new Date()).getMonth()}-${(selectedDate instanceof Date ? selectedDate : new Date()).getFullYear()}`}
-					calendarType='gregory'
-					onChange={handleDateChange}
-					showNeighboringMonth={true}
-					showNavigation={false}
-					value={selectedDate}
-					tileContent={({ date, view }) => {
-						const dateKey = formatValueTypeToYYYYMMDD(date);
-						const isDateToday = isToday(date);
-						if (
-							date.getFullYear() > todayYear ||
-							(date.getFullYear() === todayYear &&
-								date.getMonth() > todayMonth) ||
-							(date.getFullYear() === todayYear &&
-								date.getMonth() === todayMonth &&
-								date.getDate() > todayDate)
-						) {
-							return (
-								<div className='relative h-full w-full'>
-									<Image
-										src={`/moods/greyNoFace.svg`}
-										alt='Mood'
-										layout='fill'
-									/>
-								</div>
-							);
-						}
-						return moods[dateKey] ? (
-							<div className='relative h-full w-full'>
-								<Image
-									src={`/moods/${moods[dateKey].toLowerCase()}.svg`}
-									alt='Mood'
-									layout='fill'
-								/>
-							</div>
-						) : (
-							<div className='relative h-full w-full'>
-								<Image
-									src={`/moods/greyWithFace.svg`}
-									alt='Mood'
-									layout='fill'
-								/>
-							</div>
-						);
-					}}
-					tileDisabled={({ date, view }) =>
+			<Calendar
+				key={`${(selectedDate instanceof Date ? selectedDate : new Date()).getMonth()}-${(selectedDate instanceof Date ? selectedDate : new Date()).getFullYear()}`}
+				calendarType='gregory'
+				onChange={handleDateChange}
+				showNeighboringMonth={true}
+				showNavigation={false}
+				value={selectedDate}
+				tileContent={({ date, view }) => {
+					const dateKey = formatValueTypeToYYYYMMDD(date);
+					const isDateToday = isToday(date);
+					if (
 						date.getFullYear() > todayYear ||
 						(date.getFullYear() === todayYear &&
 							date.getMonth() > todayMonth) ||
 						(date.getFullYear() === todayYear &&
 							date.getMonth() === todayMonth &&
 							date.getDate() > todayDate)
+					) {
+						return (
+							<Image
+								src={`/moods/greyNoFace.svg`}
+								alt='Mood'
+								height={150}
+								width={150}
+								onClick={() =>
+									handleLogClick({
+										date: date,
+										mood: moods[dateKey],
+										icon: '/moods/greyNoFace.svg',
+									})
+								}
+							/>
+						);
 					}
-				/>
-			</div>
+					return moods[dateKey] ? (
+						<Image
+							src={`/moods/${moods[dateKey].toLowerCase()}.svg`}
+							alt='Mood'
+							height={150}
+							width={150}
+							onClick={() =>
+								handleLogClick({
+									date: date,
+									mood: moods[dateKey],
+									icon: `/moods/${moods[dateKey].toLowerCase()}.svg`,
+								})
+							}
+						/>
+					) : (
+						<Image
+							src={`/moods/greyWithFace.svg`}
+							alt='Mood'
+							height={150}
+							width={150}
+							onClick={() =>
+								handleLogClick({
+									date: date,
+									mood: moods[dateKey],
+									icon: '/moods/greyWithFace.svg',
+								})
+							}
+						/>
+					);
+				}}
+				tileDisabled={({ date, view }) =>
+					date.getFullYear() > todayYear ||
+					(date.getFullYear() === todayYear && date.getMonth() > todayMonth) ||
+					(date.getFullYear() === todayYear &&
+						date.getMonth() === todayMonth &&
+						date.getDate() > todayDate)
+				}
+			/>
 			<NewLogPopup
 				isPopupOpen={isPopupOpen}
 				handlePopupToggle={handlePopupToggle}
