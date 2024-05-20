@@ -23,7 +23,7 @@ body {
 }
 
 html {
-	font-size: 16px; /* you can chose any size here 16 is default */
+	font-size: 16px;
 	@media screen and (max-width: 1200px) {
 		font-size: 62.5%;
 	}

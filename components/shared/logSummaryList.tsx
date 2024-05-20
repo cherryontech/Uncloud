@@ -1,18 +1,18 @@
 import React from 'react';
-import Image from 'next/image'; // replace with actual import
-import { CaretRight } from '@phosphor-icons/react'; // replace with actual import
-import FilterDropdown from './filterDropdown'; // replace with actual import
-import CustomPagination from './customPagination'; // replace with actual import
+import Image from 'next/image';
+import { CaretRight } from '@phosphor-icons/react';
+import FilterDropdown from './filterDropdown';
+import CustomPagination from './customPagination';
 
 interface LogSummaryListProps {
-	currentMoods: any[]; // replace with actual type
+	currentMoods: any[];
 	handleCheckboxChange: (filter: string) => void;
-	selectedFilters: any; // replace with actual type
-	moodNames: any; // replace with actual type
-	handlePagination: any; // replace with actual type
-	filteredMoods: any; // replace with actual type
+	selectedFilters: any;
+	moodNames: any;
+	handlePagination: any;
+	filteredMoods: any;
 	pageSize: number;
-	onToggle: any; // replace with actual type
+	onToggle: any;
 	isRightBarOpen: boolean;
 }
 
@@ -51,7 +51,6 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 							month: 'short',
 							timeZone: 'UTC',
 						});
-						// console.log(mood);
 						return (
 							<div
 								key={date}

@@ -83,7 +83,6 @@ const CalendarView = ({
 	}, [user]);
 
 	useEffect(() => {
-		// Function to check if clicked outside of dropdown
 		const handleClickOutside = (event: MouseEvent) => {
 			const dropdownElement = document.querySelector('.calendar-dropdown');
 			const headingElement = document.querySelector('.calendar-heading');
@@ -96,12 +95,10 @@ const CalendarView = ({
 			}
 		};
 
-		// Add event listener when dropdown is open
 		if (isYearDropdownOpen) {
 			document.addEventListener('mousedown', handleClickOutside);
 		}
 
-		// Cleanup function to remove event listener when dropdown is closed
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};

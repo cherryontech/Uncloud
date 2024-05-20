@@ -6,7 +6,7 @@ import { CaretLeft, Plus, Minus } from '@phosphor-icons/react';
 
 interface LogSummaryProps {
 	log: { date: Date; mood: string; icon: string };
-	handleGoBack: () => void; // Add this line
+	handleGoBack: () => void;
 }
 
 const LogSummary: React.FC<LogSummaryProps> = ({ log, handleGoBack }) => {
