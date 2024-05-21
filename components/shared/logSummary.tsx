@@ -1,8 +1,14 @@
 // LogSummary.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { formatDateToMonthDayYear } from '../utils/reusableFunctions';
+import {
+	formatDateToMonthDayYear,
+	formatValueTypeToYYYYMMDD,
+} from '../utils/reusableFunctions';
 import { CaretLeft, Plus, Minus } from '@phosphor-icons/react';
+import { ReflectionsType } from '../home/newLogPopup';
+import { useAuth } from '@/app/context/UserProvider';
+import { getUser } from '../utils/serverFunctions';
 
 interface LogSummaryProps {
 	log: { date: Date; mood: string; icon: string };
@@ -17,6 +23,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({ log, handleGoBack }) => {
 		Rainy: 'Disappointed',
 		Stormy: 'Stressed',
 	};
+	const { user, isUpdated } = useAuth();
 
 	const wins = [
 		{
@@ -30,26 +37,33 @@ const LogSummary: React.FC<LogSummaryProps> = ({ log, handleGoBack }) => {
 		{ title: 'I updated my LinkedIn', description: 'I redid my coverpage' },
 	];
 
-	const reflections = [
-		{
-			question: 'How will my ideal career differ from my previous job?',
-			answer: 'I want to work in a more collaborative environment',
-		},
-		{
-			question: 'What are my top 3 skills?',
-			answer: 'I am good at communication, problem-solving, and organization',
-		},
-		{
-			question: 'What are my top 3 values?',
-			answer: 'I value honesty, integrity, and respect',
-		},
-		{
-			question: 'What are my top 3 interests?',
-			answer: 'I am interested in technology, art, and music',
-		},
-	];
-
 	const [openReflections, setOpenReflections] = useState<number[]>([]);
+	const [initialReflections, setInitialReflections] = useState<
+		ReflectionsType[]
+	>([]);
+	console.log(isUpdated);
+	useEffect(() => {
+		if (user && log.date) {
+			const formattedDate = formatValueTypeToYYYYMMDD(log.date);
+			getUser(user.uid).then((userData) => {
+				if (!userData || !userData.moods || userData.moods.length === 0) {
+					console.log('No mood data found for the user');
+					return;
+				}
+				console.log('All mood entries:', userData.moods);
+
+				const selectedMoodEntry = userData.moods.find(
+					(entry: any) => entry.date === formattedDate
+				);
+				console.log(formattedDate);
+				if (selectedMoodEntry && selectedMoodEntry.reflections) {
+					setInitialReflections(selectedMoodEntry.reflections);
+				} else {
+					setInitialReflections([]);
+				}
+			});
+		}
+	}, [user, log.date, isUpdated]);
 
 	const toggleReflection = (index: number) => {
 		setOpenReflections((prevState) =>
@@ -116,53 +130,63 @@ const LogSummary: React.FC<LogSummaryProps> = ({ log, handleGoBack }) => {
 					</div>
 				</div>
 				{/* Reflections */}
-				<div className='flex flex-col gap-3'>
-					<div className='flex flex-row items-center justify-start  gap-2 text-sm'>
-						<span className='font-semibold'>Reflections</span>
-						<span className='text-[#706F6F]'>({reflections.length})</span>
-					</div>
-					{/* render a div for every item in reflections */}
+				{initialReflections.length > 0 ? (
+					<div className='flex flex-col gap-3'>
+						<div className='flex flex-row items-center justify-start  gap-2 text-sm'>
+							<span className='font-semibold'>Reflections</span>
+							<span className='text-[#706F6F]'>
+								({initialReflections.length})
+							</span>
+						</div>
+						{/* render a div for every item in reflections */}
 
-					{reflections.map((reflection, index) => (
-						<div
-							key={index}
-							className={`grid gap-x-5 px-4 py-2 ${openReflections.includes(index) ? 'question-opened grid-cols-[1fr_min-content] grid-rows-2 items-center' : 'question-closed grid-cols-[1fr_min-content] grid-rows-1 rounded-lg border border-[#DEE9F5] bg-[#FAFCFF]'}`}
-						>
+						{initialReflections.map((reflection, index) => (
 							<div
-								className={`question-div flex flex-row items-center justify-between  text-sm text-[#706F6F] ${openReflections.includes(index) ? 'question-opened bg-white' : 'question-closed'}`}
-								onClick={() => toggleReflection(index)}
+								key={index}
+								className={`grid gap-x-5 px-4 py-2 ${openReflections.includes(index) ? 'question-opened grid-cols-[1fr_min-content] grid-rows-2 items-center' : 'question-closed grid-cols-[1fr_min-content] grid-rows-1 rounded-lg border border-[#DEE9F5] bg-[#FAFCFF]'}`}
 							>
-								<span className='font-semibold'>{reflection.question}</span>
-							</div>
-							<div
-								className={`col-start-2 col-end-3 row-span-2 row-start-1 flex self-stretch justify-self-end ${openReflections.includes(index) ? 'question-opened items-start ' : 'question-closed items-center '}`}
-								onClick={() => toggleReflection(index)}
-							>
-								{openReflections.includes(index) ? (
-									<Minus
-										size={16}
-										weight='light'
-										className='h-8 w-8 rounded-full bg-[#DEE9F5] px-1'
-									/>
-								) : (
-									<Plus
-										size={16}
-										weight='light'
-										className='h-8 w-8 rounded-full  px-1'
-									/>
+								<div
+									className={`question-div flex flex-row items-center justify-between  text-sm text-[#706F6F] ${openReflections.includes(index) ? 'question-opened bg-white' : 'question-closed'}`}
+									onClick={() => toggleReflection(index)}
+								>
+									<span className='font-semibold'>{reflection.question}</span>
+								</div>
+								<div
+									className={`col-start-2 col-end-3 row-span-2 row-start-1 flex self-stretch justify-self-end ${openReflections.includes(index) ? 'question-opened items-start ' : 'question-closed items-center '}`}
+									onClick={() => toggleReflection(index)}
+								>
+									{openReflections.includes(index) ? (
+										<Minus
+											size={16}
+											weight='light'
+											className='h-8 w-8 rounded-full bg-[#DEE9F5] px-1'
+										/>
+									) : (
+										<Plus
+											size={16}
+											weight='light'
+											className='h-8 w-8 rounded-full  px-1'
+										/>
+									)}
+								</div>
+
+								{openReflections.includes(index) && (
+									<div className='answer-div col-start-1 col-end-2 row-start-2 row-end-3 mt-2 flex flex-col gap-2'>
+										<div className='text-xs text-[#706F6F]'>
+											{reflection.answer}
+										</div>
+									</div>
 								)}
 							</div>
-
-							{openReflections.includes(index) && (
-								<div className='answer-div col-start-1 col-end-2 row-start-2 row-end-3 mt-2 flex flex-col gap-2'>
-									<div className='text-xs text-[#706F6F]'>
-										{reflection.answer}
-									</div>
-								</div>
-							)}
-						</div>
-					))}
-				</div>
+						))}
+					</div>
+				) : (
+					<div className='flex w-full flex-col items-center justify-center'>
+						<p className='text-base font-medium text-black'>
+							No Reflections yet
+						</p>
+					</div>
+				)}
 			</div>
 		</>
 	);

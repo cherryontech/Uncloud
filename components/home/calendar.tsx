@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import NewLogPopup from './newLogPopup';
+import NewLogPopup, { ReflectionsType } from './newLogPopup';
 import Calendar from 'react-calendar';
 import { getUser, addUserMood } from '../utils/serverFunctions';
 import {
@@ -22,6 +22,7 @@ import {
 } from '@phosphor-icons/react';
 
 import '/app/styles/calendar.css';
+import { init } from 'next/dist/compiled/webpack/webpack';
 
 type Props = {
 	month: number;
@@ -31,7 +32,7 @@ type Props = {
 	value: Value | null;
 	setValue: React.Dispatch<React.SetStateAction<Value | null>>;
 	isPopupOpen: boolean;
-	handlePopupToggle: () => void;
+
 	setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	handleDateChange: (newValue: Value) => void;
 	handleLogClick: (log: { date: Date; mood: string; icon: string }) => void;
@@ -53,7 +54,7 @@ const CalendarView = ({
 	value,
 	setValue,
 	isPopupOpen,
-	handlePopupToggle,
+
 	setPopupOpen,
 	handleDateChange,
 	handleLogClick,
@@ -80,7 +81,7 @@ const CalendarView = ({
 				}
 			});
 		}
-	}, [user]);
+	}, [user, isUpdated]);
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -103,17 +104,22 @@ const CalendarView = ({
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
 	}, [isYearDropdownOpen]);
-
+console.log(isUpdated);
 	useEffect(() => {
 		setDisplayedYear((selectedDate as Date).getFullYear());
 	}, [selectedDate]);
 
-	const saveMood = (mood: string, date: string) => {
+	const saveMood = async (
+		date: string,
+		mood: string,
+		reflections: ReflectionsType[]
+	) => {
 		if (user) {
-			addUserMood(user.uid, mood, date).then(() => {
-				setMoods((prev) => ({ ...prev, [date]: mood }));
-				updateData();
-			});
+			await addUserMood(user.uid, mood, date, reflections);
+			// setMoods((prev) => ({ ...prev, [date]: mood }));
+			updateData();
+		
+
 		}
 	};
 
@@ -319,7 +325,6 @@ const CalendarView = ({
 			/>
 			<NewLogPopup
 				isPopupOpen={isPopupOpen}
-				handlePopupToggle={handlePopupToggle}
 				selectedDate={formatValueTypeToYYYYMMDD(selectedDate as Date)}
 				displayDate={formatDateToDayMonthDateYear(selectedDate as Date)}
 				saveMood={saveMood}

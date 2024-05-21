@@ -3,6 +3,7 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/app/firebase';
 import { formatDateToYYYYMMDD } from './reusableFunctions';
+import { ReflectionsType } from '../home/newLogPopup';
 
 export async function updateUser(uid: string) {
 	const userDocRef = doc(db, 'authUsers', uid);
@@ -13,7 +14,8 @@ export async function updateUser(uid: string) {
 export async function addUserMood(
 	uid: string,
 	mood: string,
-	selectedDate: string
+	selectedDate: string,
+	reflections:ReflectionsType[]
 ) {
 	const userDocRef = doc(db, 'authUsers', uid);
 	const userDocSnap = await getDoc(userDocRef);
@@ -33,9 +35,10 @@ export async function addUserMood(
 				console.log('Existing mood entry found for today. Updating mood...');
 				console.log('Existing mood entry:', moodsArray[existingMoodIndex]);
 				moodsArray[existingMoodIndex].mood = mood;
+				moodsArray[existingMoodIndex].reflections = reflections;
 			} else {
 				// If mood entry for today doesn't exist, append a new entry
-				moodsArray.push({ date: selectedDate, mood: mood });
+				moodsArray.push({ date: selectedDate, mood: mood ,reflections:reflections});
 			}
 
 			console.log('Updated moods array:', moodsArray);
