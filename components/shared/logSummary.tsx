@@ -11,7 +11,12 @@ import { useAuth } from '@/app/context/UserProvider';
 import { getUser } from '../utils/serverFunctions';
 
 interface LogSummaryProps {
-	log: { date: Date; mood: string; icon: string };
+	log: {
+		date: Date;
+		mood: string;
+		icon: string;
+		reflections: ReflectionsType[];
+	};
 	handleGoBack: () => void;
 }
 
@@ -42,28 +47,6 @@ const LogSummary: React.FC<LogSummaryProps> = ({ log, handleGoBack }) => {
 		ReflectionsType[]
 	>([]);
 	console.log(isUpdated);
-	useEffect(() => {
-		if (user && log.date) {
-			const formattedDate = formatValueTypeToYYYYMMDD(log.date);
-			getUser(user.uid).then((userData) => {
-				if (!userData || !userData.moods || userData.moods.length === 0) {
-					console.log('No mood data found for the user');
-					return;
-				}
-				console.log('All mood entries:', userData.moods);
-
-				const selectedMoodEntry = userData.moods.find(
-					(entry: any) => entry.date === formattedDate
-				);
-				console.log(formattedDate);
-				if (selectedMoodEntry && selectedMoodEntry.reflections) {
-					setInitialReflections(selectedMoodEntry.reflections);
-				} else {
-					setInitialReflections([]);
-				}
-			});
-		}
-	}, [user, log.date, isUpdated]);
 
 	const toggleReflection = (index: number) => {
 		setOpenReflections((prevState) =>
@@ -78,12 +61,16 @@ const LogSummary: React.FC<LogSummaryProps> = ({ log, handleGoBack }) => {
 			<div className='flex max-h-24 flex-col gap-5 pb-4'>
 				<div className='flex w-full flex-row items-center justify-between  px-1 text-base font-semibold'>
 					<div className='flex flex-row gap-2 text-primary'>
-						<button onClick={handleGoBack}>
+						<button
+							onClick={handleGoBack}
+							className='flex flex-row items-center justify-center gap-2'
+						>
 							<CaretLeft size={16} weight='bold' />
+							<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
+								{/* {formatDateToMonthDayYear(log.date)} */}
+								Back to Summary
+							</span>
 						</button>
-						<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
-							{formatDateToMonthDayYear(log.date)}
-						</span>
 					</div>
 				</div>
 				{/* Divider */}
@@ -130,17 +117,15 @@ const LogSummary: React.FC<LogSummaryProps> = ({ log, handleGoBack }) => {
 					</div>
 				</div>
 				{/* Reflections */}
-				{initialReflections.length > 0 ? (
+				{log.reflections.length > 0 ? (
 					<div className='flex flex-col gap-3'>
 						<div className='flex flex-row items-center justify-start  gap-2 text-sm'>
 							<span className='font-semibold'>Reflections</span>
-							<span className='text-[#706F6F]'>
-								({initialReflections.length})
-							</span>
+							<span className='text-[#706F6F]'>({log.reflections.length})</span>
 						</div>
 						{/* render a div for every item in reflections */}
 
-						{initialReflections.map((reflection, index) => (
+						{log.reflections.map((reflection, index) => (
 							<div
 								key={index}
 								className={`grid gap-x-5 px-4 py-2 ${openReflections.includes(index) ? 'question-opened grid-cols-[1fr_min-content] grid-rows-2 items-center' : 'question-closed grid-cols-[1fr_min-content] grid-rows-1 rounded-lg border border-[#DEE9F5] bg-[#FAFCFF]'}`}

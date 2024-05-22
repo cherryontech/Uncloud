@@ -1,6 +1,6 @@
 import { Button } from '@/stories/Button';
 import { CaretLeft, Plus, Minus } from '@phosphor-icons/react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ReflectionsType } from './newLogPopup';
 
 type Props = {
@@ -14,73 +14,78 @@ const MoodPrompts = ({
 	initialReflections,
 	handleSaveMood,
 }: Props) => {
-	const defaultQuestions = {
-		Rainbow: [
-			{
-				question: 'What made you happy today?',
-				answer: '',
-			},
-			{
-				question: 'What are you looking forward to?',
-				answer: '',
-			},
-		],
-		Sunny: [
-			{
-				question: 'What is troubling you?',
-				answer: '',
-			},
-			{
-				question: 'How can you improve your mood?',
-				answer: '',
-			},
-		],
-		Cloudy: [
-			{
-				question: 'What is making you excited?',
-				answer: '',
-			},
-			{
-				question: 'What are your plans for the day?',
-				answer: '',
-			},
-		],
-		Rainy: [
-			{
-				question: 'What is making you excited?',
-				answer: '',
-			},
-			{
-				question: 'What are your plans for the day?',
-				answer: '',
-			},
-		],
-		Stormy: [
-			{
-				question: 'What is making you excited?',
-				answer: '',
-			},
-			{
-				question: 'What are your plans for the day?',
-				answer: '',
-			},
-		],
-	};
+	const defaultQuestions = useMemo(
+		() => ({
+			Rainbow: [
+				{
+					question: 'What made you happy today?',
+					answer: '',
+				},
+				{
+					question: 'What are you looking forward to?',
+					answer: '',
+				},
+			],
+			Sunny: [
+				{
+					question: 'What is troubling you?',
+					answer: '',
+				},
+				{
+					question: 'How can you improve your mood?',
+					answer: '',
+				},
+			],
+			Cloudy: [
+				{
+					question: 'What is making you excited?',
+					answer: '',
+				},
+				{
+					question: 'What are your plans for the day?',
+					answer: '',
+				},
+			],
+			Rainy: [
+				{
+					question: 'What is making you excited?',
+					answer: '',
+				},
+				{
+					question: 'What are your plans for the day?',
+					answer: '',
+				},
+			],
+			Stormy: [
+				{
+					question: 'What is making you excited?',
+					answer: '',
+				},
+				{
+					question: 'What are your plans for the day?',
+					answer: '',
+				},
+			],
+		}),
+		[]
+	);
 
 	const [reflections, setReflections] = useState(
-		initialReflections.length
+		initialReflections && initialReflections.length
 			? initialReflections
 			: defaultQuestions[selectedMood as keyof typeof defaultQuestions]
 	);
 	const [openReflections, setOpenReflections] = useState<number[]>([]);
 
 	useEffect(() => {
-		if (initialReflections.length === 0) {
+		if (initialReflections && initialReflections.length > 0) {
+			setReflections(initialReflections);
+		} else {
 			setReflections(
 				defaultQuestions[selectedMood as keyof typeof defaultQuestions]
 			);
 		}
-	}, [selectedMood, initialReflections]);
+	}, [selectedMood, initialReflections, defaultQuestions]);
 
 	const toggleReflection = (index: number) => {
 		setOpenReflections((prevState) =>

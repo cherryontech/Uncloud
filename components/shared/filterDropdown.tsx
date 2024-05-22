@@ -1,7 +1,7 @@
 // components/FilterDropdown.js
 import React, { useState } from 'react';
 import { IoMdFunnel } from 'react-icons/io';
-import { MoodNames } from './rightbar';
+import { MoodNames } from './logSummaryList';
 
 type props = {
 	handleCheckboxChange: (filter: string) => void;

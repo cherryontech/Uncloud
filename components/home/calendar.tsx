@@ -35,7 +35,12 @@ type Props = {
 
 	setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	handleDateChange: (newValue: Value) => void;
-	handleLogClick: (log: { date: Date; mood: string; icon: string }) => void;
+	handleLogClick: (log: {
+		date: Date;
+		mood: string;
+		icon: string;
+		reflections?: ReflectionsType[];
+	}) => void;
 };
 type ValuePiece = Date | null;
 
@@ -44,6 +49,7 @@ export type Value = ValuePiece | [ValuePiece, ValuePiece];
 export type MoodEntry = {
 	date: string;
 	mood: string;
+	reflections: ReflectionsType[];
 };
 
 const CalendarView = ({
@@ -60,7 +66,9 @@ const CalendarView = ({
 	handleLogClick,
 }: Props) => {
 	const { user, updateData, isUpdated } = useAuth();
-	const [moods, setMoods] = useState<{ [key: string]: string }>({});
+	const [moods, setMoods] = useState<{
+		[key: string]: { mood: string; reflections: ReflectionsType[] };
+	}>({});
 	const [isYearDropdownOpen, setYearDropdownOpen] = useState(false);
 	const [displayedYear, setDisplayedYear] = useState(new Date().getFullYear());
 
@@ -68,14 +76,19 @@ const CalendarView = ({
 		if (user) {
 			getUser(user.uid).then((userData) => {
 				if (userData && userData.moods) {
-					let moodMap: { [key: string]: string } = {};
+					let moodMap: {
+						[key: string]: { mood: string; reflections: ReflectionsType[] };
+					} = {};
 
 					userData.moods.forEach((moodEntry: MoodEntry) => {
 						const dateParts = moodEntry.date
 							.split('-')
 							.map((part) => parseInt(part, 10));
 						const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-						moodMap[formatValueTypeToYYYYMMDD(date)] = moodEntry.mood;
+						moodMap[formatValueTypeToYYYYMMDD(date)] = {
+							mood: moodEntry.mood,
+							reflections: moodEntry.reflections,
+						}; // Update this line
 					});
 					setMoods(moodMap);
 				}
@@ -104,7 +117,7 @@ const CalendarView = ({
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
 	}, [isYearDropdownOpen]);
-console.log(isUpdated);
+	console.log(isUpdated);
 	useEffect(() => {
 		setDisplayedYear((selectedDate as Date).getFullYear());
 	}, [selectedDate]);
@@ -116,10 +129,15 @@ console.log(isUpdated);
 	) => {
 		if (user) {
 			await addUserMood(user.uid, mood, date, reflections);
-			// setMoods((prev) => ({ ...prev, [date]: mood }));
 			updateData();
-		
-
+			// Call handleLogClick after the new log is saved
+			console.log('Log saved:', date, mood, reflections);
+			handleLogClick({
+				date: new Date(date),
+				mood: mood,
+				icon: `/moods/${mood.toLowerCase()}.svg`,
+				reflections: reflections,
+			});
 		}
 	};
 
@@ -238,10 +256,11 @@ console.log(isUpdated);
 								const todayKey = formatValueTypeToYYYYMMDD(today);
 								handleLogClick({
 									date: today,
-									mood: moods[todayKey],
+									mood: moods[todayKey].mood,
 									icon: moods[todayKey]
-										? `/moods/${moods[todayKey].toLowerCase()}.svg`
+										? `/moods/${moods[todayKey].mood.toLowerCase()}.svg`
 										: '/moods/greyWithFace.svg',
+									reflections: moods[todayKey].reflections,
 								});
 							}}
 						>
@@ -278,8 +297,9 @@ console.log(isUpdated);
 								onClick={() =>
 									handleLogClick({
 										date: date,
-										mood: moods[dateKey],
+										mood: moods[dateKey].mood,
 										icon: '/moods/greyNoFace.svg',
+										reflections: moods[dateKey].reflections,
 									})
 								}
 							/>
@@ -287,15 +307,16 @@ console.log(isUpdated);
 					}
 					return moods[dateKey] ? (
 						<Image
-							src={`/moods/${moods[dateKey].toLowerCase()}.svg`}
+							src={`/moods/${moods[dateKey].mood.toLowerCase()}.svg`}
 							alt='Mood'
 							height={150}
 							width={150}
 							onClick={() =>
 								handleLogClick({
 									date: date,
-									mood: moods[dateKey],
-									icon: `/moods/${moods[dateKey].toLowerCase()}.svg`,
+									mood: moods[dateKey].mood,
+									icon: `/moods/${moods[dateKey].mood.toLowerCase()}.svg`,
+									reflections: moods[dateKey].reflections,
 								})
 							}
 						/>
@@ -308,8 +329,9 @@ console.log(isUpdated);
 							onClick={() =>
 								handleLogClick({
 									date: date,
-									mood: moods[dateKey],
+									mood: 'No Log Yet',
 									icon: '/moods/greyWithFace.svg',
+									reflections: [],
 								})
 							}
 						/>
@@ -329,6 +351,7 @@ console.log(isUpdated);
 				displayDate={formatDateToDayMonthDateYear(selectedDate as Date)}
 				saveMood={saveMood}
 				setPopupOpen={setPopupOpen}
+				handleLogClick={handleLogClick}
 			/>
 		</div>
 	);

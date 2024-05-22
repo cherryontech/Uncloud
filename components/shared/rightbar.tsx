@@ -1,36 +1,48 @@
-'use client';
 import { useAuth } from '@/app/context/UserProvider';
 import React, { useEffect, useState } from 'react';
 import { getUser } from '../utils/serverFunctions';
 import { formatValueTypeToYYYYMMDD } from '../utils/reusableFunctions';
-import { MoodEntry } from '../home/calendar';
+import { MoodEntry, Value } from '../home/calendar';
 import Image from 'next/image';
-import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
-import FilterDropdown from './filterDropdown';
-import CustomPagination from './customPagination';
-import { CaretRight } from '@phosphor-icons/react';
 import LogSummaryList from './logSummaryList';
+import { ReflectionsType } from '../home/newLogPopup';
+import CustomPagination from './customPagination';
 
-type Props = {
-	isRightBarOpen: boolean;
-	onToggle: (isOpen: boolean) => void;
-};
 interface RightbarProps {
 	isRightBarOpen: boolean;
 	onToggle: (open: boolean) => void;
-	children?: React.ReactNode; // Add this line
+	handleLogClick: (log: {
+		date: Date;
+		mood: string;
+		icon: string;
+		reflections?: ReflectionsType[];
+	}) => void;
+	selectedDate: Value;
+	value: Value | null;
+	setValue: React.Dispatch<React.SetStateAction<Value | null>>;
+	handleDateChange: (newValue: Value) => void;
+	children?: React.ReactNode;
 }
 
-export type MoodNames = {
-	[key: string]: string;
-};
 const Rightbar: React.FC<RightbarProps> = ({
 	isRightBarOpen,
 	onToggle,
+	handleLogClick,
+	selectedDate,
+	value,
+	setValue,
+	handleDateChange,
 	children,
 }) => {
 	const { user, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{ [key: string]: string }>({});
+
+	useEffect(() => {
+		if (user) {
+			getUser(user.uid);
+		}
+	}, [user, isUpdated]);
+
 	const [selectedFilters, setSelectedFilters] = useState({
 		Rainbow: false,
 		Sunny: false,
@@ -38,41 +50,6 @@ const Rightbar: React.FC<RightbarProps> = ({
 		Rainy: false,
 		Stormy: false,
 	});
-	const [currentPage, setCurrentPage] = useState(1);
-	const handleCheckboxChange = (filter: string) => {
-		setSelectedFilters((prevState) => ({
-			...prevState,
-			[filter]: !prevState[filter as keyof typeof selectedFilters],
-		}));
-	};
-
-	useEffect(() => {
-		if (user) {
-			getUser(user.uid).then((userData) => {
-				if (userData && userData.moods) {
-					let moodMap: { [key: string]: string } = {};
-
-					userData.moods.forEach((moodEntry: MoodEntry) => {
-						const dateParts = moodEntry.date
-							.split('-')
-							.map((part) => parseInt(part, 10));
-						const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-						moodMap[formatValueTypeToYYYYMMDD(date)] = moodEntry.mood;
-					});
-					setMoods(moodMap);
-				}
-			});
-		}
-	}, [user, isUpdated]);
-
-	const moodNames: MoodNames = {
-		Rainbow: 'Proud',
-		Sunny: 'Confident',
-		Cloudy: 'Uncertain',
-		Rainy: 'Disappointed',
-		Stormy: 'Stressed',
-	};
-
 	const currentDate = new Date();
 	const currentMonth = currentDate.getUTCMonth();
 	const currentYear = currentDate.getUTCFullYear();
@@ -102,11 +79,9 @@ const Rightbar: React.FC<RightbarProps> = ({
 				new Date(`${date1}T00:00:00Z`).getTime()
 			);
 		});
-	const pageSize = 7;
-	const indexOfLastMood = currentPage * pageSize;
-	const indexOfFirstMood = indexOfLastMood - pageSize;
-	const currentMoods = filteredMoods.slice(indexOfFirstMood, indexOfLastMood);
 
+	const pageSize = 7;
+	const [currentPage, setCurrentPage] = useState(1);
 	const handlePagination = (value: { selected: number }) => {
 		setCurrentPage(value.selected + 1);
 	};
@@ -122,15 +97,11 @@ const Rightbar: React.FC<RightbarProps> = ({
 						children
 					) : (
 						<LogSummaryList
-							currentMoods={currentMoods}
-							handleCheckboxChange={handleCheckboxChange}
-							selectedFilters={selectedFilters}
-							moodNames={moodNames}
-							handlePagination={handlePagination}
-							filteredMoods={filteredMoods}
-							pageSize={pageSize}
-							onToggle={onToggle}
-							isRightBarOpen={isRightBarOpen}
+							handleLogClick={handleLogClick}
+							selectedDate={selectedDate}
+							value={value}
+							setValue={setValue}
+							handleDateChange={handleDateChange}
 						/>
 					)}
 

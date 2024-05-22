@@ -14,6 +14,7 @@ import Rightbar from '@/components/shared/rightbar';
 import LogSummary from '@/components/shared/logSummary';
 import MiniCalendarView from '@/components/shared/miniCalendar';
 import LogSummaryList from '@/components/shared/logSummaryList';
+import { ReflectionsType } from '@/components/home/newLogPopup';
 
 export default function MainComponent({
 	children,
@@ -36,28 +37,40 @@ export default function MainComponent({
 		null
 	);
 	const [rightBarHistory, setRightBarHistory] = useState<JSX.Element[]>([]);
-	const handleLogClick = (log: { date: Date; mood: string; icon: string }) => {
+	const handleLogClick = (log: {
+		date: Date;
+		mood: string;
+		icon: string;
+		reflections?: ReflectionsType[];
+	}) => {
 		setRightBarHistory((prevHistory) =>
 			rightBarContent ? [...prevHistory, rightBarContent] : prevHistory
 		);
-		setRightBarContent(<LogSummary log={log} handleGoBack={handleGoBack} />);
+		setRightBarContent(
+			<LogSummary
+				log={{ ...log, reflections: log.reflections || [] }}
+				handleGoBack={handleGoBack}
+			/>
+		);
 		setRightBarOpen(true);
-	};
-
-	const handleGoBack = () => {
-		console.log('Go back clicked');
-		setRightBarHistory((prevHistory) => {
-			const newHistory = prevHistory.filter((item) => item !== null);
-			const lastContent = newHistory.pop();
-			if (lastContent !== undefined) {
-				setRightBarContent(lastContent);
-			}
-			return newHistory;
-		});
+		console.log('Log clicked:', log);
 	};
 
 	const handleRightBarToggle = (open: boolean) => {
 		setRightBarOpen(open);
+	};
+
+	const handleGoBack = () => {
+		console.log('Go back clicked');
+		setRightBarContent(
+			<LogSummaryList
+				handleLogClick={handleLogClick}
+				selectedDate={selectedDate}
+				value={value}
+				setValue={setValue}
+				handleDateChange={handleDateChange}
+			/>
+		);
 	};
 
 	const handlePopupToggle = useCallback(() => {
@@ -66,8 +79,8 @@ export default function MainComponent({
 	}, [isPopupOpen]);
 
 	const handleAddLogClick = useCallback(() => {
-		setValue(selectedDate); // Use the selected date here
-		setPopupOpen(true); // Directly set the popup to open
+		setValue(selectedDate);
+		setPopupOpen(true);
 	}, [selectedDate]);
 
 	const handleDateChange = (newValue: Value) => {
@@ -115,7 +128,7 @@ export default function MainComponent({
 					value={value}
 					setValue={setValue}
 					isPopupOpen={isPopupOpen}
-				setPopupOpen={setPopupOpen}
+					setPopupOpen={setPopupOpen}
 					handleDateChange={handleDateChange}
 					handleLogClick={handleLogClick}
 				/>
@@ -160,6 +173,11 @@ export default function MainComponent({
 					<Rightbar
 						isRightBarOpen={isRightBarOpen}
 						onToggle={handleRightBarToggle}
+						handleLogClick={handleLogClick}
+						selectedDate={selectedDate}
+						value={value}
+						setValue={setValue}
+						handleDateChange={handleDateChange}
 					>
 						{rightBarContent}
 					</Rightbar>
