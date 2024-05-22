@@ -195,9 +195,6 @@ const CalendarView = ({
 			<div className='flex max-h-24 flex-col gap-5'>
 				<div className='flex min-h-12 w-full flex-row items-center justify-between font-semibold'>
 					<div className='calendar-nav flex flex-row gap-2'>
-						<button onClick={() => changeMonth(-1)}>
-							<CaretLeft weight='bold' className='text-primary' />
-						</button>
 						<span
 							className={`calendar-heading align-center flex cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-2xl ${isYearDropdownOpen ? 'bg-[#dee9f5]' : ''}`}
 							onClick={changeYear}
@@ -241,6 +238,9 @@ const CalendarView = ({
 								</div>
 							) : null}
 						</span>
+						<button onClick={() => changeMonth(-1)}>
+							<CaretLeft weight='bold' className='text-primary' />
+						</button>
 						<button onClick={() => changeMonth(1)}>
 							<CaretRight weight='bold' className='text-primary' />
 						</button>
