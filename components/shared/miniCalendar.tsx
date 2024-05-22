@@ -161,10 +161,10 @@ const MiniCalendarView = ({
 	};
 
 	return (
-		<div className='mini-calendar flex w-full flex-col gap-4 rounded-xl border-[1px] border-[#DEE9F5] bg-white p-3'>
-			<div className='calendar-nav flex flex-row justify-between gap-2 pr-2'>
+		<div className='mini-calendar flex w-64 flex-col gap-4 rounded-xl border-[1px] border-[#DEE9F5] bg-white p-3'>
+			<div className='calendar-nav flex w-full flex-row justify-between gap-2 pr-2'>
 				<span
-					className={`calendar-heading align-center flex cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-base font-semibold ${isYearDropdownOpen ? 'bg-[#dee9f5]' : ''}`}
+					className={`calendar-heading align-center flex w-fit cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-base font-semibold ${isYearDropdownOpen ? 'bg-[#dee9f5]' : ''}`}
 					onClick={changeYear}
 				>
 					{formatDateToMonth(selectedDate as Date)}{' '}
