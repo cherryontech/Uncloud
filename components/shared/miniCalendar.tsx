@@ -225,6 +225,9 @@ const MiniCalendarView = ({
 				showNeighboringMonth={true}
 				showNavigation={false}
 				value={selectedDate}
+				tileClassName={({ date, view }) =>
+					isToday(date) ? 'react-calendar__tile--today' : ''
+				}
 				onClickDay={(value: Date) => {
 					const dateKey = formatValueTypeToYYYYMMDD(value);
 					const mood = moods[dateKey];

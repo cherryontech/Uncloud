@@ -96,6 +96,11 @@
 	/* bottom: 1rem; */
 }
 .mini-calendar .react-calendar__tile--active abbr {
+	background: #dee9f5;
+	color: #2d81e0;
+}
+
+.mini-calendar .react-calendar__tile--today abbr {
 	background: #2d81e0;
 	color: white;
 }
@@ -157,6 +162,7 @@
 	font-weight: 400;
 	overflow: visible !important;
 	padding: 0.1rem;
+	gap: 0.3rem;
 }
 
 .mini-calendar .react-calendar__tile {
@@ -286,4 +292,8 @@
 	height: 0.5rem;
 	border-radius: 50%;
 	background-color: #2d81e0;
+}
+
+.today {
+	background-color: blue !important;
 }
