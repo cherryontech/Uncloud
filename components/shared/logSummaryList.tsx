@@ -1,32 +1,124 @@
-import React from 'react';
+import { useAuth } from '@/app/context/UserProvider';
+import { getUser } from '../utils/serverFunctions';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { CaretRight } from '@phosphor-icons/react';
 import FilterDropdown from './filterDropdown';
 import CustomPagination from './customPagination';
+import { MoodEntry, Value } from '../home/calendar';
+import { formatValueTypeToYYYYMMDD } from '../utils/reusableFunctions';
+import { ReflectionsType } from '../home/newLogPopup';
 
-interface LogSummaryListProps {
-	currentMoods: any[];
-	handleCheckboxChange: (filter: string) => void;
-	selectedFilters: any;
-	moodNames: any;
-	handlePagination: any;
-	filteredMoods: any;
-	pageSize: number;
-	onToggle: any;
-	isRightBarOpen: boolean;
-}
+export type MoodNames = {
+	[key: string]: string;
+};
+
+type LogSummaryListProps = {
+	handleLogClick: (log: {
+		date: Date;
+		mood: string;
+		icon: string;
+		reflections?: ReflectionsType[];
+	}) => void;
+	selectedDate: Value;
+	value: Value | null;
+	setValue: React.Dispatch<React.SetStateAction<Value | null>>;
+	handleDateChange: (newValue: Value) => void;
+};
 
 const LogSummaryList: React.FC<LogSummaryListProps> = ({
-	currentMoods,
-	handleCheckboxChange,
-	selectedFilters,
-	moodNames,
-	handlePagination,
-	filteredMoods,
-	pageSize,
-	onToggle,
-	isRightBarOpen,
+	handleLogClick,
+	handleDateChange,
 }) => {
+	const { user, isUpdated } = useAuth();
+	const [moods, setMoods] = useState<{
+		[key: string]: { mood: string; reflections: ReflectionsType[] };
+	}>({});
+	const [selectedFilters, setSelectedFilters] = useState({
+		Rainbow: false,
+		Sunny: false,
+		Cloudy: false,
+		Rainy: false,
+		Stormy: false,
+	});
+	const [currentPage, setCurrentPage] = useState(1);
+	const handleCheckboxChange = (filter: string) => {
+		setSelectedFilters((prevState) => ({
+			...prevState,
+			[filter]: !prevState[filter as keyof typeof selectedFilters],
+		}));
+	};
+
+	const handlePagination = (value: { selected: number }) => {
+		setCurrentPage(value.selected + 1);
+	};
+
+	useEffect(() => {
+		if (user) {
+			getUser(user.uid).then((userData) => {
+				if (userData && userData.moods) {
+					let moodMap: {
+						[key: string]: { mood: string; reflections: ReflectionsType[] };
+					} = {};
+
+					userData.moods.forEach((moodEntry: MoodEntry) => {
+						const dateParts = moodEntry.date
+							.split('-')
+							.map((part) => parseInt(part, 10));
+						const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+						moodMap[formatValueTypeToYYYYMMDD(date)] = {
+							mood: moodEntry.mood,
+							reflections: moodEntry.reflections,
+						}; // Update this line
+					});
+					setMoods(moodMap);
+				}
+			});
+		}
+	}, [user, isUpdated]);
+
+	const moodNames: MoodNames = {
+		Rainbow: 'Proud',
+		Sunny: 'Confident',
+		Cloudy: 'Uncertain',
+		Rainy: 'Disappointed',
+		Stormy: 'Stressed',
+	};
+
+	const currentDate = new Date();
+	const currentMonth = currentDate.getUTCMonth();
+	const currentYear = currentDate.getUTCFullYear();
+
+	const currentMonthMoods = Object.entries(moods).filter(([date, mood]) => {
+		const dateObj = new Date(`${date}T00:00:00Z`);
+		return (
+			dateObj.getUTCMonth() === currentMonth &&
+			dateObj.getUTCFullYear() === currentYear
+		);
+	});
+
+	const filteredMoods = currentMonthMoods
+		.filter(([date, { mood: moodValue, reflections }]) => {
+			if (Object.values(selectedFilters).some((filter) => filter)) {
+				return Object.keys(selectedFilters).some(
+					(filter) =>
+						selectedFilters[filter as keyof typeof selectedFilters] &&
+						filter === moodValue
+				);
+			}
+			return true;
+		})
+		.sort(([date1], [date2]) => {
+			return (
+				new Date(`${date2}T00:00:00Z`).getTime() -
+				new Date(`${date1}T00:00:00Z`).getTime()
+			);
+		});
+	const pageSize = 7;
+	const indexOfLastMood = currentPage * pageSize;
+	const indexOfFirstMood = indexOfLastMood - pageSize;
+	const currentMoods = filteredMoods.slice(indexOfFirstMood, indexOfLastMood);
+
 	return (
 		<>
 			<div className='flex max-h-24 flex-col gap-5 pb-4'>
@@ -45,7 +137,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 			<div className='flex h-full flex-col gap-3 overflow-scroll'>
 				{currentMoods.length > 0 ? (
 					currentMoods.map(([date, mood], index) => {
-						const dateObj = new Date(`${date}T00:00:00Z`);
+						const dateObj = new Date(`${date}T00:00:00`);
 						const day = dateObj.getUTCDate();
 						const month = dateObj.toLocaleString('default', {
 							month: 'short',
@@ -55,6 +147,15 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 							<div
 								key={date}
 								className='flex h-20 w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-blue-100 bg-boxBackground px-4  text-textPrimary hover:bg-hoverColor'
+								onClick={() => {
+									handleLogClick({
+										date: dateObj,
+										mood: mood.mood,
+										icon: `/moods/${mood.mood.toLowerCase()}.svg`,
+										reflections: mood.reflections,
+									});
+									handleDateChange(dateObj);
+								}}
 							>
 								<div className='justify-content flex flex-col items-center'>
 									<p className='text-base font-medium text-gray-600'>{day}</p>
@@ -64,7 +165,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 								<div className='h-10 border border-r border-blue-100 group-hover:border-white'></div>
 								<div className='w-20'>
 									<Image
-										src={`/moods/${mood.toLowerCase()}.svg`}
+										src={`/moods/${mood.mood.toLowerCase()}.svg`}
 										alt='Mood'
 										width={200}
 										height={200}
@@ -73,9 +174,11 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 								</div>
 								<div className='w-20'>
 									<p className='text-sm font-medium text-black'>
-										{mood.charAt(0).toUpperCase() + mood.slice(1)}
+										{mood.mood.charAt(0).toUpperCase() + mood.mood.slice(1)}
 									</p>
-									<p className='text-xs text-gray-500'>{moodNames[mood]}</p>
+									<p className='text-xs text-gray-500'>
+										{moodNames[mood.mood]}
+									</p>
 								</div>
 								<CaretRight
 									className='text-black group-hover:text-blue-500'

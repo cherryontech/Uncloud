@@ -56,20 +56,21 @@ export default function MainComponent({
 		console.log('Log clicked:', log);
 	};
 
-	const handleGoBack = () => {
-		console.log('Go back clicked');
-		setRightBarHistory((prevHistory) => {
-			const newHistory = prevHistory.filter((item) => item !== null);
-			const lastContent = newHistory.pop();
-			if (lastContent !== undefined) {
-				setRightBarContent(lastContent);
-			}
-			return newHistory;
-		});
-	};
-
 	const handleRightBarToggle = (open: boolean) => {
 		setRightBarOpen(open);
+	};
+
+	const handleGoBack = () => {
+		console.log('Go back clicked');
+		setRightBarContent(
+			<LogSummaryList
+				handleLogClick={handleLogClick}
+				selectedDate={selectedDate}
+				value={value}
+				setValue={setValue}
+				handleDateChange={handleDateChange}
+			/>
+		);
 	};
 
 	const handlePopupToggle = useCallback(() => {
@@ -172,6 +173,11 @@ export default function MainComponent({
 					<Rightbar
 						isRightBarOpen={isRightBarOpen}
 						onToggle={handleRightBarToggle}
+						handleLogClick={handleLogClick}
+						selectedDate={selectedDate}
+						value={value}
+						setValue={setValue}
+						handleDateChange={handleDateChange}
 					>
 						{rightBarContent}
 					</Rightbar>

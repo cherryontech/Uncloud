@@ -78,7 +78,7 @@ const CalendarView = ({
 				if (userData && userData.moods) {
 					let moodMap: {
 						[key: string]: { mood: string; reflections: ReflectionsType[] };
-					} = {}; // Update this line
+					} = {};
 
 					userData.moods.forEach((moodEntry: MoodEntry) => {
 						const dateParts = moodEntry.date
