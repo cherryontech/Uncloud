@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
-
+import { ReflectionsType } from '@/components/home/newLogPopup';
 import { useAuth } from '@/app/context/UserProvider';
 import { getUser, addUserMood } from '../utils/serverFunctions';
 import '/app/styles/miniCalendar.css';
@@ -27,7 +27,12 @@ type Props = {
 	value: Value | null;
 	setValue: React.Dispatch<React.SetStateAction<Value | null>>;
 	handleDateChange: (newValue: Value) => void;
-	handleLogClick: (log: { date: Date; mood: string; icon: string }) => void;
+	handleLogClick: (log: {
+		date: Date;
+		mood: string;
+		icon: string;
+		reflections?: ReflectionsType[];
+	}) => void;
 };
 
 type ValuePiece = Date | null;

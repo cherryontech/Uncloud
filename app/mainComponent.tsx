@@ -14,6 +14,7 @@ import Rightbar from '@/components/shared/rightbar';
 import LogSummary from '@/components/shared/logSummary';
 import MiniCalendarView from '@/components/shared/miniCalendar';
 import LogSummaryList from '@/components/shared/logSummaryList';
+import { ReflectionsType } from '@/components/home/newLogPopup';
 
 export default function MainComponent({
 	children,
@@ -36,12 +37,23 @@ export default function MainComponent({
 		null
 	);
 	const [rightBarHistory, setRightBarHistory] = useState<JSX.Element[]>([]);
-	const handleLogClick = (log: { date: Date; mood: string; icon: string }) => {
+	const handleLogClick = (log: {
+		date: Date;
+		mood: string;
+		icon: string;
+		reflections?: ReflectionsType[];
+	}) => {
 		setRightBarHistory((prevHistory) =>
 			rightBarContent ? [...prevHistory, rightBarContent] : prevHistory
 		);
-		setRightBarContent(<LogSummary log={log} handleGoBack={handleGoBack} />);
+		setRightBarContent(
+			<LogSummary
+				log={{ ...log, reflections: log.reflections || [] }}
+				handleGoBack={handleGoBack}
+			/>
+		);
 		setRightBarOpen(true);
+		console.log('Log clicked:', log);
 	};
 
 	const handleGoBack = () => {
@@ -66,8 +78,8 @@ export default function MainComponent({
 	}, [isPopupOpen]);
 
 	const handleAddLogClick = useCallback(() => {
-		setValue(selectedDate); // Use the selected date here
-		setPopupOpen(true); // Directly set the popup to open
+		setValue(selectedDate);
+		setPopupOpen(true);
 	}, [selectedDate]);
 
 	const handleDateChange = (newValue: Value) => {
@@ -115,7 +127,7 @@ export default function MainComponent({
 					value={value}
 					setValue={setValue}
 					isPopupOpen={isPopupOpen}
-				setPopupOpen={setPopupOpen}
+					setPopupOpen={setPopupOpen}
 					handleDateChange={handleDateChange}
 					handleLogClick={handleLogClick}
 				/>

@@ -23,6 +23,12 @@ type Props = {
 		reflections: ReflectionsType[]
 	) => Promise<void>;
 	setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	handleLogClick: (log: {
+		date: Date;
+		mood: string;
+		icon: string;
+		reflections?: ReflectionsType[];
+	}) => void;
 };
 
 type Mood = {
@@ -36,6 +42,7 @@ const NewLogPopup = ({
 	displayDate,
 	saveMood,
 	setPopupOpen,
+	handleLogClick,
 }: Props) => {
 	const [selectedMood, setSelectedMood] = useState<string>(''); // State to hold the selected mood
 	const [currentStep, setCurrentStep] = useState<number>(1); // State to hold the selected mood
@@ -100,6 +107,7 @@ const NewLogPopup = ({
 	const handleSaveMood = async (reflections: ReflectionsType[]) => {
 		if (!user) return;
 		await saveMood(selectedDate, selectedMood, reflections);
+		console.log('Saved reflections:', reflections);
 		setPopupOpen(false);
 		setCurrentStep(1);
 		console.log('handleSaveMood: Closing popup');
