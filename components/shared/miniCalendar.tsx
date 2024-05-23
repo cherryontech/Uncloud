@@ -52,6 +52,8 @@ const MiniCalendarView = ({
 	const [moods, setMoods] = useState<{ [key: string]: string }>({});
 	const [isYearDropdownOpen, setYearDropdownOpen] = useState(false);
 	const [displayedYear, setDisplayedYear] = useState(new Date().getFullYear());
+	const [tempSelectedDate, setTempSelectedDate] = useState<Value>(selectedDate);
+
 	const today = new Date();
 	const todayYear = today.getFullYear();
 	const todayMonth = today.getMonth();
@@ -125,9 +127,9 @@ const MiniCalendarView = ({
 	}, [selectedDate]);
 
 	const changeMonth = (offset: number) => {
-		const newDate = new Date(selectedDate as Date);
+		const newDate = new Date(tempSelectedDate as Date);
 		newDate.setMonth(newDate.getMonth() + offset);
-		handleDateChange(newDate);
+		setTempSelectedDate(newDate);
 	};
 
 	const changeYear = () => {
@@ -152,114 +154,123 @@ const MiniCalendarView = ({
 
 	const handleMonthSelect = (month: number, event: React.MouseEvent) => {
 		event.stopPropagation();
-		const newDate = new Date(selectedDate as Date);
+		const newDate = new Date(tempSelectedDate as Date);
 		newDate.setMonth(month);
 		newDate.setFullYear(displayedYear);
-		handleDateChange(newDate);
+		setTempSelectedDate(newDate);
 		setYearDropdownOpen(false);
 		setMonth(month);
 	};
 
 	return (
-		<div className='mini-calendar flex w-full flex-col gap-4 rounded-xl border-[1px] border-[#DEE9F5] bg-white p-3'>
-			<div className='calendar-nav flex flex-row justify-between gap-2 pr-2'>
-				<span
-					className={`calendar-heading align-center flex cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-base font-semibold ${isYearDropdownOpen ? 'bg-[#dee9f5]' : ''}`}
-					onClick={changeYear}
-				>
-					{formatDateToMonth(selectedDate as Date)}{' '}
-					{formatDateToYear(selectedDate as Date)}
-					{isYearDropdownOpen ? (
-						<div className='calendar-dropdown'>
-							<div className='calendar-dropdown-year'>
-								<span className='text-sm font-semibold text-black'>
-									{displayedYear}
-								</span>
-								<div className='flex items-center justify-center gap-3 text-[#706F6F]'>
-									<button
-										className='hover:text-primary'
-										onClick={(event) => incrementYear(event)}
-									>
-										<CaretUp size={16} />
-									</button>
-									<button
-										className='hover:text-primary'
-										onClick={(event) => decrementYear(event)}
-									>
-										<CaretDown size={16} />
-									</button>
-								</div>
-							</div>
-							<div className='calendar-dropdown-months'>
-								{Array.from({ length: 12 }, (_, i) => i).map((month) => (
-									<button
-										key={month}
-										className={`calendar-dropdown-item ${new Date(selectedDate as Date).getMonth() === month ? 'selected-month' : ''}`}
-										onClick={(event) => handleMonthSelect(month, event)}
-									>
-										{new Date(0, month).toLocaleString('default', {
-											month: 'short',
-										})}
-									</button>
-								))}
-							</div>
-						</div>
-					) : null}
-				</span>
-				<div className='flex items-center justify-center gap-6'>
-					<button onClick={() => changeMonth(-1)}>
-						<CaretLeft weight='bold' className='text-primary' />
-					</button>
-					<button onClick={() => changeMonth(1)}>
-						<CaretRight weight='bold' className='text-primary' />
-					</button>
-				</div>
-			</div>
-			<Calendar
-				formatShortWeekday={(locale, date) =>
-					date.toLocaleString(locale, { weekday: 'narrow' })
-				}
-				key={`${(selectedDate instanceof Date ? selectedDate : new Date()).getMonth()}-${(selectedDate instanceof Date ? selectedDate : new Date()).getFullYear()}`}
-				calendarType='gregory'
-				onChange={handleDateChange}
-				showNeighboringMonth={true}
-				showNavigation={false}
-				value={selectedDate}
-				onClickDay={(value: Date) => {
-					const dateKey = formatValueTypeToYYYYMMDD(value);
-					const mood = moods[dateKey];
-					const icon = mood
-						? `/moods/${mood.toLowerCase()}.svg`
-						: '/moods/greyWithFace.svg';
-					if (mood) {
-						handleLogClick({ date: value, mood, icon });
-					}
-				}}
-				tileContent={({ date, view }) => {
-					const dateKey = formatValueTypeToYYYYMMDD(date);
-					const mood = moods[dateKey]; // Check if a mood is logged for this date
-					const backgroundColor =
-						mood && colors.hasOwnProperty(mood)
-							? colors[mood as Mood]
-							: 'transparent';
-					const icon = mood
-						? `/moods/${mood.toLowerCase()}.svg`
-						: '/moods/greyWithFace.svg';
-					return (
+		<div className='mini-calendar flex w-64 flex-col gap-4 rounded-xl border-[1px] border-[#DEE9F5] bg-white p-3'>
+			{!isYearDropdownOpen ? (
+				<>
+					<div className='calendar-nav flex w-full flex-row justify-between gap-2 pr-2'>
 						<span
-							className='mb-1 flex h-[0.25rem] w-[0.25rem] rounded-full'
-							style={{ backgroundColor }}
-						></span>
-					);
-				}}
-				tileDisabled={({ date, view }) =>
-					date.getFullYear() > todayYear ||
-					(date.getFullYear() === todayYear && date.getMonth() > todayMonth) ||
-					(date.getFullYear() === todayYear &&
-						date.getMonth() === todayMonth &&
-						date.getDate() > todayDate)
-				}
-			/>
+							className={`calendar-heading align-center flex w-fit cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-base font-semibold ${isYearDropdownOpen ? 'bg-[#dee9f5]' : ''}`}
+							onClick={changeYear}
+						>
+							{formatDateToMonth(tempSelectedDate as Date)}{' '}
+							{formatDateToYear(tempSelectedDate as Date)}
+						</span>
+						<div className='flex items-center justify-center gap-6'>
+							<button onClick={() => changeMonth(-1)}>
+								<CaretLeft weight='bold' className='text-primary' />
+							</button>
+							<button onClick={() => changeMonth(1)}>
+								<CaretRight weight='bold' className='text-primary' />
+							</button>
+						</div>
+					</div>
+					<Calendar
+						formatShortWeekday={(locale, date) =>
+							date.toLocaleString(locale, { weekday: 'narrow' })
+						}
+						key={`${(tempSelectedDate instanceof Date ? tempSelectedDate : new Date()).getMonth()}-${(tempSelectedDate instanceof Date ? tempSelectedDate : new Date()).getFullYear()}`}
+						calendarType='gregory'
+						onChange={handleDateChange}
+						showNeighboringMonth={true}
+						showNavigation={false}
+						value={tempSelectedDate}
+						tileClassName={({ date, view }) =>
+							isToday(date) ? 'react-calendar__tile--today' : ''
+						}
+						onClickDay={(value: Date) => {
+							const dateKey = formatValueTypeToYYYYMMDD(value);
+							const mood = moods[dateKey];
+							const icon = mood
+								? `/moods/${mood.toLowerCase()}.svg`
+								: '/moods/greyWithFace.svg';
+							if (mood) {
+								handleLogClick({ date: value, mood, icon });
+							}
+							setTempSelectedDate(value);
+							handleDateChange(value);
+						}}
+						tileContent={({ date, view }) => {
+							const dateKey = formatValueTypeToYYYYMMDD(date);
+							const mood = moods[dateKey]; // Check if a mood is logged for this date
+							const backgroundColor =
+								mood && colors.hasOwnProperty(mood)
+									? colors[mood as Mood]
+									: 'transparent';
+							const icon = mood
+								? `/moods/${mood.toLowerCase()}.svg`
+								: '/moods/greyWithFace.svg';
+							return (
+								<span
+									className='mb-1 flex h-[0.25rem] w-[0.25rem] rounded-full'
+									style={{ backgroundColor }}
+								></span>
+							);
+						}}
+						tileDisabled={({ date, view }) =>
+							date.getFullYear() > todayYear ||
+							(date.getFullYear() === todayYear &&
+								date.getMonth() > todayMonth) ||
+							(date.getFullYear() === todayYear &&
+								date.getMonth() === todayMonth &&
+								date.getDate() > todayDate)
+						}
+					/>
+				</>
+			) : (
+				<div className='mini-calendar mini-calendar-dropdown'>
+					<div className='mini-calendar-dropdown-year'>
+						<span className='text-sm font-semibold text-black'>
+							{displayedYear}
+						</span>
+						<div className='flex items-center justify-center gap-3 text-[#706F6F]'>
+							<button
+								className='hover:text-primary'
+								onClick={(event) => incrementYear(event)}
+							>
+								<CaretUp size={16} weight='bold' className='text-primary' />
+							</button>
+							<button
+								className='hover:text-primary'
+								onClick={(event) => decrementYear(event)}
+							>
+								<CaretDown size={16} weight='bold' className='text-primary' />
+							</button>
+						</div>
+					</div>
+					<div className='mini-calendar-dropdown-months'>
+						{Array.from({ length: 12 }, (_, i) => i).map((month) => (
+							<button
+								key={month}
+								className={`calendar-dropdown-item ${new Date(tempSelectedDate as Date).getMonth() === month ? 'selected-month' : ''}`}
+								onClick={(event) => handleMonthSelect(month, event)}
+							>
+								{new Date(0, month).toLocaleString('default', {
+									month: 'short',
+								})}
+							</button>
+						))}
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };
