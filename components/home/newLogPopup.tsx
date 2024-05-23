@@ -7,6 +7,7 @@ import { Check, CalendarBlank } from '@phosphor-icons/react';
 import { Button } from '@/stories/Button';
 import ProgressBar from '@/stories/progressBar';
 import MoodPrompts from './moodPrompts';
+
 export type ReflectionsType = {
 	question: string;
 	answer: string;
@@ -20,7 +21,8 @@ type Props = {
 	saveMood: (
 		date: string,
 		mood: string,
-		reflections: ReflectionsType[]
+		reflections: ReflectionsType[],
+		favorite: boolean
 	) => Promise<void>;
 	setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	handleLogClick: (log: {
@@ -28,6 +30,7 @@ type Props = {
 		mood: string;
 		icon: string;
 		reflections?: ReflectionsType[];
+		favorite: boolean;
 	}) => void;
 };
 
@@ -106,8 +109,9 @@ const NewLogPopup = ({
 	};
 	const handleSaveMood = async (reflections: ReflectionsType[]) => {
 		if (!user) return;
-		await saveMood(selectedDate, selectedMood, reflections);
+		await saveMood(selectedDate, selectedMood, reflections, false);
 		console.log('Saved reflections:', reflections);
+		console.log('Favorite:', false);
 		setPopupOpen(false);
 		setCurrentStep(1);
 		console.log('handleSaveMood: Closing popup');

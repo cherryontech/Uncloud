@@ -32,6 +32,7 @@ type Props = {
 		mood: string;
 		icon: string;
 		reflections?: ReflectionsType[];
+		favorite: boolean;
 	}) => void;
 };
 
@@ -203,7 +204,7 @@ const MiniCalendarView = ({
 								? `/moods/${mood.toLowerCase()}.svg`
 								: '/moods/greyWithFace.svg';
 							if (mood) {
-								handleLogClick({ date: value, mood, icon });
+								handleLogClick({ date: value, mood, icon, favorite: false });
 							}
 							setTempSelectedDate(value);
 							handleDateChange(value);

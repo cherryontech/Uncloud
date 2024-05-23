@@ -5,6 +5,39 @@ import { db } from '@/app/firebase';
 import { formatDateToYYYYMMDD } from './reusableFunctions';
 import { ReflectionsType } from '../home/newLogPopup';
 
+export async function updateFavorite(
+	uid: string,
+	date: string,
+	favorite: boolean
+) {
+	const userDocRef = doc(db, 'authUsers', uid);
+	const userDocSnap = await getDoc(userDocRef);
+
+	if (userDocSnap.exists()) {
+		const userData = userDocSnap.data();
+		if (userData) {
+			// Initialize 'moods' array if it doesn't exist initially
+			const moodsArray = userData.moods || [];
+
+			const existingMoodIndex = moodsArray.findIndex(
+				(moodEntry: any) => moodEntry.date === date
+			);
+
+			if (existingMoodIndex !== -1) {
+				// If mood entry for selectedDate exists, update it
+				console.log('Existing mood entry found for today. Updating mood...');
+				console.log('Existing mood entry:', moodsArray[existingMoodIndex]);
+				moodsArray[existingMoodIndex].favorite = favorite;
+			}
+
+			console.log('Updated moods array:', moodsArray);
+
+			// Update the document with the modified moods array
+			await updateDoc(userDocRef, { moods: moodsArray });
+		}
+	}
+}
+
 export async function updateUser(uid: string) {
 	const userDocRef = doc(db, 'authUsers', uid);
 	updateDoc(userDocRef, {
@@ -15,7 +48,8 @@ export async function addUserMood(
 	uid: string,
 	mood: string,
 	selectedDate: string,
-	reflections:ReflectionsType[]
+	reflections: ReflectionsType[],
+	favorite: boolean
 ) {
 	const userDocRef = doc(db, 'authUsers', uid);
 	const userDocSnap = await getDoc(userDocRef);
@@ -36,9 +70,15 @@ export async function addUserMood(
 				console.log('Existing mood entry:', moodsArray[existingMoodIndex]);
 				moodsArray[existingMoodIndex].mood = mood;
 				moodsArray[existingMoodIndex].reflections = reflections;
+				moodsArray[existingMoodIndex].favorite = favorite;
 			} else {
 				// If mood entry for today doesn't exist, append a new entry
-				moodsArray.push({ date: selectedDate, mood: mood ,reflections:reflections});
+				moodsArray.push({
+					date: selectedDate,
+					mood: mood,
+					reflections: reflections,
+					favorite: favorite,
+				});
 			}
 
 			console.log('Updated moods array:', moodsArray);

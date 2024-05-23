@@ -43,6 +43,7 @@ export default function MainComponent({
 		mood: string;
 		icon: string;
 		reflections?: ReflectionsType[];
+		favorite: boolean;
 	}) => {
 		setIsSummaryList(false);
 		setRightBarHistory((prevHistory) =>
@@ -52,6 +53,8 @@ export default function MainComponent({
 			<LogSummary
 				log={{ ...log, reflections: log.reflections || [] }}
 				handleGoBack={handleGoBack}
+				onFavoriteToggle={onFavoriteToggle}
+				favoriteLogs={favoriteLogs}
 			/>
 		);
 		setRightBarOpen(true);
@@ -88,7 +91,7 @@ export default function MainComponent({
 	}, [selectedDate]);
 
 	const handleDateChange = (newValue: Value) => {
-		setSelectedDate(newValue); // Ensure selectedDate is updated
+		setSelectedDate(newValue);
 		setValue(newValue);
 	};
 
@@ -144,6 +147,16 @@ export default function MainComponent({
 
 	const handlePagination = (value: { selected: number }) => {
 		setCurrentPage(value.selected + 1);
+	};
+
+	const [favoriteLogs, setFavoriteLogs] = useState<{ [date: string]: boolean }>(
+		{}
+	);
+	const onFavoriteToggle = (logDate: string) => {
+		setFavoriteLogs((prevFavoriteLogs) => ({
+			...prevFavoriteLogs,
+			[logDate]: !prevFavoriteLogs[logDate],
+		}));
 	};
 
 	return (

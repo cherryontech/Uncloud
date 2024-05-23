@@ -40,6 +40,7 @@ type Props = {
 		mood: string;
 		icon: string;
 		reflections?: ReflectionsType[];
+		favorite: boolean;
 	}) => void;
 };
 type ValuePiece = Date | null;
@@ -50,6 +51,7 @@ export type MoodEntry = {
 	date: string;
 	mood: string;
 	reflections: ReflectionsType[];
+	favorite: boolean;
 };
 
 const CalendarView = ({
@@ -67,7 +69,11 @@ const CalendarView = ({
 }: Props) => {
 	const { user, updateData, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{
-		[key: string]: { mood: string; reflections: ReflectionsType[] };
+		[key: string]: {
+			mood: string;
+			reflections: ReflectionsType[];
+			favorite: boolean;
+		};
 	}>({});
 	const [isYearDropdownOpen, setYearDropdownOpen] = useState(false);
 	const [displayedYear, setDisplayedYear] = useState(new Date().getFullYear());
@@ -77,7 +83,11 @@ const CalendarView = ({
 			getUser(user.uid).then((userData) => {
 				if (userData && userData.moods) {
 					let moodMap: {
-						[key: string]: { mood: string; reflections: ReflectionsType[] };
+						[key: string]: {
+							mood: string;
+							reflections: ReflectionsType[];
+							favorite: boolean;
+						};
 					} = {};
 
 					userData.moods.forEach((moodEntry: MoodEntry) => {
@@ -88,6 +98,7 @@ const CalendarView = ({
 						moodMap[formatValueTypeToYYYYMMDD(date)] = {
 							mood: moodEntry.mood,
 							reflections: moodEntry.reflections,
+							favorite: moodEntry.favorite,
 						}; // Update this line
 					});
 					setMoods(moodMap);
@@ -125,18 +136,20 @@ const CalendarView = ({
 	const saveMood = async (
 		date: string,
 		mood: string,
-		reflections: ReflectionsType[]
+		reflections: ReflectionsType[],
+		favorite: boolean
 	) => {
 		if (user) {
-			await addUserMood(user.uid, mood, date, reflections);
+			await addUserMood(user.uid, mood, date, reflections, favorite);
 			updateData();
 			// Call handleLogClick after the new log is saved
-			console.log('Log saved:', date, mood, reflections);
+			console.log('Log saved:', date, mood, reflections, favorite);
 			handleLogClick({
 				date: new Date(date),
 				mood: mood,
 				icon: `/moods/${mood.toLowerCase()}.svg`,
 				reflections: reflections,
+				favorite: favorite,
 			});
 		}
 	};
@@ -261,6 +274,7 @@ const CalendarView = ({
 										? `/moods/${moods[todayKey].mood.toLowerCase()}.svg`
 										: '/moods/greyWithFace.svg',
 									reflections: moods[todayKey].reflections,
+									favorite: moods[todayKey].favorite,
 								});
 							}}
 						>
@@ -300,6 +314,7 @@ const CalendarView = ({
 										mood: moods[dateKey].mood,
 										icon: '/moods/greyNoFace.svg',
 										reflections: moods[dateKey].reflections,
+										favorite: moods[dateKey].favorite,
 									})
 								}
 							/>
@@ -317,6 +332,7 @@ const CalendarView = ({
 									mood: moods[dateKey].mood,
 									icon: `/moods/${moods[dateKey].mood.toLowerCase()}.svg`,
 									reflections: moods[dateKey].reflections,
+									favorite: moods[dateKey].favorite,
 								})
 							}
 						/>
@@ -332,6 +348,7 @@ const CalendarView = ({
 									mood: 'No Log Yet',
 									icon: '/moods/greyWithFace.svg',
 									reflections: [],
+									favorite: false,
 								})
 							}
 						/>
