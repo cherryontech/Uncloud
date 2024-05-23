@@ -3,7 +3,7 @@ import { useAuth } from '@/app/context/UserProvider';
 import { auth } from '@/app/firebase';
 import { signOut } from 'firebase/auth';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'; // Import useRouter
+import { useRouter } from 'next/navigation'; 
 import React from 'react';
 import { CloudSun } from '@phosphor-icons/react';
 import { Heading } from '@/stories/Heading';
@@ -13,13 +13,13 @@ import Avatar from './avatar';
 type Props = {};
 
 const Userbar = (props: Props) => {
-	const router = useRouter(); // Use the useRouter hook
+	const router = useRouter(); 
 
 	const handleLogOut = () => {
 		signOut(auth)
 			.then(() => {
 				console.log('logged out');
-				router.push('/auth/confirmLogout'); // Redirect to confirmLogout page
+				router.push('/auth/confirmLogout'); 
 			})
 			.catch((error) => {
 				console.log(error);
