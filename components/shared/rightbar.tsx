@@ -21,6 +21,11 @@ interface RightbarProps {
 	value: Value | null;
 	setValue: React.Dispatch<React.SetStateAction<Value | null>>;
 	handleDateChange: (newValue: Value) => void;
+	currentPage: number;
+	handlePagination: (value: { selected: number }) => void;
+	month?: number;
+	isSummaryList: boolean;
+
 	children?: React.ReactNode;
 }
 
@@ -32,11 +37,16 @@ const Rightbar: React.FC<RightbarProps> = ({
 	value,
 	setValue,
 	handleDateChange,
+	currentPage,
+	handlePagination,
+	month,
+	isSummaryList,
 	children,
 }) => {
 	const { user, isUpdated } = useAuth();
-	const [moods, setMoods] = useState<{ [key: string]: string }>({});
-
+	const [moods, setMoods] = useState<{
+		[key: string]: { mood: string; reflections: ReflectionsType[] };
+	}>({});
 	useEffect(() => {
 		if (user) {
 			getUser(user.uid);
@@ -51,7 +61,7 @@ const Rightbar: React.FC<RightbarProps> = ({
 		Stormy: false,
 	});
 	const currentDate = new Date();
-	const currentMonth = currentDate.getUTCMonth();
+	const currentMonth = month;
 	const currentYear = currentDate.getUTCFullYear();
 
 	const currentMonthMoods = Object.entries(moods).filter(([date, mood]) => {
@@ -63,12 +73,12 @@ const Rightbar: React.FC<RightbarProps> = ({
 	});
 
 	const filteredMoods = currentMonthMoods
-		.filter(([date, mood]) => {
+		.filter(([date, { mood: moodValue, reflections }]) => {
 			if (Object.values(selectedFilters).some((filter) => filter)) {
 				return Object.keys(selectedFilters).some(
 					(filter) =>
 						selectedFilters[filter as keyof typeof selectedFilters] &&
-						filter === mood
+						filter === moodValue
 				);
 			}
 			return true;
@@ -81,10 +91,33 @@ const Rightbar: React.FC<RightbarProps> = ({
 		});
 
 	const pageSize = 7;
-	const [currentPage, setCurrentPage] = useState(1);
-	const handlePagination = (value: { selected: number }) => {
-		setCurrentPage(value.selected + 1);
-	};
+	const indexOfLastMood = currentPage * pageSize;
+	const indexOfFirstMood = indexOfLastMood - pageSize;
+	const currentMoods = filteredMoods.slice(indexOfFirstMood, indexOfLastMood);
+
+	useEffect(() => {
+		if (user) {
+			getUser(user.uid).then((userData) => {
+				if (userData && userData.moods) {
+					let moodMap: {
+						[key: string]: { mood: string; reflections: ReflectionsType[] };
+					} = {};
+
+					userData.moods.forEach((moodEntry: MoodEntry) => {
+						const dateParts = moodEntry.date
+							.split('-')
+							.map((part) => parseInt(part, 10));
+						const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+						moodMap[formatValueTypeToYYYYMMDD(date)] = {
+							mood: moodEntry.mood,
+							reflections: moodEntry.reflections,
+						}; // Update this line
+					});
+					setMoods(moodMap);
+				}
+			});
+		}
+	}, [user, isUpdated, month]);
 
 	return (
 		<div
@@ -102,6 +135,8 @@ const Rightbar: React.FC<RightbarProps> = ({
 							value={value}
 							setValue={setValue}
 							handleDateChange={handleDateChange}
+							currentPage={currentPage}
+							handlePagination={handlePagination}
 						/>
 					)}
 
@@ -119,7 +154,7 @@ const Rightbar: React.FC<RightbarProps> = ({
 								/>
 							</button>
 
-							{filteredMoods.length > pageSize && (
+							{isSummaryList && filteredMoods.length > pageSize && (
 								<CustomPagination
 									breakLabel='...'
 									nextLabel='Next'

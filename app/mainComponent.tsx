@@ -27,6 +27,7 @@ export default function MainComponent({
 	const [value, setValue] = useState<Value | null>(new Date());
 	const [isPopupOpen, setPopupOpen] = useState(false);
 	const [month, setMonth] = useState(new Date().getMonth());
+	const [isSummaryList, setIsSummaryList] = useState(true);
 	const [isRightBarOpen, setRightBarOpen] = useState(true);
 	const [selectedLog, setSelectedLog] = useState<{
 		date: Date;
@@ -43,6 +44,7 @@ export default function MainComponent({
 		icon: string;
 		reflections?: ReflectionsType[];
 	}) => {
+		setIsSummaryList(false);
 		setRightBarHistory((prevHistory) =>
 			rightBarContent ? [...prevHistory, rightBarContent] : prevHistory
 		);
@@ -61,7 +63,7 @@ export default function MainComponent({
 	};
 
 	const handleGoBack = () => {
-		console.log('Go back clicked');
+		setIsSummaryList(true);
 		setRightBarContent(
 			<LogSummaryList
 				handleLogClick={handleLogClick}
@@ -69,6 +71,8 @@ export default function MainComponent({
 				value={value}
 				setValue={setValue}
 				handleDateChange={handleDateChange}
+				currentPage={currentPage}
+				handlePagination={handlePagination}
 			/>
 		);
 	};
@@ -135,6 +139,13 @@ export default function MainComponent({
 			);
 	}
 	console.log('User', user);
+
+	const [currentPage, setCurrentPage] = useState(1);
+
+	const handlePagination = (value: { selected: number }) => {
+		setCurrentPage(value.selected + 1);
+	};
+
 	return (
 		<div className='grid-container'>
 			<div className='sidebar border-r-[0.0625rem] border-[#D9D9D9]'>
@@ -171,6 +182,7 @@ export default function MainComponent({
 						</div>
 					</div>
 					<Rightbar
+						month={month}
 						isRightBarOpen={isRightBarOpen}
 						onToggle={handleRightBarToggle}
 						handleLogClick={handleLogClick}
@@ -178,6 +190,9 @@ export default function MainComponent({
 						value={value}
 						setValue={setValue}
 						handleDateChange={handleDateChange}
+						currentPage={currentPage}
+						handlePagination={handlePagination}
+						isSummaryList={isSummaryList}
 					>
 						{rightBarContent}
 					</Rightbar>
