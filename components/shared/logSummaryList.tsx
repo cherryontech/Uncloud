@@ -24,11 +24,15 @@ type LogSummaryListProps = {
 	value: Value | null;
 	setValue: React.Dispatch<React.SetStateAction<Value | null>>;
 	handleDateChange: (newValue: Value) => void;
+	currentPage: number;
+	handlePagination: (value: { selected: number }) => void;
 };
 
 const LogSummaryList: React.FC<LogSummaryListProps> = ({
 	handleLogClick,
 	handleDateChange,
+	currentPage,
+	handlePagination,
 }) => {
 	const { user, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{
@@ -41,16 +45,12 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 		Rainy: false,
 		Stormy: false,
 	});
-	const [currentPage, setCurrentPage] = useState(1);
+
 	const handleCheckboxChange = (filter: string) => {
 		setSelectedFilters((prevState) => ({
 			...prevState,
 			[filter]: !prevState[filter as keyof typeof selectedFilters],
 		}));
-	};
-
-	const handlePagination = (value: { selected: number }) => {
-		setCurrentPage(value.selected + 1);
 	};
 
 	useEffect(() => {
