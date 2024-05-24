@@ -143,8 +143,8 @@ const CalendarView = ({
 		date: string,
 		mood: string,
 		reflections: ReflectionsType[],
-		favorite: boolean
-     wins:Win[]
+		favorite: boolean,
+     		wins:Win[]
 	) => {
 		if (user) {
 			await addUserMood(user.uid, mood, date, reflections, favorite, wins);
