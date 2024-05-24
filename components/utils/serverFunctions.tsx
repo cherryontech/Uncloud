@@ -4,6 +4,7 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/app/firebase';
 import { formatDateToYYYYMMDD } from './reusableFunctions';
 import { ReflectionsType } from '../home/newLogPopup';
+import { Win } from '../home/moodPrompts';
 
 export async function updateUser(uid: string) {
 	const userDocRef = doc(db, 'authUsers', uid);
@@ -15,7 +16,8 @@ export async function addUserMood(
 	uid: string,
 	mood: string,
 	selectedDate: string,
-	reflections:ReflectionsType[]
+	reflections: ReflectionsType[],
+	wins: Win[]
 ) {
 	const userDocRef = doc(db, 'authUsers', uid);
 	const userDocSnap = await getDoc(userDocRef);
@@ -36,9 +38,15 @@ export async function addUserMood(
 				console.log('Existing mood entry:', moodsArray[existingMoodIndex]);
 				moodsArray[existingMoodIndex].mood = mood;
 				moodsArray[existingMoodIndex].reflections = reflections;
+				moodsArray[existingMoodIndex].wins = wins;
 			} else {
 				// If mood entry for today doesn't exist, append a new entry
-				moodsArray.push({ date: selectedDate, mood: mood ,reflections:reflections});
+				moodsArray.push({
+					date: selectedDate,
+					mood: mood,
+					reflections: reflections,
+					wins: wins,
+				});
 			}
 
 			console.log('Updated moods array:', moodsArray);

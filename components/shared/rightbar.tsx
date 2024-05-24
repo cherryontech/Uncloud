@@ -7,6 +7,7 @@ import Image from 'next/image';
 import LogSummaryList from './logSummaryList';
 import { ReflectionsType } from '../home/newLogPopup';
 import CustomPagination from './customPagination';
+import { Win } from '../home/moodPrompts';
 
 interface RightbarProps {
 	isRightBarOpen: boolean;
@@ -16,6 +17,7 @@ interface RightbarProps {
 		mood: string;
 		icon: string;
 		reflections?: ReflectionsType[];
+		wins?: Win[];
 	}) => void;
 	selectedDate: Value;
 	value: Value | null;
@@ -25,7 +27,7 @@ interface RightbarProps {
 	handlePagination: (value: { selected: number }) => void;
 	month?: number;
 	isSummaryList: boolean;
-
+	isPopupOpen: boolean;
 	children?: React.ReactNode;
 }
 
@@ -34,6 +36,7 @@ const Rightbar: React.FC<RightbarProps> = ({
 	onToggle,
 	handleLogClick,
 	selectedDate,
+	isPopupOpen,
 	value,
 	setValue,
 	handleDateChange,
@@ -60,9 +63,23 @@ const Rightbar: React.FC<RightbarProps> = ({
 		Rainy: false,
 		Stormy: false,
 	});
-	const currentDate = new Date();
-	const currentMonth = month;
-	const currentYear = currentDate.getUTCFullYear();
+
+	let currentMonth: number | null = null;
+	let currentYear: number | null = null;
+	if (selectedDate instanceof Date) {
+		currentMonth = selectedDate.getUTCMonth();
+		currentYear = selectedDate.getUTCFullYear();
+	} else if (Array.isArray(selectedDate)) {
+		// You can handle the array case here if needed
+		const [startDate, endDate] = selectedDate;
+		if (startDate instanceof Date) {
+			currentMonth = startDate.getUTCMonth();
+			currentYear = startDate.getUTCFullYear();
+		} else if (endDate instanceof Date) {
+			currentMonth = endDate.getUTCMonth();
+			currentYear = endDate.getUTCFullYear();
+		}
+	}
 
 	const currentMonthMoods = Object.entries(moods).filter(([date, mood]) => {
 		const dateObj = new Date(`${date}T00:00:00Z`);
@@ -91,9 +108,6 @@ const Rightbar: React.FC<RightbarProps> = ({
 		});
 
 	const pageSize = 7;
-	const indexOfLastMood = currentPage * pageSize;
-	const indexOfFirstMood = indexOfLastMood - pageSize;
-	const currentMoods = filteredMoods.slice(indexOfFirstMood, indexOfLastMood);
 
 	useEffect(() => {
 		if (user) {
@@ -111,14 +125,14 @@ const Rightbar: React.FC<RightbarProps> = ({
 						moodMap[formatValueTypeToYYYYMMDD(date)] = {
 							mood: moodEntry.mood,
 							reflections: moodEntry.reflections,
-						}; // Update this line
+						};
 					});
 					setMoods(moodMap);
 				}
 			});
 		}
-	}, [user, isUpdated, month]);
-
+	}, [user, isUpdated, month, isPopupOpen]);
+	console.log(filteredMoods.length);
 	return (
 		<div
 			className={`right-bar flex h-full w-full flex-col gap-4 rounded-2xl bg-white  py-6 ${isRightBarOpen ? 'px-5' : 'px-2'}`}

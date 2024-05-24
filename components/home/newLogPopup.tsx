@@ -6,7 +6,7 @@ import Image from 'next/legacy/image';
 import { Check, CalendarBlank } from '@phosphor-icons/react';
 import { Button } from '@/stories/Button';
 import ProgressBar from '@/stories/progressBar';
-import MoodPrompts from './moodPrompts';
+import MoodPrompts, { Win } from './moodPrompts';
 export type ReflectionsType = {
 	question: string;
 	answer: string;
@@ -20,7 +20,8 @@ type Props = {
 	saveMood: (
 		date: string,
 		mood: string,
-		reflections: ReflectionsType[]
+		reflections: ReflectionsType[],
+		wins: Win[]
 	) => Promise<void>;
 	setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	handleLogClick: (log: {
@@ -28,6 +29,7 @@ type Props = {
 		mood: string;
 		icon: string;
 		reflections?: ReflectionsType[];
+		wins	?: Win[];
 	}) => void;
 };
 
@@ -49,7 +51,7 @@ const NewLogPopup = ({
 	const [initialReflections, setInitialReflections] = useState<
 		ReflectionsType[]
 	>([]);
-
+	const [initialWins, setInitialWins] = useState<Win[]>([]);
 	const { user, isUpdated } = useAuth();
 
 	useEffect(() => {
@@ -70,8 +72,14 @@ const NewLogPopup = ({
 					selectedMoodEntry.reflections
 						? setInitialReflections(selectedMoodEntry.reflections)
 						: setInitialReflections([]);
+
+					selectedMoodEntry.wins
+						? setInitialWins(selectedMoodEntry.wins)
+						: setInitialWins([]);
 				} else {
 					setInitialReflections([]);
+					setInitialWins([]);
+
 					setSelectedMood('');
 				}
 			});
@@ -104,9 +112,12 @@ const NewLogPopup = ({
 		setPopupOpen(false);
 		setCurrentStep(1);
 	};
-	const handleSaveMood = async (reflections: ReflectionsType[]) => {
+	const handleSaveMood = async (
+		reflections: ReflectionsType[],
+		wins: Win[]
+	) => {
 		if (!user) return;
-		await saveMood(selectedDate, selectedMood, reflections);
+		await saveMood(selectedDate, selectedMood, reflections, wins);
 		console.log('Saved reflections:', reflections);
 		setPopupOpen(false);
 		setCurrentStep(1);
@@ -215,6 +226,7 @@ const NewLogPopup = ({
 						selectedMood={selectedMood}
 						handleSaveMood={handleSaveMood}
 						initialReflections={initialReflections}
+						initialWins={initialWins}
 					/>
 				)}
 			</div>

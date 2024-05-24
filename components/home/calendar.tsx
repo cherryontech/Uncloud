@@ -23,6 +23,7 @@ import {
 
 import '/app/styles/calendar.css';
 import { init } from 'next/dist/compiled/webpack/webpack';
+import { Win } from './moodPrompts';
 
 type Props = {
 	month: number;
@@ -40,6 +41,7 @@ type Props = {
 		mood: string;
 		icon: string;
 		reflections?: ReflectionsType[];
+		wins?: Win[];
 	}) => void;
 };
 type ValuePiece = Date | null;
@@ -50,6 +52,7 @@ export type MoodEntry = {
 	date: string;
 	mood: string;
 	reflections: ReflectionsType[];
+	wins:Win[]
 };
 
 const CalendarView = ({
@@ -67,7 +70,7 @@ const CalendarView = ({
 }: Props) => {
 	const { user, updateData, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{
-		[key: string]: { mood: string; reflections: ReflectionsType[] };
+		[key: string]: { mood: string; reflections: ReflectionsType[] ,wins:Win[]};
 	}>({});
 	const [isYearDropdownOpen, setYearDropdownOpen] = useState(false);
 	const [displayedYear, setDisplayedYear] = useState(new Date().getFullYear());
@@ -77,7 +80,7 @@ const CalendarView = ({
 			getUser(user.uid).then((userData) => {
 				if (userData && userData.moods) {
 					let moodMap: {
-						[key: string]: { mood: string; reflections: ReflectionsType[] };
+						[key: string]: { mood: string; reflections: ReflectionsType[],wins:Win[] };
 					} = {};
 
 					userData.moods.forEach((moodEntry: MoodEntry) => {
@@ -88,6 +91,7 @@ const CalendarView = ({
 						moodMap[formatValueTypeToYYYYMMDD(date)] = {
 							mood: moodEntry.mood,
 							reflections: moodEntry.reflections,
+							wins: moodEntry.wins,
 						}; // Update this line
 					});
 					setMoods(moodMap);
@@ -125,10 +129,11 @@ const CalendarView = ({
 	const saveMood = async (
 		date: string,
 		mood: string,
-		reflections: ReflectionsType[]
+		reflections: ReflectionsType[],
+		wins:Win[]
 	) => {
 		if (user) {
-			await addUserMood(user.uid, mood, date, reflections);
+			await addUserMood(user.uid, mood, date, reflections,wins);
 			updateData();
 			// Call handleLogClick after the new log is saved
 			console.log('Log saved:', date, mood, reflections);
@@ -137,6 +142,7 @@ const CalendarView = ({
 				mood: mood,
 				icon: `/moods/${mood.toLowerCase()}.svg`,
 				reflections: reflections,
+				wins:wins
 			});
 		}
 	};
@@ -261,6 +267,7 @@ const CalendarView = ({
 										? `/moods/${moods[todayKey].mood.toLowerCase()}.svg`
 										: '/moods/greyWithFace.svg',
 									reflections: moods[todayKey].reflections,
+									wins: moods[todayKey].wins,
 								});
 							}}
 						>
@@ -300,6 +307,7 @@ const CalendarView = ({
 										mood: moods[dateKey].mood,
 										icon: '/moods/greyNoFace.svg',
 										reflections: moods[dateKey].reflections,
+										wins: moods[dateKey].wins,
 									})
 								}
 							/>
@@ -317,6 +325,7 @@ const CalendarView = ({
 									mood: moods[dateKey].mood,
 									icon: `/moods/${moods[dateKey].mood.toLowerCase()}.svg`,
 									reflections: moods[dateKey].reflections,
+									wins: moods[dateKey].wins,
 								})
 							}
 						/>
@@ -332,6 +341,7 @@ const CalendarView = ({
 									mood: 'No Log Yet',
 									icon: '/moods/greyWithFace.svg',
 									reflections: [],
+									wins: [],
 								})
 							}
 						/>
