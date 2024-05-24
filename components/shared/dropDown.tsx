@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CaretDown, CaretUp, SignOut, User, Gear } from '@phosphor-icons/react';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
@@ -19,6 +19,7 @@ type DropdownProps = {
 export default function Dropdown({ user }: DropdownProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const router = useRouter();
+	const dropdownRef = useRef<HTMLDivElement>(null);
 
 	const handleLogOut = () => {
 		signOut(auth)
@@ -31,10 +32,27 @@ export default function Dropdown({ user }: DropdownProps) {
 			});
 	};
 
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				dropdownRef.current &&
+				!dropdownRef.current.contains(event.target as Node)
+			) {
+				setIsOpen(false);
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
+
 	const menu = {
 		Account: { url: '#', icon: <User size={24} /> },
 		Settings: { url: '#', icon: <Gear size={24} /> },
 	};
+
 	return (
 		<div className='dropdown w-full'>
 			<button
@@ -52,7 +70,10 @@ export default function Dropdown({ user }: DropdownProps) {
 			</button>
 
 			{isOpen && (
-				<div className='dropdown-content flex w-full flex-col rounded-md bg-[#F3F5F9] py-2'>
+				<div
+					ref={dropdownRef}
+					className='dropdown-content flex w-full flex-col rounded-md bg-[#F3F5F9] py-2'
+				>
 					{/* Add links */}
 					{Object.entries(menu).map(([text, { url, icon }]) => (
 						<a href={url} key={text}>

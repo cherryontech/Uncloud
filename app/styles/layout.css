@@ -25,7 +25,7 @@
 	grid-column: 1 / -1;
 	display: grid;
 	/* height: 95%; */
-	grid-template-columns: 2fr 1fr;
+	grid-template-columns: 2fr auto;
 	gap: 1rem;
 	margin-right: 1rem;
 	/* margin-bottom: 6rem; */

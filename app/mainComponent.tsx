@@ -83,6 +83,8 @@ export default function MainComponent({
 		null
 	);
 	const [rightBarHistory, setRightBarHistory] = useState<JSX.Element[]>([]);
+	const [logUpdate, setLogUpdate] = useState(false);
+
 	const handleLogClick = (log: {
 		date: Date;
 		mood: string;
@@ -91,6 +93,8 @@ export default function MainComponent({
 		favorite: boolean;
 		wins?: Win[];
 	}) => {
+		setLogUpdate((prevState) => !prevState);
+
 		setIsSummaryList(false);
 		setRightBarHistory((prevHistory) =>
 			rightBarContent ? [...prevHistory, rightBarContent] : prevHistory
@@ -119,9 +123,7 @@ export default function MainComponent({
 
 	const handleGoBack = () => {
 		setIsSummaryList(true);
-		setRightBarContent(
-			null
-		);
+		setRightBarContent(null);
 	};
 
 	const handlePopupToggle = useCallback(() => {
@@ -190,14 +192,14 @@ export default function MainComponent({
 				/>
 			);
 	}
-	
+
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const handlePagination = (value: { selected: number }) => {
 		setCurrentPage(value.selected + 1);
 	};
-console.log(month);
-console.log(selectedDate);
+	console.log(month);
+	console.log(selectedDate);
 	return (
 		<div className='grid-container'>
 			<div className='sidebar border-r-[0.0625rem] border-[#D9D9D9]'>
@@ -214,6 +216,7 @@ console.log(selectedDate);
 							setValue={setValue}
 							handleDateChange={handleDateChange}
 							handleLogClick={handleLogClick}
+							logUpdate={logUpdate}
 						/>
 					}
 				/>

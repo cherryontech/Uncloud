@@ -20,6 +20,7 @@ import {
 	ArrowUp,
 	ArrowDown,
 } from '@phosphor-icons/react';
+import todayIcon from '/public/moods/today.svg';
 
 import '/app/styles/calendar.css';
 import { init } from 'next/dist/compiled/webpack/webpack';
@@ -54,7 +55,7 @@ export type MoodEntry = {
 	mood: string;
 	reflections: ReflectionsType[];
 	favorite: boolean;
-	wins:Win[]
+	wins: Win[];
 };
 
 const CalendarView = ({
@@ -76,7 +77,7 @@ const CalendarView = ({
 			mood: string;
 			reflections: ReflectionsType[];
 			favorite: boolean;
-      wins:Win[]
+			wins: Win[];
 		};
 	}>({});
 	const [isYearDropdownOpen, setYearDropdownOpen] = useState(false);
@@ -91,7 +92,7 @@ const CalendarView = ({
 							mood: string;
 							reflections: ReflectionsType[];
 							favorite: boolean;
-              wins:Win[]
+							wins: Win[];
 						};
 					} = {};
 
@@ -144,7 +145,7 @@ const CalendarView = ({
 		mood: string,
 		reflections: ReflectionsType[],
 		favorite: boolean,
-     		wins:Win[]
+		wins: Win[]
 	) => {
 		if (user) {
 			await addUserMood(user.uid, mood, date, reflections, favorite, wins);
@@ -157,7 +158,7 @@ const CalendarView = ({
 				icon: `/moods/${mood.toLowerCase()}.svg`,
 				reflections: reflections,
 				favorite: favorite,
-				wins:wins
+				wins: wins,
 			});
 		}
 	};
@@ -349,7 +350,7 @@ const CalendarView = ({
 						/>
 					) : (
 						<Image
-							src={`/moods/greyWithFace.svg`}
+							src={isDateToday ? todayIcon : `/moods/greyWithFace.svg`}
 							alt='Mood'
 							height={150}
 							width={150}
@@ -357,7 +358,7 @@ const CalendarView = ({
 								handleLogClick({
 									date: date,
 									mood: 'No Log Yet',
-									icon: '/moods/greyWithFace.svg',
+									icon: isDateToday ? todayIcon : '/moods/greyWithFace.svg',
 									reflections: [],
 									favorite: false,
 									wins: [],

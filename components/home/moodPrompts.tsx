@@ -140,7 +140,9 @@ const MoodPrompts = ({
 				<div className='h-20 w-20 rounded-md bg-gray-300'></div>
 				<div className='text-left'>
 					<p className='text-2xl font-bold'>3 Wins of the Day</p>
-					<p className='text-sm'>Get specific! use details to describe what you accomplished today.</p>
+					<p className='text-sm'>
+						Get specific! use details to describe what you accomplished today.
+					</p>
 				</div>
 			</div>
 

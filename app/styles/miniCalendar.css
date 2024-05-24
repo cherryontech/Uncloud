@@ -79,8 +79,8 @@
 
 .mini-calendar abbr {
 	position: initial;
-	height: 1.5rem;
-	width: 1.5rem;
+	min-height: 1.5rem;
+	min-width: 1.5rem;
 	text-decoration: none;
 	display: flex;
 	justify-content: center;

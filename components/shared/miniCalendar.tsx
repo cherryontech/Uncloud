@@ -36,6 +36,7 @@ type Props = {
 		favorite: boolean;
 		wins?: Win[];
 	}) => void;
+	logUpdate?: boolean;
 };
 
 type ValuePiece = Date | null;
@@ -50,6 +51,7 @@ const MiniCalendarView = ({
 	setValue,
 	handleDateChange,
 	handleLogClick,
+	logUpdate,
 }: Props) => {
 	const { user } = useAuth();
 	const [moods, setMoods] = useState<{ [key: string]: string }>({});
@@ -98,7 +100,11 @@ const MiniCalendarView = ({
 				}
 			});
 		}
-	}, [user]);
+	}, [user, logUpdate]);
+
+	useEffect(() => {
+		setTempSelectedDate(selectedDate);
+	}, [selectedDate]);
 
 	useEffect(() => {
 		// Function to check if clicked outside of dropdown
@@ -166,7 +172,7 @@ const MiniCalendarView = ({
 	};
 
 	return (
-		<div className='mini-calendar flex w-64 flex-col gap-4 rounded-xl border-[1px] border-[#DEE9F5] bg-white p-3'>
+		<div className='mini-calendar flex min-h-64 w-64 flex-col gap-4 rounded-xl border-[1px] border-[#DEE9F5] bg-white p-3'>
 			{!isYearDropdownOpen ? (
 				<>
 					<div className='calendar-nav flex w-full flex-row justify-between gap-2 pr-2'>
@@ -194,11 +200,22 @@ const MiniCalendarView = ({
 						calendarType='gregory'
 						onChange={handleDateChange}
 						showNeighboringMonth={true}
+						showFixedNumberOfWeeks={true}
 						showNavigation={false}
 						value={tempSelectedDate}
-						tileClassName={({ date, view }) =>
-							isToday(date) ? 'react-calendar__tile--today' : ''
-						}
+						tileClassName={({ date, view }) => {
+							if (isToday(date)) {
+								return 'react-calendar__tile--today';
+							}
+							if (
+								date.getDate() === (selectedDate as Date).getDate() &&
+								date.getMonth() === (selectedDate as Date).getMonth() &&
+								date.getFullYear() === (selectedDate as Date).getFullYear()
+							) {
+								return 'react-calendar__tile--selected';
+							}
+							return '';
+						}}
 						onClickDay={(value: Date) => {
 							const dateKey = formatValueTypeToYYYYMMDD(value);
 							const mood = moods[dateKey];
