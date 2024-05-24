@@ -36,7 +36,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 	handleDateChange,
 	currentPage,
 	handlePagination,
-	selectedDate
+	selectedDate,
 }) => {
 	const { user, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{
@@ -44,7 +44,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 			mood: string;
 			reflections: ReflectionsType[];
 			favorite: boolean;
-      wins: Win[]
+			wins: Win[];
 		};
 	}>({});
 	const [selectedFilters, setSelectedFilters] = useState({
@@ -61,7 +61,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 			[filter]: !prevState[filter as keyof typeof selectedFilters],
 		}));
 	};
-console.log(currentPage);
+	console.log(currentPage);
 	useEffect(() => {
 		if (user) {
 			getUser(user.uid).then((userData) => {
@@ -71,7 +71,7 @@ console.log(currentPage);
 							mood: string;
 							reflections: ReflectionsType[];
 							favorite: boolean;
-              wins: Win[]
+							wins: Win[];
 						};
 					} = {};
 
@@ -117,7 +117,6 @@ console.log(currentPage);
 			currentYear = endDate.getUTCFullYear();
 		}
 	}
-
 
 	const currentMonthMoods = Object.entries(moods).filter(([date, mood]) => {
 		const dateObj = new Date(`${date}T00:00:00Z`);
@@ -176,7 +175,7 @@ console.log(currentPage);
 						return (
 							<div
 								key={date}
-								className='flex h-20 w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-blue-100 bg-boxBackground px-4  text-textPrimary hover:bg-hoverColor'
+								className='group flex h-20 w-full cursor-pointer items-center justify-between gap-4 rounded-lg border border-blue-100 bg-boxBackground px-4 py-2  text-textPrimary hover:bg-hoverColor 2xl:gap-[2.9375rem]'
 								onClick={() => {
 									handleLogClick({
 										date: dateObj,
@@ -189,34 +188,38 @@ console.log(currentPage);
 									handleDateChange(dateObj);
 								}}
 							>
-								<div className='justify-content flex flex-col items-center'>
-									<p className='text-base font-medium text-gray-600'>{day}</p>
-									<p className='text-xs text-gray-600'>{month}</p>
-								</div>
+								<div className='flex h-full w-full flex-row items-center justify-start gap-4'>
+									<div className='justify-content flex flex-col items-center gap-[0.3125rem] leading-none text-[#706F6F]'>
+										<span className='m-0 p-0 text-2xl font-medium'>{day}</span>
+										<span className='m-0 p-0 text-xs'>{month}</span>
+									</div>
 
-								<div className='h-10 border border-r border-blue-100 group-hover:border-white'></div>
-								<div className='w-20'>
-									<Image
-										src={`/moods/${mood.mood.toLowerCase()}.svg`}
-										alt='Mood'
-										width={200}
-										height={200}
-										className='w-full'
+									<div className='h-full w-[0.0625rem] bg-[#dee9f5] group-hover:bg-white'></div>
+									<div className='flex h-16 w-16 items-center justify-center rounded-lg bg-white'>
+										<Image
+											src={`/moods/${mood.mood.toLowerCase()}.svg`}
+											alt='Mood'
+											width={200}
+											height={200}
+											// className='w-full'
+										/>
+									</div>
+								</div>
+								<div className='flex h-full w-full flex-row items-center justify-start gap-4 leading-none'>
+									<div className='items-left flex w-20 flex-col justify-center gap-[0.66rem]'>
+										<span className='text-base font-medium text-black'>
+											{mood.mood.charAt(0).toUpperCase() + mood.mood.slice(1)}
+										</span>
+										<span className='text-xs text-gray-500'>
+											{moodNames[mood.mood]}
+										</span>
+									</div>
+									<CaretRight
+										className='text-black group-hover:text-blue-500'
+										size={16}
+										weight='bold'
 									/>
 								</div>
-								<div className='w-20'>
-									<p className='text-sm font-medium text-black'>
-										{mood.mood.charAt(0).toUpperCase() + mood.mood.slice(1)}
-									</p>
-									<p className='text-xs text-gray-500'>
-										{moodNames[mood.mood]}
-									</p>
-								</div>
-								<CaretRight
-									className='text-black group-hover:text-blue-500'
-									size={16}
-									weight='bold'
-								/>
 							</div>
 						);
 					})
