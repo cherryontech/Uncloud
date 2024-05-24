@@ -38,6 +38,63 @@ export async function updateFavorite(
 	}
 }
 
+// export async function getFavoriteLogs(uid: string) {
+// 	const userDocRef = doc(db, 'authUsers', uid);
+// 	const userDocSnap = await getDoc(userDocRef);
+
+// 	if (userDocSnap.exists()) {
+// 		const userData = userDocSnap.data();
+// 		if (userData && userData.moods) {
+// 			return userData.moods.reduce(
+// 				(favoriteLogs: { [date: string]: boolean }, moodEntry: any) => {
+// 					if (moodEntry.favorite) {
+// 						favoriteLogs[moodEntry.date] = true;
+// 					}
+// 					return favoriteLogs;
+// 				},
+// 				{}
+// 			);
+// 		}
+// 	}
+
+// 	return {};
+// }
+
+export async function getFavoriteLogs(uid: string) {
+	const userDocRef = doc(db, 'authUsers', uid);
+	const userDocSnap = await getDoc(userDocRef);
+
+	if (userDocSnap.exists()) {
+		const userData = userDocSnap.data();
+		if (userData && userData.moods) {
+			return userData.moods.reduce(
+				(
+					favoriteLogs: {
+						[date: string]: {
+							mood: string;
+							reflections: ReflectionsType[];
+							favorite: boolean;
+						};
+					},
+					moodEntry: any
+				) => {
+					if (moodEntry.favorite) {
+						favoriteLogs[moodEntry.date] = {
+							mood: moodEntry.mood,
+							reflections: moodEntry.reflections,
+							favorite: moodEntry.favorite,
+						};
+					}
+					return favoriteLogs;
+				},
+				{}
+			);
+		}
+	}
+
+	return {};
+}
+
 export async function updateUser(uid: string) {
 	const userDocRef = doc(db, 'authUsers', uid);
 	updateDoc(userDocRef, {

@@ -20,8 +20,18 @@ interface LogSummaryProps {
 		favorite: boolean;
 	};
 	handleGoBack: () => void;
-	onFavoriteToggle: (logDate: string) => void;
-	favoriteLogs: { [date: string]: boolean };
+	onFavoriteToggle: (
+		logDate: string,
+		mood: string,
+		reflections: ReflectionsType[]
+	) => void;
+	favoriteLogs: {
+		[date: string]: {
+			mood: string;
+			reflections: ReflectionsType[];
+			favorite: boolean;
+		};
+	};
 }
 
 const LogSummary: React.FC<LogSummaryProps> = ({
@@ -58,22 +68,24 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 	>([]);
 	console.log(isUpdated);
 
+	const logDate = formatValueTypeToYYYYMMDD(log.date);
+
 	const [favorite, setFavorite] = useState(
-		favoriteLogs[formatValueTypeToYYYYMMDD(log.date)]
+		favoriteLogs[logDate]?.favorite || false
 	);
+	console.log('Checking favoriteLogs', favoriteLogs, logDate, log.date);
 
 	useEffect(() => {
-		setFavorite(favoriteLogs[formatValueTypeToYYYYMMDD(log.date)]);
-	}, [log.favorite, favoriteLogs, log.date]);
+		setFavorite(favoriteLogs[logDate]?.favorite || false);
+	}, [favoriteLogs, logDate]);
 
 	const favoriteLog = async () => {
 		const newFavorite = !favorite;
-		const date = formatValueTypeToYYYYMMDD(log.date);
-		if (user) {
-			await updateFavorite(user.uid, date, newFavorite);
-		}
-		onFavoriteToggle(date);
+		onFavoriteToggle(logDate, log.mood, log.reflections);
 		setFavorite(newFavorite);
+		if (user) {
+			await updateFavorite(user.uid, logDate, newFavorite);
+		}
 	};
 
 	const toggleReflection = (index: number) => {
