@@ -22,7 +22,7 @@ type Props = {
 		date: string,
 		mood: string,
 		reflections: ReflectionsType[],
-		favorite: boolean
+		favorite: boolean,
 		wins: Win[]
 	) => Promise<void>;
 	setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
