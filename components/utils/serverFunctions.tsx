@@ -86,7 +86,7 @@ export async function addUserMood(
 	mood: string,
 	selectedDate: string,
 	reflections: ReflectionsType[],
-	favorite: boolean
+	favorite: boolean,
 	wins: Win[]
 ) {
 	const userDocRef = doc(db, 'authUsers', uid);
