@@ -12,7 +12,6 @@ import { getUser, updateFavorite } from '../utils/serverFunctions';
 import { on } from 'events';
 import { Win } from '../home/moodPrompts';
 
-
 interface LogSummaryProps {
 	log: {
 		date: Date;
@@ -53,18 +52,6 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 
 	const { user, isUpdated } = useAuth();
 
-	const wins = [
-		{
-			title: 'I made a resume today',
-			description: 'I created a template and updated my job list',
-		},
-		{
-			title: 'I read 3 chapters',
-			description: 'I started reading a new job search book',
-		},
-		{ title: 'I updated my LinkedIn', description: 'I redid my coverpage' },
-	];
-
 	const [openReflections, setOpenReflections] = useState<number[]>([]);
 
 	console.log(isUpdated);
@@ -96,6 +83,8 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 				: [...prevState, index]
 		);
 	};
+
+	const nonEmptyWins = log.wins.filter((win) => win.description.trim() !== '');
 
 	return (
 		<>
@@ -143,23 +132,23 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 					</div>
 				</div>
 
-				{log.wins.length > 0 && (
-					<div className='flex flex-col gap-3'>
-						<span className='text-sm font-semibold'>3 Wins</span>
-						<div>
-							{log.wins.map((win, index) => (
+				{log.wins.some((win) => win.description.trim() !== '') && (
+					<div className='flex flex-col gap-3 '>
+						<span className='text-sm font-semibold'>My Wins</span>
+						<div className='pl-[1.62rem]'>
+							{nonEmptyWins.map((win, index) => (
 								<div
 									key={index}
-									className='relative flex h-fit flex-row items-center justify-start gap-3'
+									className='relative flex h-fit flex-row items-center justify-start gap-3 '
 								>
-									<div className='absolute bottom-0 left-0 top-2 flex flex-col items-center gap-1'>
+									<div className='absolute bottom-0 left-0 top-1 flex flex-col items-center gap-1'>
 										<div className='h-2 w-2 rounded-full bg-primary'></div>
-										{index !== wins.length - 1 && (
-											<div className='w-[1px] flex-grow bg-[#DEE9F5]'></div>
+										{index !== nonEmptyWins.length - 1 && (
+											<div className='w-[0.125rem] flex-grow bg-[#DEE9F5]'></div>
 										)}
 									</div>
 									<div className='ml-3 flex flex-col justify-start pb-8 pl-3'>
-										<span className='text-xs font-normal text-[#706F6F]'>
+										<span className='text-sm font-semibold text-[#2C2C2C]'>
 											{win.description}
 										</span>
 									</div>
