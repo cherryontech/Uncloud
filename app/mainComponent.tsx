@@ -17,6 +17,7 @@ import MiniCalendarView from '@/components/shared/miniCalendar';
 import LogSummaryList from '@/components/shared/logSummaryList';
 import { ReflectionsType } from '@/components/home/newLogPopup';
 import { getFavoriteLogs } from '@/components/utils/serverFunctions';
+import { Win } from '@/components/home/moodPrompts';
 
 export default function MainComponent({
 	children,
@@ -88,6 +89,7 @@ export default function MainComponent({
 		icon: string;
 		reflections?: ReflectionsType[];
 		favorite: boolean;
+		wins?: Win[];
 	}) => {
 		setIsSummaryList(false);
 		setRightBarHistory((prevHistory) =>
@@ -95,7 +97,11 @@ export default function MainComponent({
 		);
 		setRightBarContent(
 			<LogSummary
-				log={{ ...log, reflections: log.reflections || [] }}
+				log={{
+					...log,
+					reflections: log.reflections || [],
+					wins: log.wins || [],
+				}}
 				handleGoBack={handleGoBack}
 				onFavoriteToggle={onFavoriteToggle}
 				favoriteLogs={favoriteLogs}
@@ -114,15 +120,7 @@ export default function MainComponent({
 	const handleGoBack = () => {
 		setIsSummaryList(true);
 		setRightBarContent(
-			<LogSummaryList
-				handleLogClick={handleLogClick}
-				selectedDate={selectedDate}
-				value={value}
-				setValue={setValue}
-				handleDateChange={handleDateChange}
-				currentPage={currentPage}
-				handlePagination={handlePagination}
-			/>
+			null
 		);
 	};
 
@@ -192,14 +190,14 @@ export default function MainComponent({
 				/>
 			);
 	}
-	console.log('User', user);
-
+	
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const handlePagination = (value: { selected: number }) => {
 		setCurrentPage(value.selected + 1);
 	};
-
+console.log(month);
+console.log(selectedDate);
 	return (
 		<div className='grid-container'>
 			<div className='sidebar border-r-[0.0625rem] border-[#D9D9D9]'>
@@ -242,6 +240,7 @@ export default function MainComponent({
 						handleLogClick={handleLogClick}
 						selectedDate={selectedDate}
 						value={value}
+						isPopupOpen={isPopupOpen}
 						setValue={setValue}
 						handleDateChange={handleDateChange}
 						currentPage={currentPage}

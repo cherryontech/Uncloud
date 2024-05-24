@@ -8,6 +8,7 @@ import CustomPagination from './customPagination';
 import { MoodEntry, Value } from '../home/calendar';
 import { formatValueTypeToYYYYMMDD } from '../utils/reusableFunctions';
 import { ReflectionsType } from '../home/newLogPopup';
+import { Win } from '../home/moodPrompts';
 
 export type MoodNames = {
 	[key: string]: string;
@@ -20,6 +21,7 @@ type LogSummaryListProps = {
 		icon: string;
 		reflections?: ReflectionsType[];
 		favorite: boolean;
+		wins?: Win[];
 	}) => void;
 	selectedDate: Value;
 	value: Value | null;
@@ -34,6 +36,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 	handleDateChange,
 	currentPage,
 	handlePagination,
+	selectedDate
 }) => {
 	const { user, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{
@@ -41,6 +44,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 			mood: string;
 			reflections: ReflectionsType[];
 			favorite: boolean;
+      wins: Win[]
 		};
 	}>({});
 	const [selectedFilters, setSelectedFilters] = useState({
@@ -57,7 +61,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 			[filter]: !prevState[filter as keyof typeof selectedFilters],
 		}));
 	};
-
+console.log(currentPage);
 	useEffect(() => {
 		if (user) {
 			getUser(user.uid).then((userData) => {
@@ -67,6 +71,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 							mood: string;
 							reflections: ReflectionsType[];
 							favorite: boolean;
+              wins: Win[]
 						};
 					} = {};
 
@@ -79,6 +84,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 							mood: moodEntry.mood,
 							reflections: moodEntry.reflections,
 							favorite: moodEntry.favorite,
+							wins: moodEntry.wins,
 						}; // Update this line
 					});
 					setMoods(moodMap);
@@ -95,9 +101,23 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 		Stormy: 'Stressed',
 	};
 
-	const currentDate = new Date();
-	const currentMonth = currentDate.getUTCMonth();
-	const currentYear = currentDate.getUTCFullYear();
+	let currentMonth: number | null = null;
+	let currentYear: number | null = null;
+	if (selectedDate instanceof Date) {
+		currentMonth = selectedDate.getUTCMonth();
+		currentYear = selectedDate.getUTCFullYear();
+	} else if (Array.isArray(selectedDate)) {
+		// You can handle the array case here if needed
+		const [startDate, endDate] = selectedDate;
+		if (startDate instanceof Date) {
+			currentMonth = startDate.getUTCMonth();
+			currentYear = startDate.getUTCFullYear();
+		} else if (endDate instanceof Date) {
+			currentMonth = endDate.getUTCMonth();
+			currentYear = endDate.getUTCFullYear();
+		}
+	}
+
 
 	const currentMonthMoods = Object.entries(moods).filter(([date, mood]) => {
 		const dateObj = new Date(`${date}T00:00:00Z`);
@@ -164,6 +184,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 										icon: `/moods/${mood.mood.toLowerCase()}.svg`,
 										reflections: mood.reflections,
 										favorite: mood.favorite,
+										wins: mood.wins,
 									});
 									handleDateChange(dateObj);
 								}}

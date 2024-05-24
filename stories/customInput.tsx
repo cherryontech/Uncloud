@@ -6,7 +6,7 @@ interface CustomInputProps {
 	name: string;
 	value: string;
 	placeholder: string;
-	label: string;
+	label?: string;
 	type: string;
 	error?: string | null;
 	handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -29,9 +29,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
 
 	return (
 		<div className='w-full space-y-1.5'>
-			<label className='text-sm font-bold' htmlFor={name}>
+			{label && <label className='text-sm font-bold' htmlFor={name}>
 				{label}
-			</label>
+			</label>}
 			<div className='relative'>
 				<input
 					type={type}

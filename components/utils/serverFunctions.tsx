@@ -4,6 +4,7 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/app/firebase';
 import { formatDateToYYYYMMDD } from './reusableFunctions';
 import { ReflectionsType } from '../home/newLogPopup';
+import { Win } from '../home/moodPrompts';
 
 export async function updateFavorite(
 	uid: string,
@@ -38,27 +39,6 @@ export async function updateFavorite(
 	}
 }
 
-// export async function getFavoriteLogs(uid: string) {
-// 	const userDocRef = doc(db, 'authUsers', uid);
-// 	const userDocSnap = await getDoc(userDocRef);
-
-// 	if (userDocSnap.exists()) {
-// 		const userData = userDocSnap.data();
-// 		if (userData && userData.moods) {
-// 			return userData.moods.reduce(
-// 				(favoriteLogs: { [date: string]: boolean }, moodEntry: any) => {
-// 					if (moodEntry.favorite) {
-// 						favoriteLogs[moodEntry.date] = true;
-// 					}
-// 					return favoriteLogs;
-// 				},
-// 				{}
-// 			);
-// 		}
-// 	}
-
-// 	return {};
-// }
 
 export async function getFavoriteLogs(uid: string) {
 	const userDocRef = doc(db, 'authUsers', uid);
@@ -107,6 +87,7 @@ export async function addUserMood(
 	selectedDate: string,
 	reflections: ReflectionsType[],
 	favorite: boolean
+	wins: Win[]
 ) {
 	const userDocRef = doc(db, 'authUsers', uid);
 	const userDocSnap = await getDoc(userDocRef);
@@ -128,6 +109,7 @@ export async function addUserMood(
 				moodsArray[existingMoodIndex].mood = mood;
 				moodsArray[existingMoodIndex].reflections = reflections;
 				moodsArray[existingMoodIndex].favorite = favorite;
+				moodsArray[existingMoodIndex].wins = wins;
 			} else {
 				// If mood entry for today doesn't exist, append a new entry
 				moodsArray.push({
@@ -135,6 +117,7 @@ export async function addUserMood(
 					mood: mood,
 					reflections: reflections,
 					favorite: favorite,
+					wins: wins,
 				});
 			}
 

@@ -19,6 +19,7 @@ import {
 	formatDateToMonth,
 	isToday,
 } from '../utils/reusableFunctions';
+import { Win } from '../home/moodPrompts';
 
 type Props = {
 	month: number;
@@ -33,6 +34,7 @@ type Props = {
 		icon: string;
 		reflections?: ReflectionsType[];
 		favorite: boolean;
+		wins?: Win[];
 	}) => void;
 };
 

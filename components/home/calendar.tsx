@@ -23,6 +23,7 @@ import {
 
 import '/app/styles/calendar.css';
 import { init } from 'next/dist/compiled/webpack/webpack';
+import { Win } from './moodPrompts';
 
 type Props = {
 	month: number;
@@ -41,6 +42,7 @@ type Props = {
 		icon: string;
 		reflections?: ReflectionsType[];
 		favorite: boolean;
+		wins?: Win[];
 	}) => void;
 };
 type ValuePiece = Date | null;
@@ -52,6 +54,7 @@ export type MoodEntry = {
 	mood: string;
 	reflections: ReflectionsType[];
 	favorite: boolean;
+	wins:Win[]
 };
 
 const CalendarView = ({
@@ -73,6 +76,7 @@ const CalendarView = ({
 			mood: string;
 			reflections: ReflectionsType[];
 			favorite: boolean;
+      wins:Win[]
 		};
 	}>({});
 	const [isYearDropdownOpen, setYearDropdownOpen] = useState(false);
@@ -87,6 +91,7 @@ const CalendarView = ({
 							mood: string;
 							reflections: ReflectionsType[];
 							favorite: boolean;
+              wins:Win[]
 						};
 					} = {};
 
@@ -99,6 +104,7 @@ const CalendarView = ({
 							mood: moodEntry.mood,
 							reflections: moodEntry.reflections,
 							favorite: moodEntry.favorite,
+							wins: moodEntry.wins,
 						}; // Update this line
 					});
 					setMoods(moodMap);
@@ -138,9 +144,10 @@ const CalendarView = ({
 		mood: string,
 		reflections: ReflectionsType[],
 		favorite: boolean
+     wins:Win[]
 	) => {
 		if (user) {
-			await addUserMood(user.uid, mood, date, reflections, favorite);
+			await addUserMood(user.uid, mood, date, reflections, favorite, wins);
 			updateData();
 			// Call handleLogClick after the new log is saved
 			console.log('Log saved:', date, mood, reflections, favorite);
@@ -150,6 +157,7 @@ const CalendarView = ({
 				icon: `/moods/${mood.toLowerCase()}.svg`,
 				reflections: reflections,
 				favorite: favorite,
+				wins:wins
 			});
 		}
 	};
@@ -275,6 +283,7 @@ const CalendarView = ({
 										: '/moods/greyWithFace.svg',
 									reflections: moods[todayKey].reflections,
 									favorite: moods[todayKey].favorite,
+									wins: moods[todayKey].wins,
 								});
 							}}
 						>
@@ -315,6 +324,7 @@ const CalendarView = ({
 										icon: '/moods/greyNoFace.svg',
 										reflections: moods[dateKey].reflections,
 										favorite: moods[dateKey].favorite,
+										wins: moods[dateKey].wins,
 									})
 								}
 							/>
@@ -333,6 +343,7 @@ const CalendarView = ({
 									icon: `/moods/${moods[dateKey].mood.toLowerCase()}.svg`,
 									reflections: moods[dateKey].reflections,
 									favorite: moods[dateKey].favorite,
+									wins: moods[dateKey].wins,
 								})
 							}
 						/>
@@ -349,6 +360,7 @@ const CalendarView = ({
 									icon: '/moods/greyWithFace.svg',
 									reflections: [],
 									favorite: false,
+									wins: [],
 								})
 							}
 						/>

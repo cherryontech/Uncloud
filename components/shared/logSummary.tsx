@@ -10,6 +10,8 @@ import { ReflectionsType } from '../home/newLogPopup';
 import { useAuth } from '@/app/context/UserProvider';
 import { getUser, updateFavorite } from '../utils/serverFunctions';
 import { on } from 'events';
+import { Win } from '../home/moodPrompts';
+
 
 interface LogSummaryProps {
 	log: {
@@ -18,6 +20,7 @@ interface LogSummaryProps {
 		icon: string;
 		reflections: ReflectionsType[];
 		favorite: boolean;
+		wins: Win[];
 	};
 	handleGoBack: () => void;
 	onFavoriteToggle: (
@@ -63,9 +66,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 	];
 
 	const [openReflections, setOpenReflections] = useState<number[]>([]);
-	const [initialReflections, setInitialReflections] = useState<
-		ReflectionsType[]
-	>([]);
+
 	console.log(isUpdated);
 
 	const logDate = formatValueTypeToYYYYMMDD(log.date);
@@ -141,33 +142,32 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 						</span>
 					</div>
 				</div>
-				{/* Three Wins */}
-				<div className='flex flex-col gap-3'>
-					<span className='text-sm font-semibold'>3 Wins</span>
-					<div>
-						{wins.map((win, index) => (
-							<div
-								key={index}
-								className='relative flex h-fit flex-row items-center justify-start gap-3'
-							>
-								<div className='absolute bottom-0 left-0 top-2 flex flex-col items-center gap-1'>
-									<div className='h-2 w-2 rounded-full bg-primary'></div>
-									{index !== wins.length - 1 && (
-										<div className='w-[1px] flex-grow bg-[#DEE9F5]'></div>
-									)}
+
+				{log.wins.length > 0 && (
+					<div className='flex flex-col gap-3'>
+						<span className='text-sm font-semibold'>3 Wins</span>
+						<div>
+							{log.wins.map((win, index) => (
+								<div
+									key={index}
+									className='relative flex h-fit flex-row items-center justify-start gap-3'
+								>
+									<div className='absolute bottom-0 left-0 top-2 flex flex-col items-center gap-1'>
+										<div className='h-2 w-2 rounded-full bg-primary'></div>
+										{index !== wins.length - 1 && (
+											<div className='w-[1px] flex-grow bg-[#DEE9F5]'></div>
+										)}
+									</div>
+									<div className='ml-3 flex flex-col justify-start pb-8 pl-3'>
+										<span className='text-xs font-normal text-[#706F6F]'>
+											{win.description}
+										</span>
+									</div>
 								</div>
-								<div className='ml-3 flex flex-col justify-start pb-8 pl-3'>
-									<span className='text-sm font-semibold leading-6'>
-										{win.title}
-									</span>
-									<span className='text-xs font-normal text-[#706F6F]'>
-										{win.description}
-									</span>
-								</div>
-							</div>
-						))}
+							))}
+						</div>
 					</div>
-				</div>
+				)}
 				{/* Reflections */}
 				{log.reflections.length > 0 ? (
 					<div className='flex flex-col gap-3'>
