@@ -32,7 +32,7 @@ type Props = {
 		icon: string;
 		reflections?: ReflectionsType[];
 		favorite: boolean;
-		wins	?: Win[];
+		wins?: Win[];
 	}) => void;
 };
 
@@ -213,7 +213,7 @@ const NewLogPopup = ({
 									);
 								})}
 							</div>
-							<div className='flex w-[22.5rem] justify-center'>
+							<div className='flex w-[22.5rem] flex-col justify-center gap-3 text-sm'>
 								<Button
 									type='button'
 									label='Continue'
@@ -221,6 +221,14 @@ const NewLogPopup = ({
 									onClick={() => handleChangeStep(2)}
 									version='primary'
 								/>
+								<button
+									onClick={() => {
+										handleSaveMood(initialReflections, initialWins);
+									}}
+									className='px-6 py-[0.625rem] text-sm font-bold text-[#2D81E0]'
+								>
+									Done
+								</button>
 							</div>
 						</div>
 					</div>
