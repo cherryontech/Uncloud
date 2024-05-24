@@ -1,15 +1,17 @@
 // LogSummary.tsx
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import Image from 'next/image';
 import {
 	formatDateToMonthDayYear,
 	formatValueTypeToYYYYMMDD,
 } from '../utils/reusableFunctions';
-import { CaretLeft, Plus, Minus } from '@phosphor-icons/react';
+import { CaretLeft, Plus, Minus, Heart } from '@phosphor-icons/react';
 import { ReflectionsType } from '../home/newLogPopup';
 import { useAuth } from '@/app/context/UserProvider';
-import { getUser } from '../utils/serverFunctions';
+import { getUser, updateFavorite } from '../utils/serverFunctions';
+import { on } from 'events';
 import { Win } from '../home/moodPrompts';
+
 
 interface LogSummaryProps {
 	log: {
@@ -17,12 +19,30 @@ interface LogSummaryProps {
 		mood: string;
 		icon: string;
 		reflections: ReflectionsType[];
+		favorite: boolean;
 		wins: Win[];
 	};
 	handleGoBack: () => void;
+	onFavoriteToggle: (
+		logDate: string,
+		mood: string,
+		reflections: ReflectionsType[]
+	) => void;
+	favoriteLogs: {
+		[date: string]: {
+			mood: string;
+			reflections: ReflectionsType[];
+			favorite: boolean;
+		};
+	};
 }
 
-const LogSummary: React.FC<LogSummaryProps> = ({ log, handleGoBack }) => {
+const LogSummary: React.FC<LogSummaryProps> = ({
+	log,
+	handleGoBack,
+	onFavoriteToggle,
+	favoriteLogs,
+}) => {
 	const moodNames = {
 		Rainbow: 'Proud',
 		Sunny: 'Confident',
@@ -30,6 +50,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({ log, handleGoBack }) => {
 		Rainy: 'Disappointed',
 		Stormy: 'Stressed',
 	};
+
 	const { user, isUpdated } = useAuth();
 
 	const wins = [
@@ -47,6 +68,26 @@ const LogSummary: React.FC<LogSummaryProps> = ({ log, handleGoBack }) => {
 	const [openReflections, setOpenReflections] = useState<number[]>([]);
 
 	console.log(isUpdated);
+
+	const logDate = formatValueTypeToYYYYMMDD(log.date);
+
+	const [favorite, setFavorite] = useState(
+		favoriteLogs[logDate]?.favorite || false
+	);
+	console.log('Checking favoriteLogs', favoriteLogs, logDate, log.date);
+
+	useEffect(() => {
+		setFavorite(favoriteLogs[logDate]?.favorite || false);
+	}, [favoriteLogs, logDate]);
+
+	const favoriteLog = async () => {
+		const newFavorite = !favorite;
+		onFavoriteToggle(logDate, log.mood, log.reflections);
+		setFavorite(newFavorite);
+		if (user) {
+			await updateFavorite(user.uid, logDate, newFavorite);
+		}
+	};
 
 	const toggleReflection = (index: number) => {
 		setOpenReflections((prevState) =>
@@ -70,6 +111,18 @@ const LogSummary: React.FC<LogSummaryProps> = ({ log, handleGoBack }) => {
 								{/* {formatDateToMonthDayYear(log.date)} */}
 								Back to Summary
 							</span>
+						</button>
+					</div>
+					<div className='flex text-[#706F6F]'>
+						<button
+							onClick={favoriteLog}
+							className='flex flex-row items-center justify-center gap-2'
+						>
+							{favorite ? (
+								<Heart size={24} weight='fill' color='red' />
+							) : (
+								<Heart size={24} weight='bold' />
+							)}
 						</button>
 					</div>
 				</div>

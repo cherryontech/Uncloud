@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import { useAuth } from '@/app/context/UserProvider';
 import { UserProvider } from './context/UserProvider';
 import { useState, useCallback, SetStateAction } from 'react';
@@ -15,6 +16,7 @@ import LogSummary from '@/components/shared/logSummary';
 import MiniCalendarView from '@/components/shared/miniCalendar';
 import LogSummaryList from '@/components/shared/logSummaryList';
 import { ReflectionsType } from '@/components/home/newLogPopup';
+import { getFavoriteLogs } from '@/components/utils/serverFunctions';
 import { Win } from '@/components/home/moodPrompts';
 
 export default function MainComponent({
@@ -35,6 +37,48 @@ export default function MainComponent({
 		mood: string;
 		icon: string;
 	} | null>(null);
+
+	const [favoriteLogs, setFavoriteLogs] = useState<{
+		[date: string]: {
+			mood: string;
+			reflections: ReflectionsType[];
+			favorite: boolean;
+		};
+	}>({});
+
+	useEffect(() => {
+		const fetchFavoriteLogs = async () => {
+			if (user) {
+				const favoriteLogs = await getFavoriteLogs(user.uid);
+				setFavoriteLogs(favoriteLogs);
+			}
+		};
+
+		fetchFavoriteLogs();
+	}, [user]);
+
+	const onFavoriteToggle = (
+		logDate: string,
+		mood: string,
+		reflections: ReflectionsType[]
+	): boolean => {
+		const newFavorite = !favoriteLogs[logDate]?.favorite;
+		setFavoriteLogs((prevFavoriteLogs) => {
+			let updatedFavoriteLogs = { ...prevFavoriteLogs };
+			if (newFavorite) {
+				updatedFavoriteLogs[logDate] = {
+					mood,
+					reflections,
+					favorite: newFavorite,
+				};
+			} else {
+				delete updatedFavoriteLogs[logDate];
+			}
+			return updatedFavoriteLogs;
+		});
+		return newFavorite;
+	};
+
 	const [rightBarContent, setRightBarContent] = useState<JSX.Element | null>(
 		null
 	);
@@ -44,6 +88,7 @@ export default function MainComponent({
 		mood: string;
 		icon: string;
 		reflections?: ReflectionsType[];
+		favorite: boolean;
 		wins?: Win[];
 	}) => {
 		setIsSummaryList(false);
@@ -58,8 +103,12 @@ export default function MainComponent({
 					wins: log.wins || [],
 				}}
 				handleGoBack={handleGoBack}
+				onFavoriteToggle={onFavoriteToggle}
+				favoriteLogs={favoriteLogs}
 			/>
 		);
+		console.log('Checking date', log.date.toString());
+
 		setRightBarOpen(true);
 		console.log('Log clicked:', log);
 	};
@@ -86,7 +135,7 @@ export default function MainComponent({
 	}, [selectedDate]);
 
 	const handleDateChange = (newValue: Value) => {
-		setSelectedDate(newValue); // Ensure selectedDate is updated
+		setSelectedDate(newValue);
 		setValue(newValue);
 	};
 
@@ -118,7 +167,12 @@ export default function MainComponent({
 			component = <Trends />;
 			break;
 		case 'Favorites':
-			component = <Favorites />;
+			component = (
+				<Favorites
+					favoriteLogs={favoriteLogs}
+					handleLogClick={handleLogClick}
+				/>
+			);
 			break;
 		default:
 			component = (

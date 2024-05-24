@@ -20,6 +20,7 @@ type LogSummaryListProps = {
 		mood: string;
 		icon: string;
 		reflections?: ReflectionsType[];
+		favorite: boolean;
 		wins?: Win[];
 	}) => void;
 	selectedDate: Value;
@@ -39,7 +40,12 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 }) => {
 	const { user, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{
-		[key: string]: { mood: string; reflections: ReflectionsType[] ,wins: Win[]};
+		[key: string]: {
+			mood: string;
+			reflections: ReflectionsType[];
+			favorite: boolean;
+      wins: Win[]
+		};
 	}>({});
 	const [selectedFilters, setSelectedFilters] = useState({
 		Rainbow: false,
@@ -61,7 +67,12 @@ console.log(currentPage);
 			getUser(user.uid).then((userData) => {
 				if (userData && userData.moods) {
 					let moodMap: {
-						[key: string]: { mood: string; reflections: ReflectionsType[] ,wins: Win[]};
+						[key: string]: {
+							mood: string;
+							reflections: ReflectionsType[];
+							favorite: boolean;
+              wins: Win[]
+						};
 					} = {};
 
 					userData.moods.forEach((moodEntry: MoodEntry) => {
@@ -72,6 +83,7 @@ console.log(currentPage);
 						moodMap[formatValueTypeToYYYYMMDD(date)] = {
 							mood: moodEntry.mood,
 							reflections: moodEntry.reflections,
+							favorite: moodEntry.favorite,
 							wins: moodEntry.wins,
 						}; // Update this line
 					});
@@ -171,6 +183,7 @@ console.log(currentPage);
 										mood: mood.mood,
 										icon: `/moods/${mood.mood.toLowerCase()}.svg`,
 										reflections: mood.reflections,
+										favorite: mood.favorite,
 										wins: mood.wins,
 									});
 									handleDateChange(dateObj);

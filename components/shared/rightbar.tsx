@@ -17,6 +17,7 @@ interface RightbarProps {
 		mood: string;
 		icon: string;
 		reflections?: ReflectionsType[];
+		favorite: boolean;
 		wins?: Win[];
 	}) => void;
 	selectedDate: Value;
@@ -48,7 +49,11 @@ const Rightbar: React.FC<RightbarProps> = ({
 }) => {
 	const { user, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{
-		[key: string]: { mood: string; reflections: ReflectionsType[] };
+		[key: string]: {
+			mood: string;
+			reflections: ReflectionsType[];
+			favorite: boolean;
+		};
 	}>({});
 	useEffect(() => {
 		if (user) {
@@ -114,7 +119,11 @@ const Rightbar: React.FC<RightbarProps> = ({
 			getUser(user.uid).then((userData) => {
 				if (userData && userData.moods) {
 					let moodMap: {
-						[key: string]: { mood: string; reflections: ReflectionsType[] };
+						[key: string]: {
+							mood: string;
+							reflections: ReflectionsType[];
+							favorite: boolean;
+						};
 					} = {};
 
 					userData.moods.forEach((moodEntry: MoodEntry) => {
@@ -125,6 +134,7 @@ const Rightbar: React.FC<RightbarProps> = ({
 						moodMap[formatValueTypeToYYYYMMDD(date)] = {
 							mood: moodEntry.mood,
 							reflections: moodEntry.reflections,
+							favorite: moodEntry.favorite,
 						};
 					});
 					setMoods(moodMap);
