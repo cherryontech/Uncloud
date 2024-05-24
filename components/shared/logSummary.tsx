@@ -89,7 +89,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 	return (
 		<>
 			<div className='flex max-h-24 flex-col gap-5 pb-4'>
-				<div className='flex w-full flex-row items-center justify-between  px-1 text-base font-semibold'>
+				<div className='flex w-full flex-row items-center justify-between gap-4  px-1 text-base font-semibold'>
 					<div className='flex flex-row gap-2 text-primary'>
 						<button
 							onClick={handleGoBack}
