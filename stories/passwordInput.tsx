@@ -84,7 +84,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
 					)}
 				</div>
 			</div>
-			{error && <p className='text-sm font-semibold text-red-600'>{error}</p>}
+			{error && <p className='text-xs font-semibold text-red-600'>{error}</p>}
 		</div>
 	);
 };
