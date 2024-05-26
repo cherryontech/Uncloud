@@ -50,11 +50,12 @@ const NewLogPopup = ({
 	handleLogClick,
 }: Props) => {
 	const [selectedMood, setSelectedMood] = useState<string>(''); // State to hold the selected mood
-	const [currentStep, setCurrentStep] = useState<number>(1); // State to hold the selected mood
+	const [currentStep, setCurrentStep] = useState<number>(1); // State to hold the current step
 	const [initialReflections, setInitialReflections] = useState<
 		ReflectionsType[]
 	>([]);
 	const [initialWins, setInitialWins] = useState<Win[]>([]);
+	const [showFinalProgress, setShowFinalProgress] = useState<boolean>(false); // State for final progress bar
 	const { user, isUpdated } = useAuth();
 
 	useEffect(() => {
@@ -120,11 +121,17 @@ const NewLogPopup = ({
 		wins: Win[]
 	) => {
 		if (!user) return;
+
+		// Show the final progress bar briefly
+		setShowFinalProgress(true);
+		await new Promise((resolve) => setTimeout(resolve, 500)); // Wait for 500 milliseconds
+
 		await saveMood(selectedDate, selectedMood, reflections, false, wins);
 		console.log('Saved reflections:', reflections);
 		console.log('Favorite:', false);
 		setPopupOpen(false);
 		setCurrentStep(1);
+		setShowFinalProgress(false); // Hide the progress bar after closing
 		console.log('handleSaveMood: Closing popup');
 	};
 
@@ -139,6 +146,7 @@ const NewLogPopup = ({
 				className='relative flex h-full w-full flex-col items-center justify-center gap-4 border border-black bg-[#FAFCFF] p-8 text-center'
 				onClick={handleClickInside}
 			>
+				{showFinalProgress && <ProgressBar progress={100} />}
 				<ProgressBar progress={currentStep * 33} />
 				<button
 					className='absolute right-2 top-2 text-sm text-gray-500 hover:text-gray-700'

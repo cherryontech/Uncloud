@@ -10,7 +10,7 @@ import PasswordInput from './passwordInput';
 import { Button } from './Button';
 import { setDoc, doc } from 'firebase/firestore';
 import { Icon } from './Icons';
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image';
 
 interface RegisterData {
 	displayName: string;
@@ -123,12 +123,14 @@ const RegisterForm = () => {
 	};
 
 	return (
-		<div className=' flex h-full w-full max-w-[24rem] flex-col space-y-6 bg-backgroundSecondary p-4 py-6'>
-			<div className='flex flex-col items-center justify-center gap-2 '>
+		<div className=' flex h-full w-[26rem] w-full flex-col space-y-6 rounded-xl border border-[#DEE9F5] bg-backgroundSecondary px-6 py-12'>
+			<div className='flex flex-col items-center justify-center gap-8 '>
 				<Image src='/uncloud.svg' alt='Uncloud' width={64} height={64} />
-				<div className='flex  w-full flex-col items-center justify-center gap-2  space-y-2'>
-					<div className='text-3xl font-semibold'>Welcome to Uncloud</div>
-					<div className='text-center text-base font-light'>
+				<div className='flex max-w-[20rem] flex-col items-center justify-center gap-2  space-y-2'>
+					<div className='flex items-center justify-center text-center text-3xl font-semibold'>
+						Welcome to Uncloud
+					</div>
+					<div className='!m-0 text-center text-base font-light text-[#706F6F]'>
 						Add an email address, name, and password to complete your account.
 					</div>
 				</div>
@@ -136,7 +138,7 @@ const RegisterForm = () => {
 			<form onSubmit={handleSubmit} className='flex flex-col gap-6'>
 				<CustomInput
 					type='email'
-					placeholder='Please type your email'
+					placeholder='Please type your email.'
 					name='emailAddress'
 					value={registerData.emailAddress}
 					label='Email'
@@ -145,7 +147,7 @@ const RegisterForm = () => {
 				/>
 				<CustomInput
 					type='text'
-					placeholder='Please type your preferred name'
+					placeholder='Please type your preferred name.'
 					value={registerData.displayName}
 					name='displayName'
 					label='What should we call you?'
@@ -155,7 +157,7 @@ const RegisterForm = () => {
 				<div className='flex flex-col gap-2'>
 					<PasswordInput
 						type='password'
-						placeholder='Please type in your password'
+						placeholder='Please type in your password.'
 						name='password'
 						value={registerData.password}
 						label='Password'
@@ -165,7 +167,7 @@ const RegisterForm = () => {
 					/>
 					{/* If there ISN'T an error, show the password requirements, otherwise show the error */}
 					{!errorField.password && (
-						<div className='text-sm font-semibold'>
+						<div className='text-xs font-semibold'>
 							Passwords need to have at least 8 characters.
 						</div>
 					)}

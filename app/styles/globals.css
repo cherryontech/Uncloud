@@ -87,6 +87,9 @@ h6 {
 /* ------------------------------------ */
 
 /* Links hover color is #6e757c */
+a {
+	color: #2d81e0;
+}
 a:hover {
-	color: #6e757c;
+	color: #68afff;
 }

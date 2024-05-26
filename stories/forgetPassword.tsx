@@ -89,19 +89,19 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
 	};
 
 	return (
-		<div className=' flex h-full w-full max-w-[24rem] flex-col space-y-6 bg-backgroundSecondary p-4 py-6'>
+		<div className=' flex h-[44.625rem] w-[26rem] flex-col space-y-6 rounded-xl border border-[#DEE9F5] bg-backgroundSecondary px-6 py-12'>
 			{emailMessage ? (
 				<div className='flex  h-[47.75rem] w-full flex-col items-center justify-between gap-2'>
 					<div className='flex flex-col'>
-						<div className='flex flex-col items-center justify-center gap-6 '>
-							<div className=' flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-lineColor bg-white shadow-[0_2px_8px_0_rgba(0,0,0,0.05)]'>
+						<div className='flex flex-col items-center justify-center gap-8 '>
+							<div className=' flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-[#DEE9F5] bg-white shadow-[0_2px_8px_0_rgba(0,0,0,0.05)]'>
 								<Icon type='envelope-open' size='2rem' weight='regular' />
 							</div>
-							<div className='flex  w-full flex-col items-center justify-center gap-2  space-y-2'>
+							<div className='flex max-w-[16.9rem] flex-col items-center justify-center gap-2  space-y-2'>
 								<div className='text-center text-3xl font-semibold'>
 									Check Your Email
 								</div>
-								<div className='text-center text-base font-light'>
+								<div className='!m-0 text-center text-base font-light text-[#706F6F]'>
 									Check your email for instructions on resetting your password.
 									Follow the link provided to create a new password.
 								</div>
@@ -124,23 +124,24 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
 				<>
 					<div className='flex h-[47.75rem] flex-col justify-between'>
 						<div className='flex flex-col gap-6'>
-							<div className='flex flex-col items-center justify-center gap-6 '>
-								<div className=' flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-lineColor bg-white shadow-[0_2px_8px_0_rgba(0,0,0,0.05)]'>
+							<div className='flex flex-col items-center justify-center gap-8 '>
+								<div className=' flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-[#DEE9F5] bg-white shadow-[0_2px_8px_0_rgba(0,0,0,0.05)]'>
 									<Icon type='lock-key' size='2rem' weight='regular' />
 								</div>
-								<div className='flex  w-full flex-col items-center justify-center gap-2  space-y-2'>
-									<div className='text-3xl font-semibold'>Forgot Password?</div>
-									<div className='text-center text-base font-light'>
-										No worries! Please enter the email associated with your
-										account and a secure link with instructions will be sent to
-										your inbox.
+								<div className='flex  max-w-[18rem] flex-col items-center justify-center gap-2  space-y-2'>
+									<div className='flex items-center justify-center text-center text-3xl font-semibold'>
+										Forgot Password?
+									</div>
+									<div className='!m-0 text-center text-base font-light text-[#706F6F]'>
+										Enter your email and we&apos;ll send you a link to get back
+										into your account.
 									</div>
 								</div>
 							</div>
 							<form onSubmit={handleSubmit} className='flex flex-col gap-6'>
 								<CustomInput
 									type='email'
-									placeholder='Please type your email'
+									placeholder='Please type your email.'
 									name='emailAddress'
 									value={forgetPass.emailAddress}
 									label='Email'
@@ -152,7 +153,7 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
 								<div className='space-y-16'>
 									<Button
 										type='submit'
-										label='Send Link'
+										label='Send link'
 										primary
 										version='primary'
 									/>

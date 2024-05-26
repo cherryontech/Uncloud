@@ -29,9 +29,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
 
 	return (
 		<div className='w-full space-y-1.5'>
-			{label && <label className='text-sm font-bold' htmlFor={name}>
-				{label}
-			</label>}
+			{label && (
+				<label className='text-sm font-bold' htmlFor={name}>
+					{label}
+				</label>
+			)}
 			<div className='relative'>
 				<input
 					type={type}
@@ -42,9 +44,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
 					onChange={handleChange}
 					className={[
 						error ? 'border-red-500' : 'border-[#D9D9D9]',
-						error ? 'focus:ring-0' : 'focus:ring-[#D9D9D9]',
-						error ? 'focus:outline-red-500' : 'focus:outline-[#706f6f]',
-						error ? 'focus:border-red-500' : 'focus:border-[#706f6f]',
+						error ? 'focus:ring-0' : 'focus:ring-[#DEE9F5]',
+						error ? 'focus:outline-red-500' : 'focus:outline-[#2D81E0]',
+						error ? 'focus:border-red-500' : 'focus:border-[#2D81E0]',
 						'block',
 						'w-full',
 						'rounded-md',
@@ -54,14 +56,14 @@ const CustomInput: React.FC<CustomInputProps> = ({
 						'p-2',
 						'pl-3',
 						'pr-10',
-						'text-base',
-						'font-medium',
-						'hover:border-[#706f6f]',
-						'focus:border-[#706f6f]',
+						'text-sm',
+						'font-normal',
+						'hover:border-[#2D81E0]',
+						'focus:border-[#2D81E0]',
 						'focus:outline-0',
-						'focus:outline-[#706f6f]',
+						'focus:outline-[#2D81E0]',
 						'focus:ring',
-						'focus:ring-[#D9D9D9]',
+						'focus:ring-[#DEE9F5]',
 					].join(' ')}
 				/>
 				{error && (

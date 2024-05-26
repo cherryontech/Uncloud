@@ -1,0 +1,45 @@
+.custom-select select {
+	position: relative;
+	width: 100%;
+	height: 2.875rem;
+	appearance: none;
+	-webkit-appearance: none;
+	content: 'Change';
+	color: #2c2c2c;
+	font-weight: 600;
+	line-height: 1.3125rem;
+	padding: 0.75rem 5rem 0.75rem 1.25rem;
+	font-size: 0.875rem;
+	background-image: '';
+}
+.custom-select::after {
+	display: flex;
+	align-items: center;
+	height: 2.875rem;
+	content: 'Change';
+	position: absolute;
+	right: 10px;
+	top: 0;
+	/* top: 50%; */
+	/* transform: translateY(-50%); */
+	pointer-events: none;
+	font-size: 0.875rem;
+	font-weight: 700;
+	line-height: 1.5rem;
+	color: #2d81e0;
+}
+
+.select-selected {
+	background-color: white;
+}
+
+.reflection-input textarea {
+	font-size: 1rem;
+	font-weight: 400;
+}
+
+textarea::placeholder {
+	font-size: 0.875rem;
+	font-weight: 400;
+	/* font-style: italic; */
+}

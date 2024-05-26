@@ -8,7 +8,7 @@ import CustomInput from './customInput';
 import PasswordInput from './passwordInput';
 import { Button } from './Button';
 import { Icon } from './Icons';
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image';
 
 type Props = {};
 
@@ -99,20 +99,27 @@ const LoginForm: React.FC<Props> = (props) => {
 	};
 
 	return (
-		<div className=' flex h-full w-full max-w-[24rem] flex-col space-y-6 bg-backgroundSecondary p-4 py-6'>
-			<div className='flex flex-col items-center justify-center gap-2 '>
-				<Image src='/uncloud.svg' alt='Uncloud' width={64} height={64} />
-				<div className='flex  w-full flex-col items-center justify-center gap-2  space-y-2'>
+		// X: 0 y: 5 blur:10 10%
+		<div className=' flex h-full w-[26rem] flex-col space-y-6 rounded-xl border border-[#DEE9F5] bg-backgroundSecondary px-6 py-12'>
+			<div className='flex flex-col items-center justify-center gap-8 '>
+				<Image
+					src='/uncloud.svg'
+					alt='Uncloud'
+					width={64}
+					height={64}
+					className='shadow-[0_5px_10px_rgba(0,0,0,0.1)]'
+				/>
+				<div className='flex  max-w-[16.9rem] flex-col items-center justify-center gap-2  space-y-2'>
 					<div className='text-3xl font-semibold'>Log in to Uncloud</div>
-					<div className='text-center text-base font-light'>
-						Feelings matter. Sign in to translate them into career success.
+					<div className='!m-0 text-center text-base font-light text-[#706F6F]'>
+						Sign in to translate your feelings into career success.
 					</div>
 				</div>
 			</div>
 			<form onSubmit={handleSubmit} className='flex flex-col gap-6'>
 				<CustomInput
 					type='email'
-					placeholder='Please type in your email'
+					placeholder='Please type in your email.'
 					name='emailAddress'
 					value={loginData.emailAddress}
 					label='Email'
@@ -122,7 +129,7 @@ const LoginForm: React.FC<Props> = (props) => {
 				<div className='flex flex-col gap-2'>
 					<PasswordInput
 						type='password'
-						placeholder='Please type in your password'
+						placeholder='Please type in your password.'
 						name='password'
 						value={loginData.password}
 						label='Password'
@@ -135,9 +142,9 @@ const LoginForm: React.FC<Props> = (props) => {
 					<div className='flex justify-end text-sm'>
 						<Link
 							href={'/auth/forgetPassword'}
-							className='font-medium text-blue-500 underline'
+							className='text-xs font-medium text-[#2D81E0]  underline '
 						>
-							Forgot Password?
+							Forgot password?
 						</Link>{' '}
 					</div>
 				</div>
@@ -148,7 +155,7 @@ const LoginForm: React.FC<Props> = (props) => {
 						Not registered yet?&nbsp;{' '}
 						<Link
 							href={'/auth/signUp'}
-							className='font-medium text-blue-500 underline'
+							className='font-medium text-[#2D81E0] underline '
 						>
 							Create an account
 						</Link>{' '}

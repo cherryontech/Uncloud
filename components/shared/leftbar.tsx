@@ -70,10 +70,10 @@ const Leftbar = ({
 			/>
 			<div className=' mb-[0.5rem] mt-[0.1rem] h-[0.0625rem] bg-[#dee9f5]'></div>
 			{/* Menu */}
-			<div className='text-sm font-semibold text-[#706F6F]'>
+			<div className='text-sm font-semibold text-[#706F6F] '>
 				{/* Calendar Link */}
 				<div
-					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:bg-[#DEE3E6] ${selectedMenuItem === 'Calendar' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Calendar' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
 					onClick={() => setSelectedMenuItem('Calendar')}
 				>
 					<CalendarBlank size={24} />
@@ -81,7 +81,7 @@ const Leftbar = ({
 				</div>
 				{/* Summaries Link */}
 				<div
-					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:bg-[#DEE3E6] ${selectedMenuItem === 'Summary' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Summary' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
 					onClick={() => setSelectedMenuItem('Log Summary')}
 				>
 					<ClipboardText size={24} />
@@ -90,7 +90,7 @@ const Leftbar = ({
 
 				{/* Goal Link */}
 				<div
-					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:bg-[#DEE3E6] ${selectedMenuItem === 'Goals' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Goals' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
 					onClick={() => setSelectedMenuItem('Goals')}
 				>
 					<Target size={24} />
@@ -98,7 +98,7 @@ const Leftbar = ({
 				</div>
 				{/* Trends Link */}
 				<div
-					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:bg-[#DEE3E6] ${selectedMenuItem === 'Trends' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+					className={`flex h-[3.5rem] cursor-pointer  items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Trends' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
 					onClick={() => setSelectedMenuItem('Trends')}
 				>
 					<ChartBar size={24} />
@@ -106,7 +106,7 @@ const Leftbar = ({
 				</div>
 				{/* Favorites Link */}
 				<div
-					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:bg-[#DEE3E6] ${selectedMenuItem === 'Favorites' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Favorites' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
 					onClick={() => setSelectedMenuItem('Favorites')}
 				>
 					<Heart size={24} />
@@ -114,7 +114,7 @@ const Leftbar = ({
 				</div>
 				{/* FAQ Link */}
 				<div
-					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:bg-[#DEE3E6] ${selectedMenuItem === 'FAQ' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'FAQ' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
 					onClick={() => setSelectedMenuItem('FAQ')}
 				>
 					<Chats size={24} />
