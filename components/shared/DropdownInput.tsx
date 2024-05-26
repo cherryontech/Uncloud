@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomDropdown from '../shared/customDropdown'; // Adjust the path as needed
+import CustomDropdown from '../shared/customDropdown';
 
 const DropdownInput = ({
 	options,

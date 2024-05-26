@@ -13,7 +13,7 @@ import { ReflectionsType } from './newLogPopup';
 import CustomInput from '@/stories/customInput';
 import Image from 'next/image';
 import '/app/styles/moodPrompts.css';
-import DropdownInput from '../shared/DropdownInput'; // Adjust the path as needed
+import DropdownInput from '../shared/DropdownInput';
 
 type Props = {
 	selectedMood: string;

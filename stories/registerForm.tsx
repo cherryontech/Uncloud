@@ -48,7 +48,7 @@ const RegisterForm = () => {
 			errorMessage = 'This email is invalid';
 		} else if (name === 'password' && value.length < 8) {
 			errorMessage =
-				"For added security, passwords must be at least 8 characters long. Let's give it another try";
+				"For added security, passwords must be at least 8 characters long. Let's give it another try.";
 		}
 
 		return errorMessage;

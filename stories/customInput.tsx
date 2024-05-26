@@ -78,7 +78,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 			</div>
 			{/* If error is not "Incorrect email or password." then display the message */}
 			{error && error !== 'Incorrect email or password.' && (
-				<p className='text-sm font-semibold text-red-600'>{error}</p>
+				<p className='text-xs font-semibold text-red-600'>{error}</p>
 			)}
 
 			{/* {error && <p className='text-sm font-semibold text-red-600'>{error}</p>} */}
