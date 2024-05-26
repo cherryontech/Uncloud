@@ -5,6 +5,7 @@
 	box-sizing: border-box;
 	gap: 1rem;
 	background-color: #f3f5f9;
+	overflow-x: hidden;
 }
 
 .main-container {
@@ -60,7 +61,8 @@
 }
 
 .right-bar {
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 	height: 100%;
 	box-sizing: border-box;
 }
