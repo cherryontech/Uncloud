@@ -37,7 +37,7 @@ const CustomDropdown = ({
 	return (
 		<div className='custom-dropdown' ref={dropdownRef}>
 			<div
-				className='custom-dropdown__selected'
+				className='custom-dropdown__selected hover:border-[#2D81E0] focus:border-[#2D81E0] focus:outline-[#2D81E0] focus:ring focus:ring-[#DEE9F5]'
 				onClick={() => setIsOpen(!isOpen)}
 			>
 				{value}
