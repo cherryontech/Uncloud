@@ -163,7 +163,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 				{/* Divider */}
 				<div className='h-[0.125rem] bg-[#dee9f5]'></div>
 			</div>
-			<div className='flex h-full flex-col gap-3 overflow-scroll'>
+			<div className='flex h-full flex-col gap-3 overflow-auto'>
 				{currentMoods.length > 0 ? (
 					currentMoods.map(([date, mood], index) => {
 						const dateObj = new Date(`${date}T00:00:00`);

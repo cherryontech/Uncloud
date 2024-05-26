@@ -118,7 +118,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 				{/* Divider */}
 				<div className='h-[0.125rem] bg-[#dee9f5]'></div>
 			</div>
-			<div className='flex h-full flex-col overflow-scroll px-3'>
+			<div className='flex h-full flex-col overflow-auto px-3'>
 				{/* Icon and Mood Name */}
 				<div className='flex flex-col items-center justify-center gap-4 py-10'>
 					<div className='rounded-xl border border-[#DEE9F5] bg-[#FAFCFF]'>
