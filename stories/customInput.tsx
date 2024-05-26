@@ -64,6 +64,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 						'focus:outline-[#2D81E0]',
 						'focus:ring',
 						'focus:ring-[#DEE9F5]',
+						'focus:outline-none',
 					].join(' ')}
 				/>
 				{error && (

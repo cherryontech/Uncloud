@@ -7,10 +7,10 @@ const DropdownInput = ({
 	value,
 	handleChange,
 }: {
-	options: any;
-	name: any;
+	options: any[];
+	name: string;
 	value: any;
-	handleChange: any;
+	handleChange: (event: { target: { name: string; value: any } }) => void;
 }) => {
 	return (
 		<CustomDropdown

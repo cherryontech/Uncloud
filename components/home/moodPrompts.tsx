@@ -385,7 +385,7 @@ const MoodPrompts = ({
 												name='answer'
 												id={`answer-${index}`}
 												placeholder='Type what you want to write'
-												className='h-[11.5625rem] rounded-lg border border-[#D9D9D9] p-2 hover:border-[#2D81E0] focus:border-[#2D81E0] focus:outline-0 focus:outline-[#2D81E0] focus:ring focus:ring-[#DEE9F5]'
+												className='h-[11.5625rem] rounded-lg border border-[#D9D9D9] p-2 hover:border-[#2D81E0] focus:border-[#2D81E0] focus:outline-none focus:outline-0 focus:outline-[#2D81E0] focus:ring focus:ring-[#DEE9F5]'
 												rows={10}
 												value={reflection.answer}
 												onChange={(e) =>
