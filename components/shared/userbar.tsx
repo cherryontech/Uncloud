@@ -29,7 +29,7 @@ const Userbar = (props: Props) => {
 
 	const { user } = useAuth();
 	return (
-		<div className='top-bar nav-container flex w-full items-center justify-between bg-[#F3F5F9] pr-6'>
+		<div className='nav-container flex w-fit items-center justify-between bg-[#F3F5F9] pr-6'>
 			{user && (
 				<div className='flex w-full flex-row items-center gap-4'>
 					<Dropdown user={user} />
