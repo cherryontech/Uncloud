@@ -3,7 +3,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from './Button';
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image';
 
 type Props = {};
 
@@ -13,14 +13,14 @@ const LogoutConfirmation: React.FC<Props> = (props) => {
 		router.push('/auth/login');
 	};
 	return (
-		<div className=' flex h-full w-full max-w-[24rem] flex-col space-y-6 bg-backgroundSecondary p-4 py-6'>
-			<div className='flex  h-[47.75rem] w-full flex-col items-center gap-16'>
-				<div className='flex flex-col gap-8'>
-					<div className='flex flex-col items-center justify-center gap-6 '>
+		<div className=' flex h-full w-[26rem] flex-col space-y-6 rounded-xl border border-[#DEE9F5] bg-backgroundSecondary px-6 py-12'>
+			<div className='flex w-full flex-col items-center gap-16'>
+				<div className='flex w-full flex-col gap-8'>
+					<div className='flex flex-col items-center justify-center gap-8 '>
 						<div className=' flex h-16 w-16 items-center justify-center '>
 							<Image src='/uncloud.svg' alt='Uncloud' width={64} height={64} />
 						</div>
-						<div className='flex  w-full flex-col items-center justify-center gap-2  space-y-2'>
+						<div className='flex max-w-[20rem] flex-col items-center justify-center gap-2  space-y-2'>
 							<div className='text-center text-3xl font-semibold'>
 								You&apos;ve successfully logged out!
 							</div>

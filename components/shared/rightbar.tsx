@@ -145,7 +145,7 @@ const Rightbar: React.FC<RightbarProps> = ({
 	console.log(filteredMoods.length);
 	return (
 		<div
-			className={`right-bar flex h-full w-full flex-col gap-4 rounded-2xl bg-white  py-6 ${isRightBarOpen ? 'px-5' : 'px-2'}`}
+			className={`right-bar flex h-full w-full flex-col gap-4 rounded-2xl border  border-[#DEE9F5] bg-white  py-6 ${isRightBarOpen ? 'px-5' : 'px-2'}`}
 		>
 			{isRightBarOpen ? (
 				<div className='right-bar-container h-full'>

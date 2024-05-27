@@ -34,7 +34,6 @@ type Props = {
 	value: Value | null;
 	setValue: React.Dispatch<React.SetStateAction<Value | null>>;
 	isPopupOpen: boolean;
-
 	setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	handleDateChange: (newValue: Value) => void;
 	handleLogClick: (log: {
@@ -45,6 +44,7 @@ type Props = {
 		favorite: boolean;
 		wins?: Win[];
 	}) => void;
+	setIsLoading: (loading: boolean) => void;
 };
 type ValuePiece = Date | null;
 
@@ -66,10 +66,10 @@ const CalendarView = ({
 	value,
 	setValue,
 	isPopupOpen,
-
 	setPopupOpen,
 	handleDateChange,
 	handleLogClick,
+	setIsLoading,
 }: Props) => {
 	const { user, updateData, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{
@@ -85,32 +85,41 @@ const CalendarView = ({
 
 	useEffect(() => {
 		if (user) {
-			getUser(user.uid).then((userData) => {
-				if (userData && userData.moods) {
-					let moodMap: {
-						[key: string]: {
-							mood: string;
-							reflections: ReflectionsType[];
-							favorite: boolean;
-							wins: Win[];
-						};
-					} = {};
+			// setIsLoading(true);
+			getUser(user.uid)
+				.then((userData) => {
+					if (userData && userData.moods) {
+						let moodMap: {
+							[key: string]: {
+								mood: string;
+								reflections: ReflectionsType[];
+								favorite: boolean;
+								wins: Win[];
+							};
+						} = {};
 
-					userData.moods.forEach((moodEntry: MoodEntry) => {
-						const dateParts = moodEntry.date
-							.split('-')
-							.map((part) => parseInt(part, 10));
-						const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-						moodMap[formatValueTypeToYYYYMMDD(date)] = {
-							mood: moodEntry.mood,
-							reflections: moodEntry.reflections,
-							favorite: moodEntry.favorite,
-							wins: moodEntry.wins,
-						}; // Update this line
-					});
-					setMoods(moodMap);
-				}
-			});
+						userData.moods.forEach((moodEntry: MoodEntry) => {
+							const dateParts = moodEntry.date
+								.split('-')
+								.map((part) => parseInt(part, 10));
+							const date = new Date(
+								dateParts[0],
+								dateParts[1] - 1,
+								dateParts[2]
+							);
+							moodMap[formatValueTypeToYYYYMMDD(date)] = {
+								mood: moodEntry.mood,
+								reflections: moodEntry.reflections,
+								favorite: moodEntry.favorite,
+								wins: moodEntry.wins,
+							};
+						});
+						setMoods(moodMap);
+					}
+				})
+				.finally(() => {
+					setIsLoading(false);
+				});
 		}
 	}, [user, isUpdated]);
 
@@ -135,7 +144,7 @@ const CalendarView = ({
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
 	}, [isYearDropdownOpen]);
-	console.log(isUpdated);
+
 	useEffect(() => {
 		setDisplayedYear((selectedDate as Date).getFullYear());
 	}, [selectedDate]);
@@ -151,7 +160,6 @@ const CalendarView = ({
 			await addUserMood(user.uid, mood, date, reflections, favorite, wins);
 			updateData();
 			// Call handleLogClick after the new log is saved
-			console.log('Log saved:', date, mood, reflections, favorite);
 			handleLogClick({
 				date: new Date(date),
 				mood: mood,
@@ -213,12 +221,14 @@ const CalendarView = ({
 	};
 
 	return (
-		<div className='cal-container'>
+		<div className='big-calendar cal-container'>
 			<div className='flex max-h-24 flex-col gap-5'>
-				<div className='flex min-h-12 w-full flex-row items-center justify-between font-semibold'>
+				<div className='flex h-12 w-full flex-row items-center justify-between font-semibold'>
 					<div className='calendar-nav flex flex-row gap-2'>
 						<span
-							className={`calendar-heading align-center flex cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-2xl ${isYearDropdownOpen ? 'bg-[#dee9f5]' : ''}`}
+							className={`calendar-heading align-center flex cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-2xl ${
+								isYearDropdownOpen ? 'bg-[#dee9f5]' : ''
+							}`}
 							onClick={changeYear}
 						>
 							{formatDateToMonth(selectedDate as Date)}{' '}
@@ -248,7 +258,11 @@ const CalendarView = ({
 										{Array.from({ length: 12 }, (_, i) => i).map((month) => (
 											<button
 												key={month}
-												className={`calendar-dropdown-item ${new Date(selectedDate as Date).getMonth() === month ? 'selected-month' : ''}`}
+												className={`calendar-dropdown-item ${
+													new Date(selectedDate as Date).getMonth() === month
+														? 'selected-month'
+														: ''
+												}`}
 												onClick={(event) => handleMonthSelect(month, event)}
 											>
 												{new Date(0, month).toLocaleString('default', {
@@ -278,13 +292,13 @@ const CalendarView = ({
 								const todayKey = formatValueTypeToYYYYMMDD(today);
 								handleLogClick({
 									date: today,
-									mood: moods[todayKey].mood,
+									mood: moods[todayKey]?.mood || '',
 									icon: moods[todayKey]
 										? `/moods/${moods[todayKey].mood.toLowerCase()}.svg`
 										: '/moods/greyWithFace.svg',
-									reflections: moods[todayKey].reflections,
-									favorite: moods[todayKey].favorite,
-									wins: moods[todayKey].wins,
+									reflections: moods[todayKey]?.reflections || [],
+									favorite: moods[todayKey]?.favorite || false,
+									wins: moods[todayKey]?.wins || [],
 								});
 							}}
 						>
@@ -295,7 +309,11 @@ const CalendarView = ({
 				<div className=' h-[0.125rem] bg-[#dee9f5]'></div>
 			</div>
 			<Calendar
-				key={`${(selectedDate instanceof Date ? selectedDate : new Date()).getMonth()}-${(selectedDate instanceof Date ? selectedDate : new Date()).getFullYear()}`}
+				key={`${
+					selectedDate instanceof Date ? selectedDate : new Date()
+				}.getMonth()}-${
+					selectedDate instanceof Date ? selectedDate : new Date()
+				}.getFullYear()`}
 				calendarType='gregory'
 				onChange={handleDateChange}
 				showNeighboringMonth={true}
@@ -321,11 +339,11 @@ const CalendarView = ({
 								onClick={() =>
 									handleLogClick({
 										date: date,
-										mood: moods[dateKey].mood,
+										mood: moods[dateKey]?.mood || '',
 										icon: '/moods/greyNoFace.svg',
-										reflections: moods[dateKey].reflections,
-										favorite: moods[dateKey].favorite,
-										wins: moods[dateKey].wins,
+										reflections: moods[dateKey]?.reflections || [],
+										favorite: moods[dateKey]?.favorite || false,
+										wins: moods[dateKey]?.wins || [],
 									})
 								}
 							/>

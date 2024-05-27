@@ -1,8 +1,6 @@
 'use client';
-import { useEffect } from 'react';
-import { useAuth } from '@/app/context/UserProvider';
-import { UserProvider } from './context/UserProvider';
-import { useState, useCallback, SetStateAction } from 'react';
+import { useAuth, UserProvider } from '@/app/context/UserProvider';
+import { useEffect, useState, useCallback } from 'react';
 import { Value } from '@/components/home/calendar';
 import FAQ from '@/components/pages/faq';
 import Goals from '@/components/pages/goals';
@@ -18,6 +16,7 @@ import LogSummaryList from '@/components/shared/logSummaryList';
 import { ReflectionsType } from '@/components/home/newLogPopup';
 import { getFavoriteLogs } from '@/components/utils/serverFunctions';
 import { Win } from '@/components/home/moodPrompts';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
 
 export default function MainComponent({
 	children,
@@ -46,11 +45,15 @@ export default function MainComponent({
 		};
 	}>({});
 
+	const [isLoading, setIsLoading] = useState(false);
+
 	useEffect(() => {
 		const fetchFavoriteLogs = async () => {
 			if (user) {
+				// setIsLoading(true);
 				const favoriteLogs = await getFavoriteLogs(user.uid);
 				setFavoriteLogs(favoriteLogs);
+				// setIsLoading(false);
 			}
 		};
 
@@ -83,7 +86,6 @@ export default function MainComponent({
 		null
 	);
 	const [rightBarHistory, setRightBarHistory] = useState<JSX.Element[]>([]);
-	const [logUpdate, setLogUpdate] = useState(false);
 
 	const handleLogClick = (log: {
 		date: Date;
@@ -93,8 +95,6 @@ export default function MainComponent({
 		favorite: boolean;
 		wins?: Win[];
 	}) => {
-		setLogUpdate((prevState) => !prevState);
-
 		setIsSummaryList(false);
 		setRightBarHistory((prevHistory) =>
 			rightBarContent ? [...prevHistory, rightBarContent] : prevHistory
@@ -156,6 +156,7 @@ export default function MainComponent({
 					setPopupOpen={setPopupOpen}
 					handleDateChange={handleDateChange}
 					handleLogClick={handleLogClick}
+					setIsLoading={setIsLoading}
 				/>
 			);
 			break;
@@ -189,6 +190,7 @@ export default function MainComponent({
 					setPopupOpen={setPopupOpen}
 					handleDateChange={handleDateChange}
 					handleLogClick={handleLogClick}
+					setIsLoading={setIsLoading}
 				/>
 			);
 	}
@@ -198,8 +200,11 @@ export default function MainComponent({
 	const handlePagination = (value: { selected: number }) => {
 		setCurrentPage(value.selected + 1);
 	};
-	console.log(month);
-	console.log(selectedDate);
+
+	if (isLoading) {
+		return <LoadingSpinner />; // Show loading spinner while loading
+	}
+
 	return (
 		<div className='grid-container'>
 			<div className='sidebar border-r-[0.0625rem] border-[#D9D9D9]'>
@@ -216,23 +221,26 @@ export default function MainComponent({
 							setValue={setValue}
 							handleDateChange={handleDateChange}
 							handleLogClick={handleLogClick}
-							logUpdate={logUpdate}
 						/>
 					}
 				/>
 			</div>
 			<div className={`main-container bg-[#F3F5F9]`}>
-				<div className='col-span-1 flex h-16 w-full flex-row items-center justify-start'>
-					<span className='text-3xl font-semibold'>My Log</span>
+				<div className='top-bar flex flex-row'>
+					<div className='col-span-1 flex w-full flex-row items-center justify-start'>
+						<span className='text-3xl font-semibold'>My Log</span>
+					</div>
+
+					<Userbar />
 				</div>
 
-				<Userbar />
-
 				<div
-					className={`content ${isRightBarOpen ? 'right-bar-open' : 'right-bar-collapsed'}`}
+					className={`content ${
+						isRightBarOpen ? 'right-bar-open' : 'right-bar-collapsed'
+					}`}
 				>
 					<div className='main-content flex flex-col items-center  bg-[#F3F5F9]'>
-						<div className='h-full w-full rounded-2xl bg-white  px-4 py-6'>
+						<div className='h-full w-full rounded-2xl border  border-[#DEE9F5] bg-white px-4 py-6'>
 							<UserProvider>{component}</UserProvider>
 						</div>
 					</div>
