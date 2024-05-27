@@ -175,15 +175,15 @@ const MiniCalendarView = ({
 		<div className='mini-calendar flex h-[15.3rem] max-w-[12.6rem] flex-col gap-2 rounded-xl border-[1px] border-[#DEE9F5] bg-white p-3'>
 			{!isYearDropdownOpen ? (
 				<>
-					<div className='calendar-nav flex w-full flex-row justify-between gap-2 pr-2'>
+					<div className='calendar-nav flex w-full flex-row justify-between gap-1 pr-1'>
 						<span
-							className={`calendar-heading align-center flex w-fit cursor-pointer justify-center gap-[0.625rem] rounded-lg px-1 py-1 text-base font-semibold ${isYearDropdownOpen ? 'bg-[#dee9f5]' : ''}`}
+							className={`calendar-heading align-center flex w-fit cursor-pointer justify-center gap-[0.5rem] rounded-lg pl-2 text-sm font-semibold ${isYearDropdownOpen ? 'bg-[#dee9f5]' : ''}`}
 							onClick={changeYear}
 						>
 							{formatDateToMonth(tempSelectedDate as Date)}{' '}
 							{formatDateToYear(tempSelectedDate as Date)}
 						</span>
-						<div className='flex items-center justify-center gap-6'>
+						<div className='flex items-center justify-center gap-4'>
 							<button onClick={() => changeMonth(-1)}>
 								<CaretLeft weight='bold' className='text-primary' />
 							</button>
