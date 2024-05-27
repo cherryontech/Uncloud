@@ -177,6 +177,12 @@
 	height: 100%;
 	width: 100%;
 }
+@media screen and (max-height: 1200px) {
+	.big-calendar .react-calendar__tile {
+		height: 7.5rem;
+		width: 7.5rem;
+	}
+}
 
 @media screen and (max-height: 975px) {
 	.big-calendar .react-calendar__tile {
