@@ -226,11 +226,13 @@ export default function MainComponent({
 				/>
 			</div>
 			<div className={`main-container bg-[#F3F5F9]`}>
-				<div className='col-span-1 flex h-16 w-full flex-row items-center justify-start'>
-					<span className='text-3xl font-semibold'>My Log</span>
-				</div>
+				<div className='top-bar flex flex-row'>
+					<div className='col-span-1 flex w-full flex-row items-center justify-start'>
+						<span className='text-3xl font-semibold'>My Log</span>
+					</div>
 
-				<Userbar />
+					<Userbar />
+				</div>
 
 				<div
 					className={`content ${
@@ -238,7 +240,7 @@ export default function MainComponent({
 					}`}
 				>
 					<div className='main-content flex flex-col items-center  bg-[#F3F5F9]'>
-						<div className='h-full w-full rounded-2xl bg-white  px-4 py-6'>
+						<div className='h-full w-full rounded-2xl border  border-[#DEE9F5] bg-white px-4 py-6'>
 							<UserProvider>{component}</UserProvider>
 						</div>
 					</div>

@@ -79,14 +79,6 @@ const Leftbar = ({
 					<CalendarBlank size={24} />
 					<span className='leading-6'>Calendar</span>
 				</div>
-				{/* Summaries Link */}
-				<div
-					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Summary' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
-					onClick={() => setSelectedMenuItem('Log Summary')}
-				>
-					<ClipboardText size={24} />
-					<span className='leading-6'>Summary</span>
-				</div>
 
 				{/* Goal Link */}
 				<div

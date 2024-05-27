@@ -221,9 +221,9 @@ const CalendarView = ({
 	};
 
 	return (
-		<div className='cal-container'>
+		<div className='big-calendar cal-container'>
 			<div className='flex max-h-24 flex-col gap-5'>
-				<div className='flex min-h-12 w-full flex-row items-center justify-between font-semibold'>
+				<div className='flex h-12 w-full flex-row items-center justify-between font-semibold'>
 					<div className='calendar-nav flex flex-row gap-2'>
 						<span
 							className={`calendar-heading align-center flex cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-2xl ${
