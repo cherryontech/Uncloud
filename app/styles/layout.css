@@ -1,6 +1,6 @@
 .grid-container {
 	display: grid;
-	grid-template-columns: auto auto;
+	grid-template-columns: min-content auto;
 	height: 100vh;
 	box-sizing: border-box;
 	gap: 1rem;
@@ -26,7 +26,6 @@
 .content {
 	display: flex;
 	height: 95%;
-	grid-template-columns: 47.4375rem 23.125rem;
 	gap: 1rem;
 	width: 100%;
 	padding-right: 1rem;
@@ -56,7 +55,7 @@
 	background-color: #f0f0f0; /* Adjust as needed */
 	height: 100vh;
 	box-sizing: border-box;
-	min-width: 16rem;
+	width: 16rem;
 }
 
 .main {
