@@ -25,6 +25,7 @@ import todayIcon from '/public/moods/today.svg';
 import '/app/styles/calendar.css';
 import { init } from 'next/dist/compiled/webpack/webpack';
 import { Win } from './moodPrompts';
+import { on } from 'events';
 
 type Props = {
 	month: number;
@@ -44,7 +45,7 @@ type Props = {
 		favorite: boolean;
 		wins?: Win[];
 	}) => void;
-	setIsLoading: (loading: boolean) => void;
+	onLoadComplete?: () => void;
 };
 type ValuePiece = Date | null;
 
@@ -69,7 +70,7 @@ const CalendarView = ({
 	setPopupOpen,
 	handleDateChange,
 	handleLogClick,
-	setIsLoading,
+	onLoadComplete,
 }: Props) => {
 	const { user, updateData, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{
@@ -85,41 +86,34 @@ const CalendarView = ({
 
 	useEffect(() => {
 		if (user) {
-			// setIsLoading(true);
-			getUser(user.uid)
-				.then((userData) => {
-					if (userData && userData.moods) {
-						let moodMap: {
-							[key: string]: {
-								mood: string;
-								reflections: ReflectionsType[];
-								favorite: boolean;
-								wins: Win[];
-							};
-						} = {};
+			console.log('User found:', user);
+			getUser(user.uid).then((userData) => {
+				if (userData && userData.moods) {
+					let moodMap: {
+						[key: string]: {
+							mood: string;
+							reflections: ReflectionsType[];
+							favorite: boolean;
+							wins: Win[];
+						};
+					} = {};
 
-						userData.moods.forEach((moodEntry: MoodEntry) => {
-							const dateParts = moodEntry.date
-								.split('-')
-								.map((part) => parseInt(part, 10));
-							const date = new Date(
-								dateParts[0],
-								dateParts[1] - 1,
-								dateParts[2]
-							);
-							moodMap[formatValueTypeToYYYYMMDD(date)] = {
-								mood: moodEntry.mood,
-								reflections: moodEntry.reflections,
-								favorite: moodEntry.favorite,
-								wins: moodEntry.wins,
-							};
-						});
-						setMoods(moodMap);
-					}
-				})
-				.finally(() => {
-					setIsLoading(false);
-				});
+					userData.moods.forEach((moodEntry: MoodEntry) => {
+						const dateParts = moodEntry.date
+							.split('-')
+							.map((part) => parseInt(part, 10));
+						const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+						moodMap[formatValueTypeToYYYYMMDD(date)] = {
+							mood: moodEntry.mood,
+							reflections: moodEntry.reflections,
+							favorite: moodEntry.favorite,
+							wins: moodEntry.wins,
+						};
+					});
+					setMoods(moodMap);
+					onLoadComplete && onLoadComplete();
+				}
+			});
 		}
 	}, [user, isUpdated]);
 

@@ -31,6 +31,7 @@ export default function MainComponent({
 	const [month, setMonth] = useState(new Date().getMonth());
 	const [isSummaryList, setIsSummaryList] = useState(true);
 	const [isRightBarOpen, setRightBarOpen] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 	const [selectedLog, setSelectedLog] = useState<{
 		date: Date;
 		mood: string;
@@ -45,15 +46,11 @@ export default function MainComponent({
 		};
 	}>({});
 
-	const [isLoading, setIsLoading] = useState(false);
-
 	useEffect(() => {
 		const fetchFavoriteLogs = async () => {
 			if (user) {
-				// setIsLoading(true);
 				const favoriteLogs = await getFavoriteLogs(user.uid);
 				setFavoriteLogs(favoriteLogs);
-				// setIsLoading(false);
 			}
 		};
 
@@ -156,7 +153,7 @@ export default function MainComponent({
 					setPopupOpen={setPopupOpen}
 					handleDateChange={handleDateChange}
 					handleLogClick={handleLogClick}
-					setIsLoading={setIsLoading}
+					onLoadComplete={() => setIsLoading(false)}
 				/>
 			);
 			break;
@@ -190,7 +187,7 @@ export default function MainComponent({
 					setPopupOpen={setPopupOpen}
 					handleDateChange={handleDateChange}
 					handleLogClick={handleLogClick}
-					setIsLoading={setIsLoading}
+					onLoadComplete={() => setIsLoading(false)}
 				/>
 			);
 	}
@@ -201,12 +198,9 @@ export default function MainComponent({
 		setCurrentPage(value.selected + 1);
 	};
 
-	if (isLoading) {
-		return <LoadingSpinner />; // Show loading spinner while loading
-	}
-
 	return (
 		<div className='grid-container'>
+			{isLoading && <LoadingSpinner />}
 			<div className='sidebar border-r-[0.0625rem] border-[#D9D9D9]'>
 				<Leftbar
 					setSelectedMenuItem={setSelectedMenuItem}
