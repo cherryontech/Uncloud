@@ -303,3 +303,9 @@
 .today {
 	background-color: blue !important;
 }
+
+@media screen and (max-width: 800px) {
+	.calendar-heading {
+		font-size: 0.75rem;
+	}
+}
