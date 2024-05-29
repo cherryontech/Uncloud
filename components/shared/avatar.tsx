@@ -2,12 +2,13 @@ import React from 'react';
 import Image from 'next/legacy/image';
 
 type Props = {
-	// src: string;
+	image?:  string | null;
 	size?: number;
 };
 
 const Avatar: React.FC<Props> = ({
 	// src = './moods/sunny.svg',
+	image = '/profileIcon.jpg',
 	size = '2rem',
 }) => (
 	<div
@@ -15,10 +16,13 @@ const Avatar: React.FC<Props> = ({
 		style={{ width: size, height: size }}
 	>
 		<Image
-			src='/moods/sunny.svg'
+			src={image || '/profileIcon.jpg'}
 			alt='User Avatar'
-			layout='fill'
-			className='avatar'
+		width={100}
+		height={100}
+		objectFit='cover'
+		
+			className='avatar w-full h-full object-cover rounded-full'
 		/>
 	</div>
 );
