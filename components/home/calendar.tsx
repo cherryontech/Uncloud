@@ -83,6 +83,7 @@ const CalendarView = ({
 	}>({});
 	const [isYearDropdownOpen, setYearDropdownOpen] = useState(false);
 	const [displayedYear, setDisplayedYear] = useState(new Date().getFullYear());
+	const [selectedIconDate, setSelectedIconDate] = useState<string | null>(null);
 
 	useEffect(() => {
 		if (user) {
@@ -296,6 +297,7 @@ const CalendarView = ({
 									favorite: moods[todayKey]?.favorite || false,
 									wins: moods[todayKey]?.wins || [],
 								});
+								setSelectedIconDate(todayKey);
 							}}
 						>
 							Today
@@ -332,7 +334,7 @@ const CalendarView = ({
 								alt='Mood'
 								height={150}
 								width={150}
-								onClick={() =>
+								onClick={() => {
 									handleLogClick({
 										date: date,
 										mood: moods[dateKey]?.mood || '',
@@ -340,44 +342,42 @@ const CalendarView = ({
 										reflections: moods[dateKey]?.reflections || [],
 										favorite: moods[dateKey]?.favorite || false,
 										wins: moods[dateKey]?.wins || [],
-									})
-								}
+									});
+									setSelectedIconDate(dateKey);
+								}}
 							/>
 						);
 					}
-					return moods[dateKey] ? (
+					const moodIcon = moods[dateKey]
+						? `/moods/${moods[dateKey].mood.toLowerCase()}.svg`
+						: isDateToday
+							? todayIcon
+							: '/moods/greyWithFace.svg';
+
+					const selectedMoodIcon = moods[dateKey]
+						? `/moods/selected-${moods[dateKey].mood.toLowerCase()}.svg`
+						: isDateToday
+							? todayIcon
+							: '/moods/greyWithFace.svg';
+
+					return (
 						<Image
-							src={`/moods/${moods[dateKey].mood.toLowerCase()}.svg`}
+							src={selectedIconDate === dateKey ? selectedMoodIcon : moodIcon}
 							alt='Mood'
 							height={150}
 							width={150}
-							onClick={() =>
+							onClick={() => {
 								handleLogClick({
 									date: date,
-									mood: moods[dateKey].mood,
-									icon: `/moods/${moods[dateKey].mood.toLowerCase()}.svg`,
-									reflections: moods[dateKey].reflections,
-									favorite: moods[dateKey].favorite,
-									wins: moods[dateKey].wins,
-								})
-							}
-						/>
-					) : (
-						<Image
-							src={isDateToday ? todayIcon : `/moods/greyWithFace.svg`}
-							alt='Mood'
-							height={150}
-							width={150}
-							onClick={() =>
-								handleLogClick({
-									date: date,
-									mood: 'No Log Yet',
-									icon: isDateToday ? todayIcon : '/moods/greyWithFace.svg',
-									reflections: [],
-									favorite: false,
-									wins: [],
-								})
-							}
+									mood: moods[dateKey]?.mood || 'No Log Yet',
+									icon:
+										selectedIconDate === dateKey ? selectedMoodIcon : moodIcon,
+									reflections: moods[dateKey]?.reflections || [],
+									favorite: moods[dateKey]?.favorite || false,
+									wins: moods[dateKey]?.wins || [],
+								});
+								setSelectedIconDate(dateKey);
+							}}
 						/>
 					);
 				}}
