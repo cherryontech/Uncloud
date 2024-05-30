@@ -102,13 +102,15 @@ const LoginForm: React.FC<Props> = (props) => {
 		// X: 0 y: 5 blur:10 10%
 		<div className=' flex h-full w-[26rem] flex-col space-y-6 rounded-xl border border-[#DEE9F5] bg-backgroundSecondary px-6 py-12'>
 			<div className='flex flex-col items-center justify-center gap-8 '>
-				<Image
-					src='/uncloud.svg'
-					alt='Uncloud'
-					width={64}
-					height={64}
-					className='shadow-[0_5px_10px_rgba(0,0,0,0.1)]'
-				/>
+				<div className='form-logo'>
+					<Image
+						src='/uncloud.svg'
+						alt='Uncloud'
+						width={64}
+						height={64}
+						// className='form-logo'
+					/>
+				</div>
 				<div className='flex  max-w-[16.9rem] flex-col items-center justify-center gap-2  space-y-2'>
 					<div className='text-3xl font-semibold'>Log in to Uncloud</div>
 					<div className='!m-0 text-center text-base font-light text-[#706F6F]'>

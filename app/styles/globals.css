@@ -107,3 +107,8 @@ a:hover {
 	--tw-ring-opacity: 1;
 	--tw-ring-color: rgb(222 233 245 / var(--tw-ring-opacity));
 }
+
+.form-logo {
+	-webkit-filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.1));
+	filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.1));
+}
