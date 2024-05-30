@@ -13,6 +13,7 @@ import {
 	ClipboardText,
 } from '@phosphor-icons/react';
 import { Button } from '@/stories/Button';
+import { CiUser } from 'react-icons/ci';
 // import Image from 'next/image';
 
 type Props = {
@@ -103,6 +104,13 @@ const Leftbar = ({
 				>
 					<Heart size={24} />
 					<span className='leading-6'>Favorites</span>
+				</div>
+				<div
+					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Profile' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+					onClick={() => setSelectedMenuItem('Profile')}
+				>
+					<CiUser size={24} />
+					<span className='leading-6'>Profile</span>
 				</div>
 				{/* FAQ Link */}
 				<div

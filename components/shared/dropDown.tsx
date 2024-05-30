@@ -10,6 +10,7 @@ import '/app/styles/dropDown.css';
 type User = {
 	displayName: string | null;
 	email: string | null;
+	photoURL: string | null;
 };
 
 type DropdownProps = {
@@ -20,8 +21,9 @@ export default function Dropdown({ user }: DropdownProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const router = useRouter();
 	const dropdownRef = useRef<HTMLDivElement>(null);
-
-	const handleLogOut = () => {
+console.log("object user");
+console.log('finale',user);	
+const handleLogOut = () => {
 		signOut(auth)
 			.then(() => {
 				console.log('logged out');
@@ -59,7 +61,7 @@ export default function Dropdown({ user }: DropdownProps) {
 				onClick={() => setIsOpen(!isOpen)}
 				className={`dropdown-button flex w-full flex-row items-center justify-end gap-6 bg-[#F3F5F9] py-2 pr-2 ${isOpen ? '' : ''}`}
 			>
-				<Avatar />
+				<Avatar image={user.photoURL} />
 				<div className='flex flex-col items-start justify-center'>
 					<span className='text-lg font-semibold'>{user.displayName}</span>
 					<span className='text-sm font-normal text-[#706F6F]'>
