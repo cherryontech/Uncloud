@@ -18,7 +18,14 @@ const LogoutConfirmation: React.FC<Props> = (props) => {
 				<div className='flex w-full flex-col gap-8'>
 					<div className='flex flex-col items-center justify-center gap-8 '>
 						<div className=' flex h-16 w-16 items-center justify-center '>
-							<Image src='/uncloud.svg' alt='Uncloud' width={64} height={64} />
+							<div className='form-logo'>
+								<Image
+									src='/uncloud.svg'
+									alt='Uncloud'
+									width={64}
+									height={64}
+								/>
+							</div>
 						</div>
 						<div className='flex max-w-[20rem] flex-col items-center justify-center gap-2  space-y-2'>
 							<div className='text-center text-3xl font-semibold'>
