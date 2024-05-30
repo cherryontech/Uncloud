@@ -112,6 +112,8 @@ const CalendarView = ({
 					});
 					setMoods(moodMap);
 					onLoadComplete && onLoadComplete();
+				} else {
+					onLoadComplete && onLoadComplete();
 				}
 			});
 		}
