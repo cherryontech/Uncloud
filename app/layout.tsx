@@ -19,6 +19,7 @@ const openSans = Open_Sans({
 
 import Navbar from '@/components/shared/navbar';
 import { UserProvider } from './context/UserProvider';
+import { Toaster } from 'sonner';
 
 export default function RootLayout({
 	children,
@@ -31,6 +32,7 @@ export default function RootLayout({
 				<meta charSet='utf-8' />
 			</head>
 			<body className='bg-[#F3F5F9] text-textPrimary'>
+				<Toaster position='top-center'/>
 				<UserProvider>
 					<Navbar />
 					{children}

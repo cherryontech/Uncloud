@@ -17,6 +17,7 @@ import { ReflectionsType } from '@/components/home/newLogPopup';
 import { getFavoriteLogs } from '@/components/utils/serverFunctions';
 import { Win } from '@/components/home/moodPrompts';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import Profile from '@/components/pages/profile';
 
 export default function MainComponent({
 	children,
@@ -45,6 +46,8 @@ export default function MainComponent({
 			favorite: boolean;
 		};
 	}>({});
+
+	const [profilePageOpen, setProfilePageOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchFavoriteLogs = async () => {
@@ -174,6 +177,9 @@ export default function MainComponent({
 				/>
 			);
 			break;
+		case 'Profile':
+			component = <Profile />;
+			break;
 		default:
 			component = (
 				<CalendarView
@@ -230,7 +236,9 @@ export default function MainComponent({
 
 				<div
 					className={`content ${
-						isRightBarOpen ? 'right-bar-open' : 'right-bar-collapsed'
+						isRightBarOpen && selectedMenuItem === 'Calendar'
+							? 'right-bar-open'
+							: 'right-bar-collapsed'
 					}`}
 				>
 					<div className='main-content flex flex-col items-center  bg-[#F3F5F9]'>
@@ -238,22 +246,24 @@ export default function MainComponent({
 							<UserProvider>{component}</UserProvider>
 						</div>
 					</div>
-					<Rightbar
-						month={month}
-						isRightBarOpen={isRightBarOpen}
-						onToggle={handleRightBarToggle}
-						handleLogClick={handleLogClick}
-						selectedDate={selectedDate}
-						value={value}
-						isPopupOpen={isPopupOpen}
-						setValue={setValue}
-						handleDateChange={handleDateChange}
-						currentPage={currentPage}
-						handlePagination={handlePagination}
-						isSummaryList={isSummaryList}
-					>
-						{rightBarContent}
-					</Rightbar>
+					{selectedMenuItem === 'Calendar' && (
+						<Rightbar
+							month={month}
+							isRightBarOpen={isRightBarOpen}
+							onToggle={handleRightBarToggle}
+							handleLogClick={handleLogClick}
+							selectedDate={selectedDate}
+							value={value}
+							isPopupOpen={isPopupOpen}
+							setValue={setValue}
+							handleDateChange={handleDateChange}
+							currentPage={currentPage}
+							handlePagination={handlePagination}
+							isSummaryList={isSummaryList}
+						>
+							{rightBarContent}
+						</Rightbar>
+					)}
 				</div>
 			</div>
 		</div>
