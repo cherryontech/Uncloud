@@ -358,7 +358,10 @@ const CalendarView = ({
 						? `/moods/selected-${moods[dateKey].mood.toLowerCase()}.svg`
 						: isDateToday
 							? todayIcon
-							: '/moods/greyWithFace.svg';
+							: '/moods/selected-greyWithFace.svg';
+
+					console.log('Mood Icon:', moodIcon); // Debug log
+					console.log('Selected Mood Icon:', selectedMoodIcon); // Debug log
 
 					return (
 						<Image
