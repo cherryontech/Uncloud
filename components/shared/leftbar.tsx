@@ -74,7 +74,7 @@ const Leftbar = ({
 								className='menu-items mobile-dropdown-content-navbar flex w-56 flex-col rounded-md bg-[#F3F5F9] px-2 py-2'
 							>
 								<div
-									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4`}
+									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4 hover:bg-[#DEE3E6]`}
 									onClick={() => {
 										setSelectedMenuItem('Calendar');
 										setIsOpen(false);
@@ -85,7 +85,7 @@ const Leftbar = ({
 								</div>
 
 								<div
-									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4`}
+									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4 hover:bg-[#DEE3E6]`}
 									onClick={() => {
 										setSelectedMenuItem('Trends');
 										setIsOpen(false);
@@ -96,7 +96,7 @@ const Leftbar = ({
 								</div>
 
 								<div
-									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4`}
+									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4 hover:bg-[#DEE3E6]`}
 									onClick={() => {
 										setSelectedMenuItem('Favorites');
 										setIsOpen(false);
@@ -107,7 +107,7 @@ const Leftbar = ({
 								</div>
 
 								<div
-									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4`}
+									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4 hover:bg-[#DEE3E6]`}
 									onClick={() => {
 										setSelectedMenuItem('Profile');
 										setIsOpen(false);

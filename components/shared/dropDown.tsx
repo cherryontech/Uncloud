@@ -92,12 +92,12 @@ export default function Dropdown({ user, mobile }: DropdownProps) {
 							</div>
 							<div className='flex h-[1px] w-full items-center border-b border-[#c0c8cc]'></div>
 							{/* Add links */}
-							<div className='flex  w-full flex-col items-center self-stretch text-base hover:bg-[#DEE3E6]'>
+							<div className='flex  w-full flex-col items-center self-stretch text-base '>
 								{Object.entries(menu).map(([text, { url, icon }]) => (
 									<a
 										href={url}
 										key={text}
-										className='flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-1'
+										className='flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-1 hover:bg-[#DEE3E6]'
 									>
 										<div className='h-full'>{icon}</div>
 										<span className='h-full'>{text}</span>
