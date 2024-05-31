@@ -125,7 +125,9 @@ const RegisterForm = () => {
 	return (
 		<div className=' flex h-full w-[26rem] flex-col space-y-6 rounded-xl border border-[#DEE9F5] bg-backgroundSecondary px-6 py-12'>
 			<div className='flex flex-col items-center justify-center gap-8 '>
-				<Image src='/uncloud.svg' alt='Uncloud' width={64} height={64} />
+				<div className='form-logo'>
+					<Image src='/uncloud.svg' alt='Uncloud' width={64} height={64} />
+				</div>
 				<div className='flex max-w-[20rem] flex-col items-center justify-center gap-2  space-y-2'>
 					<div className='flex items-center justify-center text-center text-3xl font-semibold'>
 						Welcome to Uncloud
