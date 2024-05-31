@@ -63,8 +63,21 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 	);
 	console.log('Checking favoriteLogs', favoriteLogs, logDate, log.date);
 
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+	const [mobile, setMobile] = useState(window.innerWidth < 768);
 	useEffect(() => {
 		setFavorite(favoriteLogs[logDate]?.favorite || false);
+		const handleResize = () => {
+			setWindowWidth(window.innerWidth);
+			setMobile(window.innerWidth < 768);
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		// Cleanup
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
 	}, [favoriteLogs, logDate]);
 
 	const favoriteLog = async () => {
@@ -88,132 +101,275 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 
 	return (
 		<>
-			<div className='flex max-h-24 flex-col gap-5 pb-4'>
-				<div className='flex w-full flex-row items-center justify-between gap-4  px-1 text-base font-semibold'>
-					<div className='flex flex-row gap-2 text-primary'>
-						<button
-							onClick={handleGoBack}
-							className='flex flex-row items-center justify-center gap-2'
-						>
-							<CaretLeft size={16} weight='bold' />
-							<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
-								{/* {formatDateToMonthDayYear(log.date)} */}
-								Back to Summary
-							</span>
-						</button>
-					</div>
-					<div className='flex text-[#706F6F]'>
-						<button
-							onClick={favoriteLog}
-							className='flex flex-row items-center justify-center gap-2'
-						>
-							{favorite ? (
-								<Heart size={24} weight='fill' color='red' />
-							) : (
-								<Heart size={24} weight='bold' />
-							)}
-						</button>
-					</div>
-				</div>
-				{/* Divider */}
-				<div className='h-[0.125rem] bg-[#dee9f5]'></div>
-			</div>
-			<div className='flex h-full flex-col overflow-auto px-3'>
-				{/* Icon and Mood Name */}
-				<div className='flex flex-col items-center justify-center gap-4 py-10'>
-					<div className='rounded-xl border border-[#DEE9F5] bg-[#FAFCFF]'>
-						<Image src={log.icon} alt={log.mood} width={150} height={150} />
-					</div>
-					<div className='flex flex-col items-center justify-center'>
-						<span className='text-2xl font-semibold'>{log.mood}</span>
-						<span className='text-sm'>
-							{moodNames[log.mood as keyof typeof moodNames]}
-						</span>
-					</div>
-				</div>
-
-				{log.wins.some((win) => win.description.trim() !== '') && (
-					<div className='flex flex-col gap-3 '>
-						<span className='text-sm font-semibold'>My Wins</span>
-						<div className='pl-[1.62rem]'>
-							{nonEmptyWins.map((win, index) => (
-								<div
-									key={index}
-									className='relative flex h-fit flex-row items-center justify-start gap-3 '
+			{mobile ? (
+				<>
+					<div className='flex max-h-24 flex-col gap-5 pb-4'>
+						<div className='flex w-full flex-row items-center justify-between gap-4  px-1 text-base font-semibold'>
+							<div className='flex flex-row gap-2 text-primary'>
+								<button
+									onClick={handleGoBack}
+									className='flex flex-row items-center justify-center gap-2'
 								>
-									<div className='absolute bottom-0 left-0 top-1 flex flex-col items-center gap-1'>
-										<div className='h-2 w-2 rounded-full bg-primary'></div>
-										{index !== nonEmptyWins.length - 1 && (
-											<div className='w-[0.125rem] flex-grow bg-[#DEE9F5]'></div>
-										)}
+									<CaretLeft size={8} weight='bold' />
+									<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
+										{/* {formatDateToMonthDayYear(log.date)} */}
+										Back to Summary
+									</span>
+								</button>
+							</div>
+							<div className='flex text-[#706F6F]'>
+								<button
+									onClick={favoriteLog}
+									className='flex flex-row items-center justify-center gap-2'
+								>
+									{favorite ? (
+										<Heart size={12} weight='fill' color='red' />
+									) : (
+										<Heart size={12} weight='bold' />
+									)}
+								</button>
+							</div>
+						</div>
+						{/* Divider */}
+						<div className='h-[0.125rem] bg-[#dee9f5]'></div>
+					</div>
+					<div className='flex h-full flex-row items-start gap-8 overflow-auto p-2'>
+						{/* Icon and Mood Name */}
+						<div className='flex flex-col items-center justify-center gap-2'>
+							<div className='rounded-xl border border-[#DEE9F5] bg-[#FAFCFF]'>
+								<Image src={log.icon} alt={log.mood} width={60} height={60} />
+							</div>
+							<div className='flex flex-col items-center justify-center'>
+								<span className='text-xl font-semibold'>{log.mood}</span>
+								<span className='text-sm'>
+									{moodNames[log.mood as keyof typeof moodNames]}
+								</span>
+							</div>
+						</div>
+
+						<div className='w-full rounded-xl border border-[#DEE9F5] p-4'>
+							{log.wins.some((win) => win.description.trim() !== '') && (
+								<div className='flex flex-col gap-3 '>
+									<span className='text-sm font-semibold'>My Wins</span>
+									<div className='pl-[1.62rem]'>
+										{nonEmptyWins.map((win, index) => (
+											<div
+												key={index}
+												className='relative flex h-fit flex-row items-center justify-start gap-3 '
+											>
+												<div className='absolute bottom-0 left-0 top-1 flex flex-col items-center gap-1'>
+													<div className='h-2 w-2 rounded-full bg-primary'></div>
+													{index !== nonEmptyWins.length - 1 && (
+														<div className='w-[0.125rem] flex-grow bg-[#DEE9F5]'></div>
+													)}
+												</div>
+												<div className='ml-3 flex flex-col justify-start pb-8 pl-3'>
+													<span className='text-sm font-semibold text-[#2C2C2C]'>
+														{win.description}
+													</span>
+												</div>
+											</div>
+										))}
 									</div>
-									<div className='ml-3 flex flex-col justify-start pb-8 pl-3'>
-										<span className='text-sm font-semibold text-[#2C2C2C]'>
-											{win.description}
+								</div>
+							)}
+							{/* Reflections */}
+							{log.reflections.length > 0 ? (
+								<div className='flex flex-col gap-3'>
+									<div className='flex flex-row items-center justify-start  gap-2 text-sm'>
+										<span className='font-semibold'>Reflections</span>
+										<span className='text-[#706F6F]'>
+											({log.reflections.length})
 										</span>
 									</div>
-								</div>
-							))}
-						</div>
-					</div>
-				)}
-				{/* Reflections */}
-				{log.reflections.length > 0 ? (
-					<div className='flex flex-col gap-3'>
-						<div className='flex flex-row items-center justify-start  gap-2 text-sm'>
-							<span className='font-semibold'>Reflections</span>
-							<span className='text-[#706F6F]'>({log.reflections.length})</span>
-						</div>
-						{/* render a div for every item in reflections */}
+									{/* render a div for every item in reflections */}
 
-						{log.reflections.map((reflection, index) => (
-							<div
-								key={index}
-								className={`grid gap-x-5 px-4 py-2 ${openReflections.includes(index) ? 'question-opened grid-cols-[1fr_min-content] grid-rows-2 items-center' : 'question-closed grid-cols-[1fr_min-content] grid-rows-1 rounded-lg border border-[#DEE9F5] bg-[#FAFCFF]'}`}
-							>
-								<div
-									className={`question-div flex flex-row items-center justify-between  text-sm text-[#706F6F] ${openReflections.includes(index) ? 'question-opened bg-white' : 'question-closed'}`}
-									onClick={() => toggleReflection(index)}
-								>
-									<span className='font-semibold'>{reflection.question}</span>
-								</div>
-								<div
-									className={`col-start-2 col-end-3 row-span-2 row-start-1 flex self-stretch justify-self-end ${openReflections.includes(index) ? 'question-opened items-start ' : 'question-closed items-center '}`}
-									onClick={() => toggleReflection(index)}
-								>
-									{openReflections.includes(index) ? (
-										<Minus
-											size={16}
-											weight='light'
-											className='h-8 w-8 rounded-full bg-[#DEE9F5] px-1'
-										/>
-									) : (
-										<Plus
-											size={16}
-											weight='light'
-											className='h-8 w-8 rounded-full  px-1'
-										/>
-									)}
-								</div>
+									{log.reflections.map((reflection, index) => (
+										<div
+											key={index}
+											className={`grid gap-x-5 px-4 py-2 ${openReflections.includes(index) ? 'question-opened grid-cols-[1fr_min-content] grid-rows-2 items-center' : 'question-closed grid-cols-[1fr_min-content] grid-rows-1 rounded-lg border border-[#DEE9F5] bg-[#FAFCFF]'}`}
+										>
+											<div
+												className={`question-div flex flex-row items-center justify-between  text-sm text-[#706F6F] ${openReflections.includes(index) ? 'question-opened bg-white' : 'question-closed'}`}
+												onClick={() => toggleReflection(index)}
+											>
+												<span className='font-semibold'>
+													{reflection.question}
+												</span>
+											</div>
+											<div
+												className={`col-start-2 col-end-3 row-span-2 row-start-1 flex self-stretch justify-self-end ${openReflections.includes(index) ? 'question-opened items-start ' : 'question-closed items-center '}`}
+												onClick={() => toggleReflection(index)}
+											>
+												{openReflections.includes(index) ? (
+													<Minus
+														size={16}
+														weight='light'
+														className='h-8 w-8 rounded-full bg-[#DEE9F5] px-1'
+													/>
+												) : (
+													<Plus
+														size={16}
+														weight='light'
+														className='h-8 w-8 rounded-full  px-1'
+													/>
+												)}
+											</div>
 
-								{openReflections.includes(index) && (
-									<div className='answer-div col-start-1 col-end-2 row-start-2 row-end-3 mt-2 flex flex-col gap-2'>
-										<div className='text-xs text-[#706F6F]'>
-											{reflection.answer}
+											{openReflections.includes(index) && (
+												<div className='answer-div col-start-1 col-end-2 row-start-2 row-end-3 mt-2 flex flex-col gap-2'>
+													<div className='text-xs text-[#706F6F]'>
+														{reflection.answer}
+													</div>
+												</div>
+											)}
 										</div>
-									</div>
-								)}
+									))}
+								</div>
+							) : (
+								<div className='flex w-full flex-col items-center justify-center'>
+									<p className='text-base font-medium text-black'>
+										No Reflections yet
+									</p>
+								</div>
+							)}
+						</div>
+					</div>
+				</>
+			) : (
+				<>
+					<div className='flex max-h-24 flex-col gap-5 pb-4'>
+						<div className='flex w-full flex-row items-center justify-between gap-4  px-1 text-base font-semibold'>
+							<div className='flex flex-row gap-2 text-primary'>
+								<button
+									onClick={handleGoBack}
+									className='flex flex-row items-center justify-center gap-2'
+								>
+									<CaretLeft size={16} weight='bold' />
+									<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
+										{/* {formatDateToMonthDayYear(log.date)} */}
+										Back to Summary
+									</span>
+								</button>
 							</div>
-						))}
+							<div className='flex text-[#706F6F]'>
+								<button
+									onClick={favoriteLog}
+									className='flex flex-row items-center justify-center gap-2'
+								>
+									{favorite ? (
+										<Heart size={24} weight='fill' color='red' />
+									) : (
+										<Heart size={24} weight='bold' />
+									)}
+								</button>
+							</div>
+						</div>
+						{/* Divider */}
+						<div className='h-[0.125rem] bg-[#dee9f5]'></div>
 					</div>
-				) : (
-					<div className='flex w-full flex-col items-center justify-center'>
-						<p className='text-base font-medium text-black'>
-							No Reflections yet
-						</p>
+					<div className='flex h-full flex-col overflow-auto px-3'>
+						{/* Icon and Mood Name */}
+						<div className='flex flex-col items-center justify-center gap-4 py-10'>
+							<div className='rounded-xl border border-[#DEE9F5] bg-[#FAFCFF]'>
+								<Image src={log.icon} alt={log.mood} width={150} height={150} />
+							</div>
+							<div className='flex flex-col items-center justify-center'>
+								<span className='text-2xl font-semibold'>{log.mood}</span>
+								<span className='text-sm'>
+									{moodNames[log.mood as keyof typeof moodNames]}
+								</span>
+							</div>
+						</div>
+
+						{log.wins.some((win) => win.description.trim() !== '') && (
+							<div className='flex flex-col gap-3 '>
+								<span className='text-sm font-semibold'>My Wins</span>
+								<div className='pl-[1.62rem]'>
+									{nonEmptyWins.map((win, index) => (
+										<div
+											key={index}
+											className='relative flex h-fit flex-row items-center justify-start gap-3 '
+										>
+											<div className='absolute bottom-0 left-0 top-1 flex flex-col items-center gap-1'>
+												<div className='h-2 w-2 rounded-full bg-primary'></div>
+												{index !== nonEmptyWins.length - 1 && (
+													<div className='w-[0.125rem] flex-grow bg-[#DEE9F5]'></div>
+												)}
+											</div>
+											<div className='ml-3 flex flex-col justify-start pb-8 pl-3'>
+												<span className='text-sm font-semibold text-[#2C2C2C]'>
+													{win.description}
+												</span>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						)}
+						{/* Reflections */}
+						{log.reflections.length > 0 ? (
+							<div className='flex flex-col gap-3'>
+								<div className='flex flex-row items-center justify-start  gap-2 text-sm'>
+									<span className='font-semibold'>Reflections</span>
+									<span className='text-[#706F6F]'>
+										({log.reflections.length})
+									</span>
+								</div>
+								{/* render a div for every item in reflections */}
+
+								{log.reflections.map((reflection, index) => (
+									<div
+										key={index}
+										className={`grid gap-x-5 px-4 py-2 ${openReflections.includes(index) ? 'question-opened grid-cols-[1fr_min-content] grid-rows-2 items-center' : 'question-closed grid-cols-[1fr_min-content] grid-rows-1 rounded-lg border border-[#DEE9F5] bg-[#FAFCFF]'}`}
+									>
+										<div
+											className={`question-div flex flex-row items-center justify-between  text-sm text-[#706F6F] ${openReflections.includes(index) ? 'question-opened bg-white' : 'question-closed'}`}
+											onClick={() => toggleReflection(index)}
+										>
+											<span className='font-semibold'>
+												{reflection.question}
+											</span>
+										</div>
+										<div
+											className={`col-start-2 col-end-3 row-span-2 row-start-1 flex self-stretch justify-self-end ${openReflections.includes(index) ? 'question-opened items-start ' : 'question-closed items-center '}`}
+											onClick={() => toggleReflection(index)}
+										>
+											{openReflections.includes(index) ? (
+												<Minus
+													size={16}
+													weight='light'
+													className='h-8 w-8 rounded-full bg-[#DEE9F5] px-1'
+												/>
+											) : (
+												<Plus
+													size={16}
+													weight='light'
+													className='h-8 w-8 rounded-full  px-1'
+												/>
+											)}
+										</div>
+
+										{openReflections.includes(index) && (
+											<div className='answer-div col-start-1 col-end-2 row-start-2 row-end-3 mt-2 flex flex-col gap-2'>
+												<div className='text-xs text-[#706F6F]'>
+													{reflection.answer}
+												</div>
+											</div>
+										)}
+									</div>
+								))}
+							</div>
+						) : (
+							<div className='flex w-full flex-col items-center justify-center'>
+								<p className='text-base font-medium text-black'>
+									No Reflections yet
+								</p>
+							</div>
+						)}
 					</div>
-				)}
-			</div>
+				</>
+			)}
 		</>
 	);
 };

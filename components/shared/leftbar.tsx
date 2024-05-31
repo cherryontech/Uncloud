@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
 	CloudSun,
 	CalendarBlank,
@@ -10,17 +10,21 @@ import {
 	Target,
 	ChartBar,
 	Chats,
+	List,
 	ClipboardText,
+	UserCircle,
 } from '@phosphor-icons/react';
 import { Button } from '@/stories/Button';
-import { CiUser } from 'react-icons/ci';
-// import Image from 'next/image';
+import Image from 'next/image';
+import Userbar from '@/components/shared/userbar';
+import '/app/styles/dropDown.css';
 
 type Props = {
 	setSelectedMenuItem: (menuItem: string) => void;
 	selectedMenuItem: string;
 	handleAddLogClick: () => void;
-	MiniCalendar: React.ReactNode;
+	MiniCalendar?: React.ReactNode;
+	mobile: boolean;
 };
 
 const Leftbar = ({
@@ -28,100 +32,186 @@ const Leftbar = ({
 	selectedMenuItem,
 	handleAddLogClick,
 	MiniCalendar,
+	mobile,
 }: Props) => {
+	const [isOpen, setIsOpen] = useState(false);
+	const dropdownRef = useRef<HTMLDivElement>(null);
+
+	const hamburgerRef = useRef(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				dropdownRef.current &&
+				!dropdownRef.current.contains(event.target as Node) &&
+				hamburgerRef.current !== event.target
+			) {
+				setIsOpen(false);
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
+
 	return (
-		<div className='flex h-full w-full flex-col gap-4 bg-[#FAFCFF] px-6 py-2'>
-			{/* <div className='relative h-[1.895rem] w-[2.385rem]'>
-				<Image src='/logoUn.svg' alt='Uncloud Logo' layout='fill' />
-			</div>
-			<div className='relative h-[1.25rem] w-[3.781rem]'>
-				<Image src='/logoCloud.svg' alt='Uncloud Logo' layout='fill' />
-			</div> */}
-			<div className='flex h-16 flex-row items-center justify-start gap-2'>
-				<Link href='/'>
-					<CloudSun className='h-8 w-8' />
-				</Link>
-				<Link href='/'>
-					<span className='text-2xl font-semibold'>Uncloud</span>
-				</Link>
-			</div>
+		<>
+			{mobile ? (
+				<>
+					<div className='hamburger-menu mobile-dropdown'>
+						<List
+							size={18}
+							color='#2C2C2C'
+							onClick={() => setIsOpen(!isOpen)}
+							ref={hamburgerRef}
+						/>
 
-			{/* Calendar */}
-			{MiniCalendar}
-			<Button
-				type='button'
-				label={
-					<span
-						style={{
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-							gap: '5px',
-						}}
-					>
-						<Plus />
-						<div className='flex content-center items-center justify-center'>
-							Add a Log
+						{isOpen && (
+							<div
+								ref={dropdownRef}
+								className='menu-items mobile-dropdown-content-navbar flex w-56 flex-col rounded-md bg-[#F3F5F9] px-2 py-2'
+							>
+								<div
+									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4 hover:bg-[#DEE3E6]`}
+									onClick={() => {
+										setSelectedMenuItem('Calendar');
+										setIsOpen(false);
+									}}
+								>
+									<CalendarBlank size={12} />
+									<span className=''>Calendar</span>
+								</div>
+
+								<div
+									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4 hover:bg-[#DEE3E6]`}
+									onClick={() => {
+										setSelectedMenuItem('Trends');
+										setIsOpen(false);
+									}}
+								>
+									<ChartBar size={12} />
+									<span className=''>Trends</span>
+								</div>
+
+								<div
+									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4 hover:bg-[#DEE3E6]`}
+									onClick={() => {
+										setSelectedMenuItem('Favorites');
+										setIsOpen(false);
+									}}
+								>
+									<Heart size={12} />
+									<span className=''>Favorites</span>
+								</div>
+
+								<div
+									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4 hover:bg-[#DEE3E6]`}
+									onClick={() => {
+										setSelectedMenuItem('Profile');
+										setIsOpen(false);
+									}}
+								>
+									<UserCircle size={12} />
+									<span className=''>Profile</span>
+								</div>
+							</div>
+						)}
+					</div>
+					<Userbar mobile={mobile} />
+				</>
+			) : (
+				<>
+					<div className='flex h-full w-full flex-col gap-4 bg-[#FAFCFF] px-6 py-2'>
+						<div className='flex h-16 flex-row items-center justify-start gap-2'>
+							<Link href='/'>
+								<CloudSun className='h-8 w-8' />
+							</Link>
+							<Link href='/'>
+								<span className='text-2xl font-semibold'>Uncloud</span>
+							</Link>
 						</div>
-					</span>
-				}
-				primary
-				onClick={handleAddLogClick}
-				version='primary'
-			/>
-			<div className=' mb-[0.5rem] mt-[0.1rem] h-[0.0625rem] bg-[#dee9f5]'></div>
-			{/* Menu */}
-			<div className='text-sm font-semibold text-[#706F6F] '>
-				{/* Calendar Link */}
-				<div
-					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Calendar' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
-					onClick={() => setSelectedMenuItem('Calendar')}
-				>
-					<CalendarBlank size={24} />
-					<span className='leading-6'>Calendar</span>
-				</div>
 
-				{/* Goal Link */}
-				<div
-					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Goals' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
-					onClick={() => setSelectedMenuItem('Goals')}
-				>
-					<Target size={24} />
-					<span className='leading-6'>Goals</span>
-				</div>
-				{/* Trends Link */}
-				<div
-					className={`flex h-[3.5rem] cursor-pointer  items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Trends' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
-					onClick={() => setSelectedMenuItem('Trends')}
-				>
-					<ChartBar size={24} />
-					<span className='leading-6'>Trends</span>
-				</div>
-				{/* Favorites Link */}
-				<div
-					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Favorites' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
-					onClick={() => setSelectedMenuItem('Favorites')}
-				>
-					<Heart size={24} />
-					<span className='leading-6'>Favorites</span>
-				</div>
-				<div
-					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Profile' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
-					onClick={() => setSelectedMenuItem('Profile')}
-				>
-					<CiUser size={24} />
-					<span className='leading-6'>Profile</span>
-				</div>
-				{/* FAQ Link */}
-				<div
-					className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'FAQ' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
-					onClick={() => setSelectedMenuItem('FAQ')}
-				>
-					<Chats size={24} />
-					<span className='leading-6'>FAQ</span>
-				</div>
-			</div>
-		</div>
+						{/* Calendar */}
+						{MiniCalendar}
+						<Button
+							type='button'
+							label={
+								<span
+									style={{
+										display: 'flex',
+										alignItems: 'center',
+										justifyContent: 'center',
+										gap: '5px',
+									}}
+								>
+									<Plus />
+									<div className='flex content-center items-center justify-center'>
+										Add a Log
+									</div>
+								</span>
+							}
+							primary
+							onClick={handleAddLogClick}
+							version='primary'
+						/>
+						<div className=' mb-[0.5rem] mt-[0.1rem] h-[0.0625rem] bg-[#dee9f5]'></div>
+						{/* Menu */}
+						<div className='text-sm font-semibold text-[#706F6F] '>
+							{/* Calendar Link */}
+							<div
+								className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Calendar' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+								onClick={() => setSelectedMenuItem('Calendar')}
+							>
+								<CalendarBlank size={24} />
+								<span className='leading-6'>Calendar</span>
+							</div>
+
+							{/* Goal Link */}
+							<div
+								className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Goals' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+								onClick={() => setSelectedMenuItem('Goals')}
+							>
+								<Target size={24} />
+								<span className='leading-6'>Goals</span>
+							</div>
+							{/* Trends Link */}
+							<div
+								className={`flex h-[3.5rem] cursor-pointer  items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Trends' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+								onClick={() => setSelectedMenuItem('Trends')}
+							>
+								<ChartBar size={24} />
+								<span className='leading-6'>Trends</span>
+							</div>
+							{/* Favorites Link */}
+							<div
+								className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Favorites' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+								onClick={() => setSelectedMenuItem('Favorites')}
+							>
+								<Heart size={24} />
+								<span className='leading-6'>Favorites</span>
+							</div>
+							<div
+								className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Profile' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+								onClick={() => setSelectedMenuItem('Profile')}
+							>
+								<UserCircle size={24} />
+								<span className='leading-6'>Profile</span>
+							</div>
+							{/* FAQ Link */}
+							<div
+								className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'FAQ' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+								onClick={() => setSelectedMenuItem('FAQ')}
+							>
+								<Chats size={24} />
+								<span className='leading-6'>FAQ</span>
+							</div>
+						</div>
+					</div>
+				</>
+			)}
+		</>
 	);
 };
 

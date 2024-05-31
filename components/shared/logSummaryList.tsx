@@ -29,6 +29,7 @@ type LogSummaryListProps = {
 	handleDateChange: (newValue: Value) => void;
 	currentPage: number;
 	handlePagination: (value: { selected: number }) => void;
+	mobile: boolean;
 };
 
 const LogSummaryList: React.FC<LogSummaryListProps> = ({
@@ -37,6 +38,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 	currentPage,
 	handlePagination,
 	selectedDate,
+	mobile,
 }) => {
 	const { user, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{
@@ -150,95 +152,204 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 
 	return (
 		<>
-			<div className='flex max-h-24 flex-col gap-5 pb-4'>
-				<div className='flex w-full flex-row items-center justify-between  text-base font-semibold'>
-					<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
-						Summary Page
-					</span>
-					<FilterDropdown
-						handleCheckboxChange={handleCheckboxChange}
-						selectedFilters={selectedFilters}
-					/>
-				</div>
-				{/* Divider */}
-				<div className='h-[0.125rem] bg-[#dee9f5]'></div>
-			</div>
-			<div className='flex h-full flex-col gap-3 overflow-auto'>
-				{currentMoods.length > 0 ? (
-					currentMoods.map(([date, mood], index) => {
-						const dateObj = new Date(`${date}T00:00:00`);
-						const day = dateObj.getUTCDate();
-						const month = dateObj.toLocaleString('default', {
-							month: 'short',
-							timeZone: 'UTC',
-						});
-						return (
-							<div
-								key={date}
-								className='group flex h-20 w-full cursor-pointer items-center justify-between gap-4 rounded-lg border border-blue-100 bg-boxBackground px-4 py-2  text-textPrimary hover:bg-hoverColor 2xl:gap-[2.9375rem]'
-								onClick={() => {
-									handleLogClick({
-										date: dateObj,
-										mood: mood.mood,
-										icon: `/moods/${mood.mood.toLowerCase()}.svg`,
-										reflections: mood.reflections,
-										favorite: mood.favorite,
-										wins: mood.wins,
-									});
-									handleDateChange(dateObj);
-								}}
-							>
-								<div className='flex h-full w-full flex-row items-center justify-start gap-4'>
-									<div className='justify-content flex flex-col items-center gap-[0.3125rem] leading-none text-[#706F6F]'>
-										<span className='m-0 p-0 text-2xl font-medium'>{day}</span>
-										<span className='m-0 p-0 text-xs'>{month}</span>
-									</div>
-
-									<div className='h-full w-[0.0625rem] bg-[#dee9f5] group-hover:bg-white'></div>
-									<div className='flex h-16 w-16 items-center justify-center rounded-lg bg-white'>
-										<Image
-											src={`/moods/${mood.mood.toLowerCase()}.svg`}
-											alt='Mood'
-											width={200}
-											height={200}
-											// className='w-full'
-										/>
-									</div>
-								</div>
-								<div className='flex h-full w-full flex-row items-center justify-start gap-4 leading-none'>
-									<div className='items-left flex w-20 flex-col justify-center gap-[0.66rem]'>
-										<span className='text-base font-medium text-black'>
-											{mood.mood.charAt(0).toUpperCase() + mood.mood.slice(1)}
-										</span>
-										<span className='text-xs text-gray-500'>
-											{moodNames[mood.mood]}
-										</span>
-									</div>
-									<CaretRight
-										className='text-black group-hover:text-blue-500'
-										size={16}
-										weight='bold'
-									/>
-								</div>
-							</div>
-						);
-					})
-				) : (
-					<div className='flex w-full flex-col items-center justify-center'>
-						<p className='text-base font-medium text-black'>No summaries yet</p>
-						<Image
-							src='/moods/greyWithFace.svg'
-							alt='Empty'
-							width={200}
-							height={200}
-							className='w-full'
-						/>
-						<p className='text-base font-medium text-gray-500'>
-							Add a log to get started!
-						</p>
+			{mobile ? (
+				<>
+					<div className='flex max-h-24 flex-col gap-2 pb-4'>
+						<div className='flex w-full flex-row items-center justify-between  text-base font-semibold'>
+							<span className='flex min-h-12 w-fit items-center justify-center text-xl'>
+								Summary Page
+							</span>
+							<FilterDropdown
+								handleCheckboxChange={handleCheckboxChange}
+								selectedFilters={selectedFilters}
+								mobile={mobile}
+							/>
+						</div>
+						{/* Divider */}
+						<div className='h-[0.125rem] bg-[#dee9f5]'></div>
 					</div>
-				)}
-			</div>
+					<div className='flex h-full flex-col gap-3 overflow-auto pr-4'>
+						{currentMoods.length > 0 ? (
+							currentMoods.map(([date, mood], index) => {
+								const dateObj = new Date(`${date}T00:00:00`);
+								const day = dateObj.getUTCDate();
+								const month = dateObj.toLocaleString('default', {
+									month: 'short',
+									timeZone: 'UTC',
+								});
+								return (
+									<div
+										key={date}
+										className='group flex h-20 w-full cursor-pointer items-center justify-between gap-4 rounded-lg border border-blue-100 bg-boxBackground px-4 py-2  text-textPrimary hover:bg-hoverColor 2xl:gap-[2.9375rem]'
+										onClick={() => {
+											handleLogClick({
+												date: dateObj,
+												mood: mood.mood,
+												icon: `/moods/${mood.mood.toLowerCase()}.svg`,
+												reflections: mood.reflections,
+												favorite: mood.favorite,
+												wins: mood.wins,
+											});
+											handleDateChange(dateObj);
+										}}
+									>
+										<div className='flex h-full w-full flex-row items-center justify-start gap-4'>
+											<div className='justify-content flex flex-col items-center gap-[0.3125rem] leading-none text-[#706F6F]'>
+												<span className='m-0 p-0 text-2xl font-medium'>
+													{day}
+												</span>
+												<span className='m-0 p-0 text-xs'>{month}</span>
+											</div>
+
+											<div className='h-full w-[0.0625rem] bg-[#dee9f5] group-hover:bg-white'></div>
+											<div className='flex h-16 w-16 items-center justify-center rounded-lg bg-white'>
+												<Image
+													src={`/moods/${mood.mood.toLowerCase()}.svg`}
+													alt='Mood'
+													width={200}
+													height={200}
+													// className='w-full'
+												/>
+											</div>
+											<div className='items-left flex w-20 flex-col justify-center gap-[0.4rem]'>
+												<span className='text-base font-medium text-black'>
+													{mood.mood.charAt(0).toUpperCase() +
+														mood.mood.slice(1)}
+												</span>
+												<span className='text-xs text-gray-500'>
+													{moodNames[mood.mood]}
+												</span>
+											</div>
+										</div>
+										<div className='flex h-full w-fit flex-row items-center justify-start gap-4 leading-none'>
+											<CaretRight
+												className='text-black group-hover:text-blue-500'
+												size={8}
+												color='#2c2c2c'
+												weight='bold'
+											/>
+										</div>
+									</div>
+								);
+							})
+						) : (
+							<div className='flex w-full flex-col items-center justify-center'>
+								<p className='text-base font-medium text-black'>
+									No summaries yet
+								</p>
+								<Image
+									src='/moods/greyWithFace.svg'
+									alt='Empty'
+									width={200}
+									height={200}
+									className='w-full'
+								/>
+								<p className='text-base font-medium text-gray-500'>
+									Add a log to get started!
+								</p>
+							</div>
+						)}
+					</div>
+				</>
+			) : (
+				<>
+					<div className='flex max-h-24 flex-col gap-5 pb-4'>
+						<div className='flex w-full flex-row items-center justify-between  text-base font-semibold'>
+							<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
+								Summary Page
+							</span>
+							<FilterDropdown
+								handleCheckboxChange={handleCheckboxChange}
+								selectedFilters={selectedFilters}
+								mobile={mobile}
+							/>
+						</div>
+						{/* Divider */}
+						<div className='h-[0.125rem] bg-[#dee9f5]'></div>
+					</div>
+					<div className='flex h-full flex-col gap-3 overflow-auto'>
+						{currentMoods.length > 0 ? (
+							currentMoods.map(([date, mood], index) => {
+								const dateObj = new Date(`${date}T00:00:00`);
+								const day = dateObj.getUTCDate();
+								const month = dateObj.toLocaleString('default', {
+									month: 'short',
+									timeZone: 'UTC',
+								});
+								return (
+									<div
+										key={date}
+										className='group flex h-20 w-full cursor-pointer items-center justify-between gap-4 rounded-lg border border-blue-100 bg-boxBackground px-4 py-2  text-textPrimary hover:bg-hoverColor 2xl:gap-[2.9375rem]'
+										onClick={() => {
+											handleLogClick({
+												date: dateObj,
+												mood: mood.mood,
+												icon: `/moods/${mood.mood.toLowerCase()}.svg`,
+												reflections: mood.reflections,
+												favorite: mood.favorite,
+												wins: mood.wins,
+											});
+											handleDateChange(dateObj);
+										}}
+									>
+										<div className='flex h-full w-full flex-row items-center justify-start gap-4'>
+											<div className='justify-content flex flex-col items-center gap-[0.3125rem] leading-none text-[#706F6F]'>
+												<span className='m-0 p-0 text-2xl font-medium'>
+													{day}
+												</span>
+												<span className='m-0 p-0 text-xs'>{month}</span>
+											</div>
+
+											<div className='h-full w-[0.0625rem] bg-[#dee9f5] group-hover:bg-white'></div>
+											<div className='flex h-16 w-16 items-center justify-center rounded-lg bg-white'>
+												<Image
+													src={`/moods/${mood.mood.toLowerCase()}.svg`}
+													alt='Mood'
+													width={200}
+													height={200}
+													// className='w-full'
+												/>
+											</div>
+										</div>
+										<div className='flex h-full w-full flex-row items-center justify-start gap-4 leading-none'>
+											<div className='items-left flex w-20 flex-col justify-center gap-[0.66rem]'>
+												<span className='text-base font-medium text-black'>
+													{mood.mood.charAt(0).toUpperCase() +
+														mood.mood.slice(1)}
+												</span>
+												<span className='text-xs text-gray-500'>
+													{moodNames[mood.mood]}
+												</span>
+											</div>
+											<CaretRight
+												className='text-black group-hover:text-blue-500'
+												size={16}
+												weight='bold'
+											/>
+										</div>
+									</div>
+								);
+							})
+						) : (
+							<div className='flex w-full flex-col items-center justify-center'>
+								<p className='text-base font-medium text-black'>
+									No summaries yet
+								</p>
+								<Image
+									src='/moods/greyWithFace.svg'
+									alt='Empty'
+									width={200}
+									height={200}
+									className='w-full'
+								/>
+								<p className='text-base font-medium text-gray-500'>
+									Add a log to get started!
+								</p>
+							</div>
+						)}
+					</div>
+				</>
+			)}
 		</>
 	);
 };

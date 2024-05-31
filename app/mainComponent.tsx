@@ -18,6 +18,8 @@ import { getFavoriteLogs } from '@/components/utils/serverFunctions';
 import { Win } from '@/components/home/moodPrompts';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import Profile from '@/components/pages/profile';
+import DesktopLayout from '@/components/home/desktopLayout';
+import MobileLayout from '@/components/home/mobileLayout';
 
 export default function MainComponent({
 	children,
@@ -38,6 +40,23 @@ export default function MainComponent({
 		mood: string;
 		icon: string;
 	} | null>(null);
+
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+	const [mobile, setMobile] = useState(window.innerWidth < 768);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowWidth(window.innerWidth);
+			setMobile(window.innerWidth < 768);
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		// Cleanup
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	const [favoriteLogs, setFavoriteLogs] = useState<{
 		[date: string]: {
@@ -157,6 +176,7 @@ export default function MainComponent({
 					handleDateChange={handleDateChange}
 					handleLogClick={handleLogClick}
 					onLoadComplete={() => setIsLoading(false)}
+					mobile={mobile}
 				/>
 			);
 			break;
@@ -174,6 +194,7 @@ export default function MainComponent({
 				<Favorites
 					favoriteLogs={favoriteLogs}
 					handleLogClick={handleLogClick}
+					mobile={mobile}
 				/>
 			);
 			break;
@@ -194,6 +215,7 @@ export default function MainComponent({
 					handleDateChange={handleDateChange}
 					handleLogClick={handleLogClick}
 					onLoadComplete={() => setIsLoading(false)}
+					mobile={mobile}
 				/>
 			);
 	}
@@ -205,67 +227,55 @@ export default function MainComponent({
 	};
 
 	return (
-		<div className='grid-container'>
-			{isLoading && <LoadingSpinner />}
-			<div className='sidebar border-r-[0.0625rem] border-[#D9D9D9]'>
-				<Leftbar
+		<>
+			{windowWidth >= 768 ? (
+				<DesktopLayout
+					isLoading={isLoading}
 					setSelectedMenuItem={setSelectedMenuItem}
 					selectedMenuItem={selectedMenuItem}
 					handleAddLogClick={handleAddLogClick}
-					MiniCalendar={
-						<MiniCalendarView
-							month={month}
-							setMonth={setMonth}
-							selectedDate={selectedDate}
-							value={value}
-							setValue={setValue}
-							handleDateChange={handleDateChange}
-							handleLogClick={handleLogClick}
-						/>
-					}
+					month={month}
+					setMonth={setMonth}
+					selectedDate={selectedDate}
+					value={value}
+					setValue={setValue}
+					handleDateChange={handleDateChange}
+					handleLogClick={handleLogClick}
+					component={component}
+					isRightBarOpen={isRightBarOpen}
+					handleRightBarToggle={handleRightBarToggle}
+					currentPage={currentPage}
+					handlePagination={handlePagination}
+					isSummaryList={isSummaryList}
+					rightBarContent={rightBarContent}
+					isPopupOpen={isPopupOpen}
+					mobile={mobile}
 				/>
-			</div>
-			<div className={`main-container bg-[#F3F5F9]`}>
-				<div className='top-bar flex flex-row'>
-					<div className='col-span-1 flex w-full flex-row items-center justify-start'>
-						<span className='text-3xl font-semibold'>My Log</span>
-					</div>
-
-					<Userbar />
-				</div>
-
-				<div
-					className={`content ${
-						isRightBarOpen && selectedMenuItem === 'Calendar'
-							? 'right-bar-open'
-							: 'right-bar-collapsed'
-					}`}
-				>
-					<div className='main-content flex flex-col items-center  bg-[#F3F5F9]'>
-						<div className='h-full w-full rounded-2xl border  border-[#DEE9F5] bg-white px-4 py-6'>
-							<UserProvider>{component}</UserProvider>
-						</div>
-					</div>
-					{selectedMenuItem === 'Calendar' && (
-						<Rightbar
-							month={month}
-							isRightBarOpen={isRightBarOpen}
-							onToggle={handleRightBarToggle}
-							handleLogClick={handleLogClick}
-							selectedDate={selectedDate}
-							value={value}
-							isPopupOpen={isPopupOpen}
-							setValue={setValue}
-							handleDateChange={handleDateChange}
-							currentPage={currentPage}
-							handlePagination={handlePagination}
-							isSummaryList={isSummaryList}
-						>
-							{rightBarContent}
-						</Rightbar>
-					)}
-				</div>
-			</div>
-		</div>
+			) : (
+				// Mobile layout
+				<MobileLayout
+					isLoading={isLoading}
+					setSelectedMenuItem={setSelectedMenuItem}
+					selectedMenuItem={selectedMenuItem}
+					handleAddLogClick={handleAddLogClick}
+					month={month}
+					setMonth={setMonth}
+					selectedDate={selectedDate}
+					value={value}
+					setValue={setValue}
+					handleDateChange={handleDateChange}
+					handleLogClick={handleLogClick}
+					component={component}
+					isRightBarOpen={isRightBarOpen}
+					handleRightBarToggle={handleRightBarToggle}
+					currentPage={currentPage}
+					handlePagination={handlePagination}
+					isSummaryList={isSummaryList}
+					rightBarContent={rightBarContent}
+					isPopupOpen={isPopupOpen}
+					mobile={mobile}
+				/>
+			)}
+		</>
 	);
 }
