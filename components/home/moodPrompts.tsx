@@ -41,51 +41,125 @@ const MoodPrompts = ({
 		() => ({
 			Rainbow: [
 				{
-					question: 'What made you happy today?',
+					question:
+						'How did I overcome career switching challenges and what did I learn ?',
 					answer: '',
 				},
 				{
-					question: 'What are you looking forward to?',
+					question: 'What do I like most about my ideal career field?',
+					answer: '',
+				},
+				{
+					question: 'How will my ideal career differ from my previous job?',
+					answer: '',
+				},
+				{
+					question: 'What do I find challenging about my ideal career field?',
+					answer: '',
+				},
+				{
+					question:
+						'What skills help me find fullfillment and success in my career?',
 					answer: '',
 				},
 			],
 			Sunny: [
 				{
-					question: 'What is troubling you?',
+					question: 'What career advice would I give to my younger self?',
 					answer: '',
 				},
 				{
-					question: 'How can you improve your mood?',
+					question: 'When did I feel proud at work, and why?',
+					answer: '',
+				},
+				{
+					question:
+						'What small wins am I proud of, and how can I continue them?',
+					answer: '',
+				},
+				{
+					question:
+						'What values matter in my career? How can I honor them today?',
+					answer: '',
+				},
+				{
+					question:
+						'What skills help me find fullfillment and success in my career?',
 					answer: '',
 				},
 			],
 			Cloudy: [
 				{
-					question: 'What is making you excited?',
+					question:
+						'What values matter in my career? How can I honor them today?',
 					answer: '',
 				},
 				{
-					question: 'What are your plans for the day?',
+					question: 'What would I do if I knew I couldn&apos;t fail?',
+					answer: '',
+				},
+				{
+					question: 'Who inspires or motivates me and why?',
+					answer: '',
+				},
+				{
+					question:
+						'What does my ideal career look like? What are my responsibilities?',
+					answer: '',
+				},
+				{
+					question:
+						'What skills help me find fullfillment and success in my career?',
 					answer: '',
 				},
 			],
 			Rainy: [
 				{
-					question: 'What is making you excited?',
+					question: 'How can my past job skills help me in my ideal career?',
 					answer: '',
 				},
 				{
-					question: 'What are your plans for the day?',
+					question: 'How do I show myself kindness after making a mistake?',
+					answer: '',
+				},
+				{
+					question:
+						'What 10 words describe me when I think about my ideal career?',
+					answer: '',
+				},
+				{
+					question:
+						'What activities keep me focused, energized, and joyful? Why?',
+					answer: '',
+				},
+				{
+					question:
+						'What activities tend to drain me mentally and emotionally? Why?',
 					answer: '',
 				},
 			],
 			Stormy: [
 				{
-					question: 'What is making you excited?',
+					question: 'What do I envision my work-life balance? How can I achieve it?',
 					answer: '',
 				},
 				{
-					question: 'What are your plans for the day?',
+					question: 'What environments make me feel most peaceful or productive?',
+					answer: '',
+				},
+					{
+					question:
+						'What activities tend to drain me mentally and emotionally? Why?',
+					answer: '',
+				},
+				{
+					question:
+						'What activities tend to drain me mentally and emotionally? Why?',
+					answer: '',
+				},
+				{
+					question:
+						'What activities keep me focused, energized, and joyful? Why?',
 					answer: '',
 				},
 			],
