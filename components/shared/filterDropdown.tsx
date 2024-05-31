@@ -5,11 +5,16 @@ import { MoodNames } from './logSummaryList';
 
 type props = {
 	handleCheckboxChange: (filter: string) => void;
+	mobile?: boolean;
 	selectedFilters: {
 		[key: string]: boolean;
 	};
 };
-const FilterDropdown = ({ handleCheckboxChange, selectedFilters }: props) => {
+const FilterDropdown = ({
+	handleCheckboxChange,
+	selectedFilters,
+	mobile,
+}: props) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const toggleDropdown = () => {
@@ -28,7 +33,7 @@ const FilterDropdown = ({ handleCheckboxChange, selectedFilters }: props) => {
 				<button
 					onClick={toggleDropdown}
 					type='button'
-					className='inline-flex w-fit items-center justify-center gap-2 rounded-full border border-gray-300 bg-lineColor font-medium text-gray-500 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100 sm:px-2 sm:py-1 sm:text-xs md:px-4 md:py-2 md:text-sm'
+					className={`inline-flex w-fit items-center justify-center gap-2 rounded-full border border-gray-300 bg-lineColor text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100 ${mobile ? 'px-[0.7rem] py-[0.2rem]' : 'px-[0.5rem] py-[0.2rem]'}`}
 				>
 					<IoMdFunnel />
 					<span>Filters</span>

@@ -11,9 +11,11 @@ import Dropdown from './dropDown';
 import Avatar from './avatar';
 import '/app/styles/layout.css';
 
-type Props = {};
+type Props = {
+	mobile: boolean;
+};
 
-const Userbar = (props: Props) => {
+const Userbar = ({ mobile }: Props) => {
 	const router = useRouter();
 
 	const handleLogOut = () => {
@@ -28,11 +30,14 @@ const Userbar = (props: Props) => {
 	};
 
 	const { user } = useAuth();
+	console.log('Mobile', mobile);
 	return (
-		<div className='nav-container flex w-fit items-center justify-between bg-[#F3F5F9] pr-6'>
+		<div
+			className={`nav-container flex w-fit items-center justify-between ${mobile ? 'pr-0' : 'pr-6'}`}
+		>
 			{user && (
 				<div className='flex w-full flex-row items-center gap-4'>
-					<Dropdown user={user} />
+					<Dropdown user={user} mobile={mobile} />
 				</div>
 			)}
 		</div>

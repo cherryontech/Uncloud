@@ -34,6 +34,7 @@ type Props = {
 		favorite: boolean;
 		wins?: Win[];
 	}) => void;
+	mobile?: boolean;
 };
 
 type Mood = {
@@ -48,6 +49,7 @@ const NewLogPopup = ({
 	saveMood,
 	setPopupOpen,
 	handleLogClick,
+	mobile,
 }: Props) => {
 	const [selectedMood, setSelectedMood] = useState<string>(''); // State to hold the selected mood
 	const [currentStep, setCurrentStep] = useState<number>(1); // State to hold the current step
@@ -152,7 +154,11 @@ const NewLogPopup = ({
 					className='absolute right-2 top-2 text-sm text-gray-500 hover:text-gray-700'
 					onClick={handleLogPopupToggle}
 				>
-					<IoClose size={32} color='#2D81E0' />
+					{mobile ? (
+						<IoClose size={24} color='#2D81E0' />
+					) : (
+						<IoClose size={32} color='#2D81E0' />
+					)}
 				</button>
 				{currentStep === 1 && (
 					<div className='flex flex-col justify-center gap-28'>
@@ -165,7 +171,11 @@ const NewLogPopup = ({
 							</span>
 							<div className='justify-content align-items flex flex-row gap-2 text-[#706F6F]'>
 								<div className='flex items-center justify-center '>
-									<CalendarBlank size={24} />
+									{mobile ? (
+										<CalendarBlank size={12} />
+									) : (
+										<CalendarBlank size={24} />
+									)}
 								</div>
 								<span className='align-items justify-content flex items-center text-2xl'>
 									{' '}
@@ -174,7 +184,9 @@ const NewLogPopup = ({
 							</div>
 						</div>
 						<div className='flex flex-col items-center justify-center gap-24'>
-							<div className='flex  flex-row items-center gap-8'>
+							<div
+								className={`flex  flex-row items-center ${mobile ? 'gap-4' : 'gap-8'}`}
+							>
 								{moods.map((mood, index) => {
 									const moodName = Object.keys(mood)[0];
 									const moodDescription = mood[moodName];
@@ -247,6 +259,7 @@ const NewLogPopup = ({
 						handleSaveMood={handleSaveMood}
 						initialReflections={initialReflections}
 						initialWins={initialWins}
+						mobile={mobile}
 					/>
 				)}
 			</div>

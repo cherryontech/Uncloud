@@ -23,6 +23,7 @@ type Props = {
 		reflections: ReflectionsType[],
 		wins: Win[]
 	) => Promise<void>;
+	mobile?: boolean;
 };
 export interface Win {
 	description: string;
@@ -33,6 +34,7 @@ const MoodPrompts = ({
 	initialReflections,
 	initialWins,
 	handleSaveMood,
+	mobile,
 }: Props) => {
 	const [winsDropdownOpen, setWinsDropdownOpen] = useState(false);
 	const [reflectionsDropdownOpen, setReflectionsDropdownOpen] = useState(false);
@@ -268,7 +270,7 @@ const MoodPrompts = ({
 								<span className='text-xl font-semibold leading-[1.625rem] text-[#2c2c2c]'>
 									3 Wins of the Day
 								</span>
-								<span className='text-xs leading-6 text-[#706F6F]'>
+								<span className='text-left text-xs leading-6 text-[#706F6F]'>
 									Get specific! use details to describe what you accomplished
 									today.
 								</span>
@@ -279,11 +281,19 @@ const MoodPrompts = ({
 							>
 								{winsDropdownOpen ? (
 									<div className='flex items-center justify-center rounded-full bg-[#E0F1FF] p-1'>
-										<CaretUp size={20} color='#2C2C2C' />
+										{mobile ? (
+											<CaretUp size={12} color='#2C2C2C' />
+										) : (
+											<CaretUp size={20} color='#2C2C2C' />
+										)}
 									</div>
 								) : (
 									<div className='flex items-center justify-center rounded-full p-1'>
-										<CaretDown size={20} color='#706f6f' />
+										{mobile ? (
+											<CaretDown size={12} color='#2C2C2C' />
+										) : (
+											<CaretDown size={20} color='#2C2C2C' />
+										)}
 									</div>
 								)}
 							</div>
@@ -345,7 +355,7 @@ const MoodPrompts = ({
 									<span className='text-xl font-semibold leading-[1.625rem] text-[#2c2c2c]'>
 										Reflection
 									</span>
-									<span className='text-xs leading-6 text-[#706F6F]'>
+									<span className='text-left text-xs leading-6 text-[#706F6F]'>
 										Stuck, fired up, or somewhere in between? Write down how you
 										are feeling.
 									</span>
@@ -356,11 +366,19 @@ const MoodPrompts = ({
 								>
 									{openReflections.includes(index) ? (
 										<div className='flex items-center justify-center rounded-full bg-[#E0F1FF] p-1'>
-											<CaretUp size={20} color='#2C2C2C' />
+											{mobile ? (
+												<CaretUp size={12} color='#2C2C2C' />
+											) : (
+												<CaretUp size={20} color='#2C2C2C' />
+											)}
 										</div>
 									) : (
 										<div className='flex items-center justify-center rounded-full  p-1'>
-											<CaretDown size={20} color='#706f6f' />
+											{mobile ? (
+												<CaretDown size={12} color='#706f6f' />
+											) : (
+												<CaretDown size={20} color='#706f6f' />
+											)}
 										</div>
 									)}
 								</div>
@@ -403,7 +421,11 @@ const MoodPrompts = ({
 							className='flex items-center justify-center gap-2 px-6 py-[0.63rem]'
 							onClick={handleAddReflection}
 						>
-							<Plus size={16} color='#2d81e0' />
+							{mobile ? (
+								<Plus size={8} color='#2d81e0' />
+							) : (
+								<Plus size={16} color='#2d81e0' />
+							)}
 							<span className='text-sm font-bold text-primary'>
 								Add another reflection
 							</span>

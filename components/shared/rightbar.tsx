@@ -47,6 +47,8 @@ const Rightbar: React.FC<RightbarProps> = ({
 	isSummaryList,
 	children,
 }) => {
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+	const [mobile, setMobile] = useState(window.innerWidth < 768);
 	const { user, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{
 		[key: string]: {
@@ -59,6 +61,18 @@ const Rightbar: React.FC<RightbarProps> = ({
 		if (user) {
 			getUser(user.uid);
 		}
+
+		const handleResize = () => {
+			setWindowWidth(window.innerWidth);
+			setMobile(window.innerWidth < 768);
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		// Cleanup
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
 	}, [user, isUpdated]);
 
 	const [selectedFilters, setSelectedFilters] = useState({
@@ -145,10 +159,12 @@ const Rightbar: React.FC<RightbarProps> = ({
 	console.log(filteredMoods.length);
 	return (
 		<div
-			className={`right-bar flex h-full w-full flex-col gap-4 rounded-2xl border  border-[#DEE9F5] bg-white  py-6 ${isRightBarOpen ? 'px-5' : 'px-2'}`}
+			className={` flex w-full flex-col gap-4 rounded-2xl border  border-[#DEE9F5] bg-white  py-6 ${isRightBarOpen ? 'px-5' : 'px-2'} ${mobile ? 'mobile-right-bar' : 'right-bar'} ${mobile && isRightBarOpen ? 'h-full' : 'h-fit'}`}
 		>
 			{isRightBarOpen ? (
-				<div className='right-bar-container h-full'>
+				<div
+					className={`h-full ${mobile ? 'mobile-right-bar-container' : 'right-bar-container'}`}
+				>
 					{/* Content */}
 					{children ? (
 						children
@@ -161,6 +177,7 @@ const Rightbar: React.FC<RightbarProps> = ({
 							handleDateChange={handleDateChange}
 							currentPage={currentPage}
 							handlePagination={handlePagination}
+							mobile={mobile}
 						/>
 					)}
 
@@ -168,15 +185,30 @@ const Rightbar: React.FC<RightbarProps> = ({
 					<div className='flex flex-col gap-2 pt-4'>
 						<div className='h-[0.125rem] bg-[#dee9f5]'></div>
 						<div className='flex min-h-8 items-center justify-between'>
-							<button onClick={() => onToggle(!isRightBarOpen)}>
-								<Image
-									src='/phosphor-icons/SidebarSimple.svg'
-									alt='Sidebar Icon'
-									width={24}
-									height={24}
-									color='white'
-								/>
-							</button>
+							{mobile ? (
+								<button
+									onClick={() => onToggle(!isRightBarOpen)}
+									className={`mobile-collapse-button`}
+								>
+									<Image
+										src='/phosphor-icons/SidebarSimple.svg'
+										alt='Sidebar Icon'
+										width={12}
+										height={12}
+										color='white'
+									/>
+								</button>
+							) : (
+								<button onClick={() => onToggle(!isRightBarOpen)}>
+									<Image
+										src='/phosphor-icons/SidebarSimple.svg'
+										alt='Sidebar Icon'
+										width={24}
+										height={24}
+										color='white'
+									/>
+								</button>
+							)}
 
 							{isSummaryList && filteredMoods.length > pageSize && (
 								<CustomPagination
@@ -198,18 +230,33 @@ const Rightbar: React.FC<RightbarProps> = ({
 					</div>
 				</div>
 			) : (
-				<div className='flex h-full w-full min-w-8 items-end justify-center'>
+				<div className='flex h-full w-full items-end justify-center'>
 					<div className='h-[0.125rem] bg-[#dee9f5]'></div>
-					<div className='flex min-h-8 items-center justify-between'>
-						<button onClick={() => onToggle(!isRightBarOpen)}>
-							<Image
-								src='/phosphor-icons/SidebarSimple.svg'
-								alt='Sidebar Icon'
-								width={24}
-								height={24}
-								color='white'
-							/>
-						</button>
+					<div className='flex items-center justify-between'>
+						{mobile ? (
+							<button
+								onClick={() => onToggle(!isRightBarOpen)}
+								className={`mobile-open-button`}
+							>
+								<Image
+									src='/phosphor-icons/SidebarSimple.svg'
+									alt='Sidebar Icon'
+									width={12}
+									height={12}
+									color='white'
+								/>
+							</button>
+						) : (
+							<button onClick={() => onToggle(!isRightBarOpen)}>
+								<Image
+									src='/phosphor-icons/SidebarSimple.svg'
+									alt='Sidebar Icon'
+									width={24}
+									height={24}
+									color='white'
+								/>
+							</button>
+						)}
 					</div>
 				</div>
 			)}

@@ -19,6 +19,7 @@ interface FavoriteLogsProps {
 		reflections?: ReflectionsType[];
 		favorite: boolean;
 	}) => void;
+	mobile?: boolean;
 }
 const moodNames = {
 	Rainbow: 'Proud',
@@ -31,6 +32,7 @@ const moodNames = {
 const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 	favoriteLogs,
 	handleLogClick,
+	mobile,
 }) => {
 	console.log('Fav logs', favoriteLogs);
 

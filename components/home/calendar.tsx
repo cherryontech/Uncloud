@@ -46,6 +46,7 @@ type Props = {
 		wins?: Win[];
 	}) => void;
 	onLoadComplete?: () => void;
+	mobile?: boolean;
 };
 type ValuePiece = Date | null;
 
@@ -71,6 +72,7 @@ const CalendarView = ({
 	handleDateChange,
 	handleLogClick,
 	onLoadComplete,
+	mobile,
 }: Props) => {
 	const { user, updateData, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<{
@@ -217,6 +219,7 @@ const CalendarView = ({
 		handleDateChange(newDate);
 	};
 
+	const iconSize = mobile ? 8 : 16;
 	return (
 		<div className='big-calendar cal-container'>
 			<div className='flex max-h-24 flex-col gap-5'>
@@ -225,7 +228,7 @@ const CalendarView = ({
 						<span
 							className={`calendar-heading align-center flex cursor-pointer justify-center gap-[0.625rem] rounded-lg px-3 py-1 text-2xl ${
 								isYearDropdownOpen ? 'bg-[#dee9f5]' : ''
-							}`}
+							} ${mobile ? '!text-xl' : 'text-2xl'}`}
 							onClick={changeYear}
 						>
 							{formatDateToMonth(selectedDate as Date)}{' '}
@@ -236,18 +239,20 @@ const CalendarView = ({
 										<span className='text-sm font-semibold text-black'>
 											{displayedYear}
 										</span>
-										<div className='flex items-center justify-center gap-3 text-[#706F6F]'>
+										<div
+											className={`flex items-center justify-center text-[#706F6F] ${mobile ? 'gap-8' : 'gap-3'}`}
+										>
 											<button
 												className='hover:text-primary'
 												onClick={(event) => incrementYear(event)}
 											>
-												<ArrowUp size={16} />
+												<ArrowUp size={iconSize} />
 											</button>
 											<button
 												className='hover:text-primary'
 												onClick={(event) => decrementYear(event)}
 											>
-												<ArrowDown size={16} />
+												<ArrowDown size={iconSize} />
 											</button>
 										</div>
 									</div>
@@ -278,29 +283,45 @@ const CalendarView = ({
 							<CaretRight weight='bold' className='text-primary' />
 						</button>
 					</div>
+					<div className='flex flex-row gap-6'>
+						{/* Add Log Button for Mobile */}
+						{mobile && (
+							<button
+								onClick={handleAddLogClick}
+								className='flex min-w-fit items-center justify-center gap-2 rounded-[1.25rem] border border-[#2D81E0] bg-[#2D81E0] px-6 py-1 text-sm font-bold text-white'
+							>
+								<div>
+									<Plus />
+								</div>
+								<div className='m-0 flex content-center items-center justify-center p-0 leading-none'>
+									Add a Log
+								</div>
+							</button>
+						)}
 
-					<div className='flex w-fit cursor-pointer flex-row items-center justify-center gap-4'>
-						<div
-							className='background-white flex min-w-fit items-center justify-center rounded-[1.25rem] border border-[#2D81E0] px-6 py-1 text-sm font-bold text-primary '
-							onClick={() => {
-								const today = new Date();
-								handleDateChange(today);
-								setMonth(today.getMonth());
-								const todayKey = formatValueTypeToYYYYMMDD(today);
-								handleLogClick({
-									date: today,
-									mood: moods[todayKey]?.mood || '',
-									icon: moods[todayKey]
-										? `/moods/${moods[todayKey].mood.toLowerCase()}.svg`
-										: '/moods/greyWithFace.svg',
-									reflections: moods[todayKey]?.reflections || [],
-									favorite: moods[todayKey]?.favorite || false,
-									wins: moods[todayKey]?.wins || [],
-								});
-								setSelectedIconDate(todayKey);
-							}}
-						>
-							Today
+						<div className='flex w-fit cursor-pointer flex-row items-center justify-center gap-4'>
+							<div
+								className='background-white flex min-w-fit items-center justify-center rounded-[1.25rem] border border-[#2D81E0] px-6 py-1 text-sm font-bold text-primary '
+								onClick={() => {
+									const today = new Date();
+									handleDateChange(today);
+									setMonth(today.getMonth());
+									const todayKey = formatValueTypeToYYYYMMDD(today);
+									handleLogClick({
+										date: today,
+										mood: moods[todayKey]?.mood || '',
+										icon: moods[todayKey]
+											? `/moods/${moods[todayKey].mood.toLowerCase()}.svg`
+											: '/moods/greyWithFace.svg',
+										reflections: moods[todayKey]?.reflections || [],
+										favorite: moods[todayKey]?.favorite || false,
+										wins: moods[todayKey]?.wins || [],
+									});
+									setSelectedIconDate(todayKey);
+								}}
+							>
+								Today
+							</div>
 						</div>
 					</div>
 				</div>
@@ -399,6 +420,7 @@ const CalendarView = ({
 				saveMood={saveMood}
 				setPopupOpen={setPopupOpen}
 				handleLogClick={handleLogClick}
+				mobile={mobile}
 			/>
 		</div>
 	);
