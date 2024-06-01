@@ -95,7 +95,7 @@ const TrendLineChart = ({ moods }: props) => {
 
 	return (
 		<>
-			<svg>
+			<svg width='0' height='0'>
 				<defs>
 					<linearGradient id='gradient' x1='0' y1='0' x2='0' y2='1'>
 						<stop offset='0%' stopColor='#2D81E0' stopOpacity={0.8} />
@@ -107,7 +107,7 @@ const TrendLineChart = ({ moods }: props) => {
 				height={300}
 				xScale={{ type: 'band' }}
 				yScale={yScaleConfig}
-				margin={{ left: 80, top: 10, right: 10, bottom: 40 }}
+				margin={{ left: 80, top: 15, right: 10, bottom: 40 }}
 			>
 				<AnimatedGrid
 					columns={true}
@@ -126,7 +126,7 @@ const TrendLineChart = ({ moods }: props) => {
 					hideAxisLine
 					hideTicks
 					tickComponent={({ formattedValue, ...tickProps }) => (
-						<g transform={`translate(${0},${10})`}>
+						<g transform={`translate(${0},${5})`}>
 							{' '}
 							{/* Increase the y value to move the ticks down */}
 							<text {...tickProps}>{formattedValue}</text>
