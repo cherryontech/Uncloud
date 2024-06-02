@@ -4,6 +4,8 @@ import TrendLineChart, { singleMood } from '../home/trendLineChart';
 import { getUser } from '../utils/serverFunctions';
 import { useAuth } from '@/app/context/UserProvider';
 import { formatValueTypeToYYYYMMDD } from '../utils/reusableFunctions';
+import PercentageCard from '../trends/percentageCard';
+import { FaArrowTrendDown, FaArrowTrendUp } from 'react-icons/fa6';
 
 const Trends = () => {
 	const { user, isUpdated } = useAuth();
@@ -34,7 +36,38 @@ const Trends = () => {
 	}, [user, isUpdated]);
 	return (
 		<div>
-			<h1>Trends</h1>
+			<div className='mb-4 grid grid-cols-2 gap-4 md:grid-cols-4'>
+				<PercentageCard
+					count={8}
+					percentage={12}
+					isNegative={false}
+					icon={'/cloudtrend.svg'}
+					growthArrow={<FaArrowTrendUp className='text-blueColor' size={24} />}
+				/>
+				<PercentageCard
+					count={8}
+					percentage={12}
+					isNegative={false}
+					icon={'/favorite.svg'}
+					growthArrow={
+						<FaArrowTrendDown className='text-blueColor' size={24} />
+					}
+				/>
+				<PercentageCard
+					count={8}
+					percentage={12}
+					isNegative={true}
+					icon={'/reflections.svg'}
+					growthArrow={<FaArrowTrendUp className='text-blueColor' size={24} />}
+				/>
+				<PercentageCard
+					count={8}
+					percentage={12}
+					isNegative={false}
+					icon={'/wins.svg'}
+					growthArrow={<FaArrowTrendUp className='text-blueColor' size={24} />}
+				/>
+			</div>
 			<p>This is the trends page.</p>
 			{moods && moods.length > 0 && <TrendLineChart moods={moods} />}
 		</div>
