@@ -3,13 +3,13 @@ import React from 'react';
 import {
 	AnimatedAxis,
 	AnimatedGrid,
+	AnimatedAreaSeries,
 	AnimatedLineSeries,
 	XYChart,
 	Tooltip,
-	Axis,
 } from '@visx/xychart';
-import { LinePath } from '@visx/shape';
-
+import { GlyphSeries } from '@visx/xychart';
+import '/app/styles/trends.css';
 type DataPoint = {
 	x: string;
 	y: number;
@@ -33,6 +33,7 @@ const moodMap: { [key: string]: { value: number; color: string } } = {
 	Stormy: { value: 0, color: '#AA52BF' },
 	// Add more moods as needed
 };
+
 const moodToColor = (mood: string): { value: number; color: string } => {
 	return moodMap[mood] ?? { value: 0, color: 'black' }; // Default to 0 and black if the mood is not in the map
 };
@@ -43,14 +44,16 @@ const convertMoodsToDataPoints = (moods: singleMood[]): DataPoint[] => {
 		return month === 5; // Change this to the desired month
 	});
 
-	return filteredData.map((moodEntry, index) => {
-		const moodData = moodToColor(moodEntry.mood);
-		return {
-			x: moodEntry.date,
-			y: moodData.value,
-			color: moodData.color,
-		};
-	});
+	return filteredData
+		.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+		.map((moodEntry) => {
+			const moodData = moodToColor(moodEntry.mood);
+			return {
+				x: moodEntry.date,
+				y: moodData.value,
+				color: moodData.color,
+			};
+		});
 };
 
 // Custom tick component to render colored divs
@@ -77,7 +80,7 @@ const TrendLineChart = ({ moods }: props) => {
 
 	const accessors = {
 		xAccessor: (d: DataPoint) =>
-			new Date(`${d.x}T00:00:00`).toLocaleDateString('en-US', {
+			new Date(d.x).toLocaleDateString('en-US', {
 				month: '2-digit',
 				day: '2-digit',
 			}),
@@ -89,94 +92,128 @@ const TrendLineChart = ({ moods }: props) => {
 		domain: [0, 4],
 		tickValues: [0, 1, 2, 3, 4],
 	};
-	const generateMonthDates = (year: number, month: number): string[] => {
-		const startDate = new Date(year, month - 1, 1);
-		const endDate = new Date(year, month, 0);
-		const dates: string[] = [];
-		let currentDate = startDate;
 
-		while (currentDate <= endDate) {
-			const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-			const day = String(currentDate.getDate()).padStart(2, '0');
-			dates.push(`${month}/${day}`);
-			currentDate.setDate(currentDate.getDate() + 1);
-		}
-
-		return dates;
-	};
-
-	// Usage example:
-	const monthDates = generateMonthDates(2024, 5); // May 2024
-
-	// Generate tick values to show max 4 labels
-	const tickInterval = Math.ceil(monthDates.length / 4);
-	const tickValues = monthDates.filter((_, i) => i % tickInterval === 0);
-
-	console.log(tickValues);
 	return (
-		<XYChart height={300} xScale={{ type: 'band' }} yScale={yScaleConfig}>
-			<AnimatedAxis orientation='bottom' />
-			<AnimatedAxis
-				orientation='left'
-				numTicks={5}
-				tickClassName={'mr-4'}
-				tickComponent={({ formattedValue, ...tickProps }) => {
-					console.log(formattedValue);
-					console.log(tickProps);
-					const color =
-						Object.values(moodMap).find(
-							(mood) => mood.value.toString() === formattedValue?.split('.')[0]
-						)?.color || 'black';
-
-					console.log(color);
-					return (
-						<g transform={`translate(${-20},${-10})`}>
-							<CustomTick formattedValue={formattedValue || ''} color={color} />
+		<>
+			<svg width='0' height='0'>
+				<defs>
+					<linearGradient id='gradient' x1='0' y1='0' x2='0' y2='1'>
+						<stop offset='0%' stopColor='#2D81E0' stopOpacity={0.8} />
+						<stop offset='100%' stopColor='#2D81E0' stopOpacity={0} />
+					</linearGradient>
+				</defs>
+			</svg>
+			<XYChart
+				height={300}
+				xScale={{ type: 'band' }}
+				yScale={yScaleConfig}
+				margin={{ left: 80, top: 15, right: 10, bottom: 40 }}
+			>
+				<AnimatedGrid
+					columns={true}
+					rows={false}
+					numTicks={dataPoints.length}
+					className='grid'
+				/>
+				<AnimatedAxis
+					orientation='bottom'
+					tickLabelProps={() => ({
+						dy: '1em',
+						fontFamily: 'Open Sans',
+						fontWeight: 600,
+						fill: '#706F6F',
+					})}
+					hideAxisLine
+					hideTicks
+					tickComponent={({ formattedValue, ...tickProps }) => (
+						<g transform={`translate(${0},${5})`}>
+							{' '}
+							{/* Increase the y value to move the ticks down */}
+							<text {...tickProps}>{formattedValue}</text>
 						</g>
-					);
-				}}
-			/>
+					)}
+				/>
+				<AnimatedAxis
+					orientation='left'
+					numTicks={5}
+					tickClassName={'mr-4'}
+					hideAxisLine
+					hideTicks
+					tickComponent={({ formattedValue, ...tickProps }) => {
+						const color =
+							Object.values(moodMap).find(
+								(mood) =>
+									mood.value.toString() === formattedValue?.split('.')[0]
+							)?.color || 'black';
 
-			{/* <AnimatedGrid columns={false} numTicks={4} /> */}
-			<AnimatedLineSeries
-				dataKey='Line 1'
-				data={dataPoints}
-				{...accessors}
-				// stroke={({ datum }: { datum: DataPoint }) => datum.color} // Set stroke color based on the mood color
-			/>
-			<Tooltip<DataPoint>
-				snapTooltipToDatumX
-				snapTooltipToDatumY
-				showVerticalCrosshair
-				showSeriesGlyphs
-				renderTooltip={({ tooltipData }: any) => (
-					<div>
-						<div
-							style={{
-								color: tooltipData?.nearestDatum?.datum?.color || 'black',
-							}}
-						>
-							{tooltipData?.nearestDatum?.key}
-						</div>
-						{accessors.xAccessor(
-							tooltipData?.nearestDatum?.datum || {
-								x: '',
-								y: 0,
-								color: 'black',
-							}
-						)}
-						{', '}
-						{accessors.yAccessor(
-							tooltipData?.nearestDatum?.datum || {
-								x: '',
-								y: 0,
-								color: 'black',
-							}
-						)}
-					</div>
-				)}
-			/>
-		</XYChart>
+						return (
+							<g transform={`translate(${-40},${-10})`}>
+								{' '}
+								<CustomTick
+									formattedValue={formattedValue || ''}
+									color={color}
+								/>
+							</g>
+						);
+					}}
+				/>
+				<AnimatedAreaSeries
+					dataKey='Line 1'
+					data={dataPoints}
+					{...accessors}
+					fillOpacity={0.5}
+					fill='url(#gradient)'
+					stroke='none'
+					renderLine={false}
+				/>
+				<AnimatedLineSeries
+					dataKey='Line 1'
+					data={dataPoints}
+					{...accessors}
+					stroke='#2D81E0'
+					strokeWidth={1.5}
+				/>
+				<GlyphSeries
+					dataKey='Line 1'
+					data={dataPoints}
+					{...accessors}
+					renderGlyph={({ x, y }) => (
+						<circle cx={x} cy={y} r={4} fill='#2D81E0' />
+					)}
+				/>
+				<Tooltip<DataPoint>
+					className='tooltip'
+					snapTooltipToDatumX
+					snapTooltipToDatumY
+					showVerticalCrosshair
+					showSeriesGlyphs
+					renderTooltip={({ tooltipData }: any) => {
+						const mood = Object.keys(moodMap).find(
+							(key) =>
+								moodMap[key].value === tooltipData?.nearestDatum?.datum?.y
+						);
+
+						return (
+							<div className='flex flex-col gap-2'>
+								<div
+									style={{
+										color: tooltipData?.nearestDatum?.datum?.color || 'black',
+									}}
+								>
+									{mood} {/* Display the mood instead of the data key */}
+								</div>
+								{new Date(
+									tooltipData?.nearestDatum?.datum?.x
+								).toLocaleDateString('en-US', {
+									month: '2-digit',
+									day: '2-digit',
+								})}
+							</div>
+						);
+					}}
+				/>
+			</XYChart>
+		</>
 	);
 };
 
