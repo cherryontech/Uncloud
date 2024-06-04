@@ -107,7 +107,7 @@ const Leftbar = ({
 								</div>
 
 								<div
-									className={`flex min-h-[3rem] w-full flex-row items-center gap-3  px-3 py-4 hover:bg-[#DEE3E6]`}
+									className={`hover:bg-[#DEE3E6]Don' flex min-h-[3rem] w-full flex-row items-center  gap-3 px-3 py-4 `}
 									onClick={() => {
 										setSelectedMenuItem('Profile');
 										setIsOpen(false);

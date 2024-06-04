@@ -1,41 +1,31 @@
-'use client';
 import React, { useEffect, useState } from 'react';
 import TrendLineChart, { singleMood } from '../home/trendLineChart';
 import { getUser } from '../utils/serverFunctions';
 import { useAuth } from '@/app/context/UserProvider';
-import { formatValueTypeToYYYYMMDD } from '../utils/reusableFunctions';
+import { prepareHeatMapData } from '../utils/textProcessing';
 import PercentageCard from '../trends/percentageCard';
 import { FaArrowTrendDown, FaArrowTrendUp } from 'react-icons/fa6';
+import HeatMap from '../home/heatMapChart';
 
 const Trends = () => {
 	const { user, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<singleMood[]>([]);
-	useEffect(() => {
-		if (user) {
-			getUser(user.uid);
-		}
-	}, [user, isUpdated]);
-
-	const [selectedFilters, setSelectedFilters] = useState({
-		Rainbow: false,
-		Sunny: false,
-		Cloudy: false,
-		Rainy: false,
-		Stormy: false,
-	});
+	const [heatMapData, setHeatMapData] = useState<any[]>([]);
 
 	useEffect(() => {
 		if (user) {
 			getUser(user.uid).then((userData) => {
 				if (userData && userData.moods) {
-					console.log(userData.moods);
 					setMoods(userData.moods);
+					const heatmapData = prepareHeatMapData(userData.moods);
+					setHeatMapData(heatmapData);
 				}
 			});
 		}
 	}, [user, isUpdated]);
+
 	return (
-		<div>
+		<div className='flex flex-col gap-5'>
 			<div className='mb-4 grid grid-cols-2 gap-4 md:grid-cols-4'>
 				<PercentageCard
 					count={8}
@@ -68,8 +58,30 @@ const Trends = () => {
 					growthArrow={<FaArrowTrendUp className='text-blueColor' size={24} />}
 				/>
 			</div>
-			<p>This is the trends page.</p>
-			{moods && moods.length > 0 && <TrendLineChart moods={moods} />}
+			<div className='grid h-full w-full gap-5 md:grid-cols-2'>
+				<div className='flex h-[30rem] flex-col gap-[3rem] px-6 py-8'>
+					{moods && moods.length > 0 && (
+						<>
+							<span className='h-[2.1rem] text-2xl font-semibold'>
+								Mood Flow
+							</span>
+							<TrendLineChart moods={moods} />
+						</>
+					)}
+				</div>
+				<div className='flex h-[30rem] flex-col px-6 py-8'>
+					{heatMapData.length > 0 && (
+						<>
+							<span className='h-[2.1rem] text-2xl font-semibold'>
+								Frequent Words
+							</span>
+							{/* <div className='flex-grow'> */}
+							<HeatMap data={heatMapData} />
+							{/* </div> */}
+						</>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };

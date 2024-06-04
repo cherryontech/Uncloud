@@ -1,5 +1,8 @@
+// trendLineChart.tsx
+
 'use client';
 import React from 'react';
+import { ParentSize } from '@visx/responsive';
 import {
 	AnimatedAxis,
 	AnimatedGrid,
@@ -7,9 +10,10 @@ import {
 	AnimatedLineSeries,
 	XYChart,
 	Tooltip,
+	GlyphSeries,
 } from '@visx/xychart';
-import { GlyphSeries } from '@visx/xychart';
 import '/app/styles/trends.css';
+
 type DataPoint = {
 	x: string;
 	y: number;
@@ -21,17 +25,18 @@ export type singleMood = {
 	mood: string;
 };
 
-type props = {
+type Props = {
 	moods: singleMood[];
 };
 
-const moodMap: { [key: string]: { value: number; color: string } } = {
-	Rainbow: { value: 4, color: '#F9C7D7' },
-	Sunny: { value: 3, color: '#FFE773' },
-	Cloudy: { value: 2, color: '#B1D5D5' },
-	Rainy: { value: 1, color: '#A0D1F9' },
-	Stormy: { value: 0, color: '#AA52BF' },
-	// Add more moods as needed
+const moodMap: {
+	[key: string]: { value: number; color: string; icon: string };
+} = {
+	Rainbow: { value: 4, color: '#F9C7D7', icon: '/moods/rainbow-noface.svg' },
+	Sunny: { value: 3, color: '#FFE773', icon: '/moods/sunny-noface.svg' },
+	Cloudy: { value: 2, color: '#B1D5D5', icon: '/moods/cloudy-noface.svg' },
+	Rainy: { value: 1, color: '#A0D1F9', icon: '/moods/rainy-noface.svg' },
+	Stormy: { value: 0, color: '#AA52BF', icon: '/moods/stormy-noface.svg' },
 };
 
 const moodToColor = (mood: string): { value: number; color: string } => {
@@ -56,165 +61,192 @@ const convertMoodsToDataPoints = (moods: singleMood[]): DataPoint[] => {
 		});
 };
 
-// Custom tick component to render colored divs
 const CustomTick = ({
 	formattedValue,
-	color,
+	icon,
 }: {
 	formattedValue: string;
-	color: string;
+	icon: string;
 }) => (
-	<svg
-		className='relative bottom-4 right-6'
-		xmlns='http://www.w3.org/2000/svg'
-		viewBox='0 0 12 12'
-		width={16}
-		height={16}
-	>
-		<circle cx='6' cy='6' r='6' fill={color} />
-	</svg>
+	<g transform={`translate(${-20}, ${0})`}>
+		<image href={icon} x={-16} y={-16} height='2rem' width='2rem' />
+	</g>
 );
 
-const TrendLineChart = ({ moods }: props) => {
+const TrendLineChart = ({ moods }: Props) => {
 	const dataPoints: DataPoint[] = convertMoodsToDataPoints(moods);
 
 	const accessors = {
 		xAccessor: (d: DataPoint) =>
 			new Date(d.x).toLocaleDateString('en-US', {
-				month: '2-digit',
-				day: '2-digit',
+				month: 'numeric',
+				day: 'numeric',
 			}),
 		yAccessor: (d: DataPoint) => d.y,
 	};
 
 	const yScaleConfig: any = {
 		type: 'linear',
-		domain: [0, 4],
+		domain: [-0.3, 4.3],
 		tickValues: [0, 1, 2, 3, 4],
 	};
 
+	const margin = { left: 40, top: 0, right: 10, bottom: 30 };
+
 	return (
-		<>
-			<svg width='0' height='0'>
-				<defs>
-					<linearGradient id='gradient' x1='0' y1='0' x2='0' y2='1'>
-						<stop offset='0%' stopColor='#2D81E0' stopOpacity={0.8} />
-						<stop offset='100%' stopColor='#2D81E0' stopOpacity={0} />
-					</linearGradient>
-				</defs>
-			</svg>
-			<XYChart
-				height={300}
-				xScale={{ type: 'band' }}
-				yScale={yScaleConfig}
-				margin={{ left: 80, top: 15, right: 10, bottom: 40 }}
-			>
-				<AnimatedGrid
-					columns={true}
-					rows={false}
-					numTicks={dataPoints.length}
-					className='grid'
-				/>
-				<AnimatedAxis
-					orientation='bottom'
-					tickLabelProps={() => ({
-						dy: '1em',
-						fontFamily: 'Open Sans',
-						fontWeight: 600,
-						fill: '#706F6F',
-					})}
-					hideAxisLine
-					hideTicks
-					tickComponent={({ formattedValue, ...tickProps }) => (
-						<g transform={`translate(${0},${5})`}>
-							{' '}
-							{/* Increase the y value to move the ticks down */}
-							<text {...tickProps}>{formattedValue}</text>
-						</g>
-					)}
-				/>
-				<AnimatedAxis
-					orientation='left'
-					numTicks={5}
-					tickClassName={'mr-4'}
-					hideAxisLine
-					hideTicks
-					tickComponent={({ formattedValue, ...tickProps }) => {
-						const color =
-							Object.values(moodMap).find(
-								(mood) =>
-									mood.value.toString() === formattedValue?.split('.')[0]
-							)?.color || 'black';
-
-						return (
-							<g transform={`translate(${-40},${-10})`}>
-								{' '}
-								<CustomTick
-									formattedValue={formattedValue || ''}
-									color={color}
+		<ParentSize>
+			{({ width, height }) => {
+				// Ensure chart occupies full width and height minus margins
+				return (
+					<div
+						style={{
+							width: '100%',
+							// height: `${height - margin.bottom}px`,
+							height: '100%',
+							display: 'flex',
+							flexDirection: 'column',
+						}}
+					>
+						<svg width='0' height='0'>
+							<defs>
+								<linearGradient id='gradient' x1='0' y1='0' x2='0' y2='1'>
+									<stop offset='0%' stopColor='#A0D1F9' stopOpacity={1.0} />
+									<stop offset='100%' stopColor='#A0D1F9' stopOpacity={0} />
+								</linearGradient>
+							</defs>
+						</svg>
+						{width > 0 && height > 0 && (
+							<XYChart
+								width={width}
+								height={height}
+								xScale={{ type: 'band' }}
+								yScale={yScaleConfig}
+								margin={margin}
+							>
+								<AnimatedGrid
+									columns={true}
+									rows={false}
+									numTicks={dataPoints.length}
+									className='grid'
 								/>
-							</g>
-						);
-					}}
-				/>
-				<AnimatedAreaSeries
-					dataKey='Line 1'
-					data={dataPoints}
-					{...accessors}
-					fillOpacity={0.5}
-					fill='url(#gradient)'
-					stroke='none'
-					renderLine={false}
-				/>
-				<AnimatedLineSeries
-					dataKey='Line 1'
-					data={dataPoints}
-					{...accessors}
-					stroke='#2D81E0'
-					strokeWidth={1.5}
-				/>
-				<GlyphSeries
-					dataKey='Line 1'
-					data={dataPoints}
-					{...accessors}
-					renderGlyph={({ x, y }) => (
-						<circle cx={x} cy={y} r={4} fill='#2D81E0' />
-					)}
-				/>
-				<Tooltip<DataPoint>
-					className='tooltip'
-					snapTooltipToDatumX
-					snapTooltipToDatumY
-					showVerticalCrosshair
-					showSeriesGlyphs
-					renderTooltip={({ tooltipData }: any) => {
-						const mood = Object.keys(moodMap).find(
-							(key) =>
-								moodMap[key].value === tooltipData?.nearestDatum?.datum?.y
-						);
-
-						return (
-							<div className='flex flex-col gap-2'>
-								<div
-									style={{
-										color: tooltipData?.nearestDatum?.datum?.color || 'black',
+								<AnimatedAxis
+									orientation='bottom'
+									tickLabelProps={() => ({
+										dy: '1em',
+										fontSize: 12,
+										fontFamily: 'Open Sans',
+										fontWeight: 600,
+										fill: '#706F6F',
+									})}
+									hideAxisLine
+									hideTicks
+									tickComponent={({ formattedValue }) => (
+										<g transform={`translate(${-10},${5})`}>
+											<text
+												// dy='1em'
+												style={{
+													fontSize: '.75rem',
+													fontFamily: 'Open Sans',
+													fontWeight: 600,
+													fill: '#706F6F',
+												}}
+											>
+												{formattedValue}
+											</text>
+										</g>
+									)}
+								/>
+								<AnimatedAxis
+									orientation='left'
+									numTicks={5}
+									tickClassName={'mr-4'}
+									hideAxisLine
+									hideTicks
+									tickComponent={({ formattedValue, ...tickProps }) => {
+										const mood = Object.values(moodMap).find(
+											(mood) =>
+												mood.value.toString() === formattedValue?.split('.')[0]
+										);
+										return (
+											<CustomTick
+												formattedValue={formattedValue || ''}
+												icon={mood?.icon || ''}
+											/>
+										);
 									}}
-								>
-									{mood} {/* Display the mood instead of the data key */}
-								</div>
-								{new Date(
-									tooltipData?.nearestDatum?.datum?.x
-								).toLocaleDateString('en-US', {
-									month: '2-digit',
-									day: '2-digit',
-								})}
-							</div>
-						);
-					}}
-				/>
-			</XYChart>
-		</>
+								/>
+								<AnimatedAreaSeries
+									dataKey='Line 1'
+									data={dataPoints}
+									{...accessors}
+									fillOpacity={0.8}
+									fill='url(#gradient)'
+									stroke='none'
+									renderLine={false}
+								/>
+								<AnimatedLineSeries
+									dataKey='Line 1'
+									data={dataPoints}
+									{...accessors}
+									stroke='#2D81E0'
+									strokeWidth={1.5}
+								/>
+								<GlyphSeries
+									dataKey='Line 1'
+									data={dataPoints}
+									{...accessors}
+									renderGlyph={({ x, y }) => {
+										const validX = typeof x === 'number' ? x : 0;
+										const validY = typeof y === 'number' ? y : 0;
+										return (
+											<circle cx={validX} cy={validY} r={4} fill='#2D81E0' />
+										);
+									}}
+								/>
+								<Tooltip<DataPoint>
+									className='tooltip'
+									snapTooltipToDatumX
+									snapTooltipToDatumY
+									showVerticalCrosshair
+									showSeriesGlyphs
+									renderTooltip={({ tooltipData }: any) => {
+										const mood = Object.keys(moodMap).find(
+											(key) =>
+												moodMap[key].value ===
+												tooltipData?.nearestDatum?.datum?.y
+										);
+
+										return (
+											<div className='flex flex-col gap-2'>
+												<div
+													style={{
+														color:
+															tooltipData?.nearestDatum?.datum?.color ||
+															'black',
+													}}
+												>
+													{mood}{' '}
+													{/* Display the mood instead of the data key */}
+												</div>
+												{new Date(
+													tooltipData?.nearestDatum?.datum?.x
+												).toLocaleDateString('en-US', {
+													month: '2-digit',
+													day: '2-digit',
+												})}
+											</div>
+										);
+									}}
+								/>
+							</XYChart>
+						)}
+					</div>
+				);
+			}}
+		</ParentSize>
 	);
 };
 
 export default TrendLineChart;
+
+export { moodMap, CustomTick };
