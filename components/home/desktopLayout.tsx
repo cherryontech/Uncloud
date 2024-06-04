@@ -103,7 +103,7 @@ export default function DesktopLayout({
 					}`}
 				>
 					<div className='main-content flex flex-col items-center  bg-[#F3F5F9]'>
-						<div className='h-full w-full rounded-2xl border  border-[#DEE9F5] bg-white px-4 py-6'>
+						<div className='h-full w-full overflow-auto rounded-2xl  border border-[#DEE9F5] bg-white px-4 py-6'>
 							<UserProvider>{component}</UserProvider>
 						</div>
 					</div>

@@ -307,7 +307,6 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 													alt='Mood'
 													width={200}
 													height={200}
-													// className='w-full'
 												/>
 											</div>
 										</div>
