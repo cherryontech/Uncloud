@@ -30,8 +30,8 @@ const HeatMap: React.FC<HeatMapProps> = ({ data }) => {
 	return (
 		<div
 			style={{
-				// height: '22.9rem',
-				height: '100%',
+				height: '26.9rem',
+				// height: '100%',
 				width: '100%',
 				display: 'flex',
 				flexDirection: 'column',
@@ -55,9 +55,9 @@ const HeatMap: React.FC<HeatMapProps> = ({ data }) => {
 			<ParentSize>
 				{({ width, height }) => {
 					// Adjust height to account for legend and gap
-					const adjustedHeight = height - legendHeight;
+					const adjustedHeight = height - legendHeight - gapHeight;
 					const xMax = width - margin.left - margin.right;
-					const yMax = adjustedHeight - margin.bottom - margin.top;
+					const yMax = adjustedHeight - margin.bottom - margin.top - 16;
 
 					const xScale = scaleBand<string>({
 						range: [0, xMax],
@@ -66,7 +66,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ data }) => {
 					});
 
 					const yScale = scaleBand<string>({
-						range: [0, adjustedHeight],
+						range: [0, adjustedHeight + 14],
 						domain: Object.keys(moodMap),
 						padding: 0.15,
 					});
@@ -106,7 +106,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ data }) => {
 								/>
 								<AxisBottom
 									scale={xScale}
-									top={adjustedHeight - 5}
+									top={adjustedHeight + 5}
 									stroke='#333'
 									tickStroke='#333'
 									hideAxisLine
@@ -116,7 +116,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ data }) => {
 										fontWeight: 600,
 										fill: '#706F6F',
 										// dy: '1em',
-										fontSize: '.75rem',
+										fontSize: '.625rem',
 										textAnchor: 'middle',
 									})}
 								/>

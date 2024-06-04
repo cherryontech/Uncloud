@@ -69,15 +69,13 @@ const Trends = () => {
 						</>
 					)}
 				</div>
-				<div className='flex h-[30rem] flex-col px-6 py-8'>
+				<div className='flex h-[30rem] flex-col gap-4 px-6 py-8'>
 					{heatMapData.length > 0 && (
 						<>
 							<span className='h-[2.1rem] text-2xl font-semibold'>
 								Frequent Words
 							</span>
-							{/* <div className='flex-grow'> */}
 							<HeatMap data={heatMapData} />
-							{/* </div> */}
 						</>
 					)}
 				</div>
