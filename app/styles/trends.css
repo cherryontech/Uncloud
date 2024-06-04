@@ -9,6 +9,8 @@
 	align-items: flex-start;
 	flex-shrink: 0;
 	align-self: stretch;
+	box-sizing: border-box;
+	width: 100%;
 
 	border-radius: 0.75rem;
 	border: 1px solid #dee9f5;
