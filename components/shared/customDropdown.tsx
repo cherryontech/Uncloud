@@ -37,10 +37,13 @@ const CustomDropdown = ({
 	return (
 		<div className='custom-dropdown' ref={dropdownRef}>
 			<div
-				className='custom-dropdown__selected hover:border-[#2D81E0] focus:border-[#2D81E0] focus:outline-[#2D81E0] focus:ring focus:ring-[#DEE9F5]'
+				className='custom-dropdown__selected hover:border-[#2D81E0]  focus:border-[#2D81E0] focus:outline-[#2D81E0] focus:ring focus:ring-[#DEE9F5]'
 				onClick={() => setIsOpen(!isOpen)}
 			>
+				<div className='w-[80%] m-0 p-0 truncate'>
+
 				{value}
+				</div>
 			</div>
 			{isOpen && (
 				<ul className='custom-dropdown__list'>

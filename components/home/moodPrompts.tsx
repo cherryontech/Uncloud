@@ -64,6 +64,19 @@ const MoodPrompts = ({
 						'What skills help me find fullfillment and success in my career?',
 					answer: '',
 				},
+				{
+					question: 'What has kept me from changing my career before?',
+					answer: '',
+				},
+				{
+					question: "What's inspiring me to switch my career?",
+					answer: '',
+				},
+				{
+					question:
+						'What small steps can I take daily to work towards my career goals?',
+					answer: '',
+				},
 			],
 			Sunny: [
 				{
@@ -89,6 +102,19 @@ const MoodPrompts = ({
 						'What skills help me find fullfillment and success in my career?',
 					answer: '',
 				},
+				{
+					question: 'What has kept me from changing my career before?',
+					answer: '',
+				},
+				{
+					question: "What's inspiring me to switch my career?",
+					answer: '',
+				},
+				{
+					question:
+						'What small steps can I take daily to work towards my career goals?',
+					answer: '',
+				},
 			],
 			Cloudy: [
 				{
@@ -97,7 +123,7 @@ const MoodPrompts = ({
 					answer: '',
 				},
 				{
-					question: 'What would I do if I knew I couldn&apos;t fail?',
+					question: "What would I do if I knew I couldn't fail?",
 					answer: '',
 				},
 				{
@@ -112,6 +138,19 @@ const MoodPrompts = ({
 				{
 					question:
 						'What skills help me find fullfillment and success in my career?',
+					answer: '',
+				},
+				{
+					question: 'What has kept me from changing my career before?',
+					answer: '',
+				},
+				{
+					question: "What's inspiring me to switch my career?",
+					answer: '',
+				},
+				{
+					question:
+						'What small steps can I take daily to work towards my career goals?',
 					answer: '',
 				},
 			],
@@ -139,17 +178,32 @@ const MoodPrompts = ({
 						'What activities tend to drain me mentally and emotionally? Why?',
 					answer: '',
 				},
+				{
+					question: 'What has kept me from changing my career before?',
+					answer: '',
+				},
+				{
+					question: "What's inspiring me to switch my career?",
+					answer: '',
+				},
+				{
+					question:
+						'What small steps can I take daily to work towards my career goals?',
+					answer: '',
+				},
 			],
 			Stormy: [
 				{
-					question: 'What do I envision my work-life balance? How can I achieve it?',
+					question:
+						'What do I envision my work-life balance? How can I achieve it?',
 					answer: '',
 				},
 				{
-					question: 'What environments make me feel most peaceful or productive?',
+					question:
+						'What environments make me feel most peaceful or productive?',
 					answer: '',
 				},
-					{
+				{
 					question:
 						'What activities tend to drain me mentally and emotionally? Why?',
 					answer: '',
@@ -162,6 +216,20 @@ const MoodPrompts = ({
 				{
 					question:
 						'What activities keep me focused, energized, and joyful? Why?',
+					answer: '',
+				},
+
+				{
+					question: 'What has kept me from changing my career before?',
+					answer: '',
+				},
+				{
+					question: "What's inspiring me to switch my career?",
+					answer: '',
+				},
+				{
+					question:
+						'What small steps can I take daily to work towards my career goals?',
 					answer: '',
 				},
 			],
@@ -191,7 +259,7 @@ const MoodPrompts = ({
 		{ description: '' },
 		{ description: '' },
 		{ description: '' },
-		// Add as many initial win objects as needed
+		
 	];
 	const [wins, setWins] = useState<Win[]>(
 		initialWins && initialWins.length ? initialWins : defaultWins
@@ -282,10 +350,10 @@ const MoodPrompts = ({
 	const moods = ['cloudy', 'rainy', 'stormy', 'rainbow', 'sunny'];
 	const moodIndex = moods.indexOf(selectedMood?.toLowerCase() ?? '');
 
-	// Calculate the start index for the slice so that selectedMood ends up in the third position
+	
 	const startIndex = (moodIndex + moods.length - 2) % moods.length;
 
-	// Create a new array with selectedMood in the third position
+
 	const sortedMoods = [
 		...moods.slice(startIndex, moods.length),
 		...moods.slice(0, startIndex),
@@ -462,16 +530,18 @@ const MoodPrompts = ({
 									<div className='relative flex h-fit flex-row items-center justify-start gap-3'>
 										<div className='reflection-input ml-12 flex w-full flex-col justify-start gap-2'>
 											<div className='custom-select'>
+
 												<DropdownInput
 													options={availableQuestions(index).map(
 														(q) => q.question
-													)}
-													name={`question-${index}`}
-													value={reflection.question}
-													handleChange={(e: { target: { value: string } }) =>
+														)}
+														name={`question-${index}`}
+														value={reflection.question}
+														handleChange={(e: { target: { value: string } }) =>
 														handleQuestionChange(index, e.target.value)
 													}
-												/>
+													/>
+												
 											</div>
 											<textarea
 												name='answer'
