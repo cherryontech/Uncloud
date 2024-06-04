@@ -123,7 +123,7 @@ const MoodPrompts = ({
 					answer: '',
 				},
 				{
-					question: 'What would I do if I knew I couldn&apos;t fail?',
+					question: "What would I do if I knew I couldn't fail?",
 					answer: '',
 				},
 				{
