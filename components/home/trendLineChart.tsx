@@ -91,20 +91,15 @@ const TrendLineChart = ({ moods }: Props) => {
 		tickValues: [0, 1, 2, 3, 4],
 	};
 
-	const margin = { left: 40, top: 0, right: 10, bottom: 30 };
+	const margin = { left: 40, top: 0, right: 10, bottom: 24 };
 
 	return (
 		<ParentSize>
 			{({ width, height }) => {
+				const maxHeight = 219;
+				const h = Math.min(height, maxHeight);
 				return (
-					<div
-						style={{
-							width: '100%',
-							height: '100%',
-							display: 'flex',
-							flexDirection: 'column',
-						}}
-					>
+					<>
 						<svg width='0' height='0'>
 							<defs>
 								<linearGradient id='gradient' x1='0' y1='0' x2='0' y2='1'>
@@ -113,10 +108,10 @@ const TrendLineChart = ({ moods }: Props) => {
 								</linearGradient>
 							</defs>
 						</svg>
-						{width > 0 && height > 0 && (
+						{width > 0 && maxHeight > 0 && (
 							<XYChart
 								width={width}
-								height={height}
+								height={maxHeight}
 								xScale={{ type: 'band' }}
 								yScale={yScaleConfig}
 								margin={margin}
@@ -139,10 +134,11 @@ const TrendLineChart = ({ moods }: Props) => {
 									hideAxisLine
 									hideTicks
 									tickComponent={({ formattedValue }) => (
-										<g transform={`translate(${-10},${5})`}>
+										<g transform={`translate(${0},${5})`}>
 											<text
 												style={{
-													fontSize: '.75rem',
+													fontSize: '.625rem',
+													textAnchor: 'middle',
 													fontFamily: 'Open Sans',
 													fontWeight: 600,
 													fill: '#706F6F',
@@ -236,7 +232,7 @@ const TrendLineChart = ({ moods }: Props) => {
 								/>
 							</XYChart>
 						)}
-					</div>
+					</>
 				);
 			}}
 		</ParentSize>

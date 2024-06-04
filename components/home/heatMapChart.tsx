@@ -25,63 +25,54 @@ const HeatMap: React.FC<HeatMapProps> = ({ data }) => {
 		}
 	}, []);
 
-	const margin = { top: 0, right: 0, bottom: 0, left: 40 };
+	const margin = { top: 0, right: 0, bottom: 20, left: 40 };
 
 	return (
-		<div
-			style={{
-				height: '26.9rem',
-				width: '100%',
-				display: 'flex',
-				flexDirection: 'column',
-			}}
-		>
-			<div className='flex justify-end pr-3' ref={legendRef}>
-				<CustomLegend
-					scale={scaleLinear({
-						domain: [
-							0,
-							Math.max(...data.flatMap((d) => d.moods.map((m) => m.count))),
-						],
-						range: ['#E0F2FE', '#2D81E0'],
-					})}
-				/>
-			</div>
-			<div
-				ref={gapRef}
-				style={{ height: '0.75rem', display: 'flex', flexShrink: 0 }}
-			></div>
-			<ParentSize>
-				{({ width, height }) => {
-					// Adjust height to account for legend and gap
-					const adjustedHeight = height - legendHeight - gapHeight;
-					const xMax = width - margin.left - margin.right;
-					const yMax = adjustedHeight - margin.bottom - margin.top - 16;
+		<ParentSize>
+			{({ width, height }) => {
+				const maxHeight = 219;
+				const h = Math.min(height, maxHeight);
+				const xMax = width - margin.left - margin.right;
+				const yMax = h - margin.bottom;
 
-					const xScale = scaleBand<string>({
-						range: [0, xMax],
-						domain: data.map((d) => d.word),
-						padding: 0.1,
-					});
+				const xScale = scaleBand<string>({
+					range: [0, xMax],
+					domain: data.map((d) => d.word),
+					padding: 0.1,
+				});
 
-					const yScale = scaleBand<string>({
-						range: [0, adjustedHeight + 14],
-						domain: Object.keys(moodMap),
-						padding: 0.15,
-					});
+				const yScale = scaleBand<string>({
+					range: [0, yMax],
+					domain: Object.keys(moodMap),
+					padding: 0.1,
+				});
 
-					const colorScale = scaleLinear<string>({
-						domain: [
-							0,
-							Math.max(...data.flatMap((d) => d.moods.map((m) => m.count))),
-						],
-						range: ['#E0F2FE', '#2D81E0'],
-					});
+				const colorScale = scaleLinear<string>({
+					domain: [
+						0,
+						Math.max(...data.flatMap((d) => d.moods.map((m) => m.count))),
+					],
+					range: ['#E0F2FE', '#2D81E0'],
+				});
 
-					return (
+				return (
+					<div>
+						<div className='flex justify-end pr-2' ref={legendRef}>
+							<CustomLegend
+								scale={scaleLinear({
+									domain: [
+										0,
+										Math.max(
+											...data.flatMap((d) => d.moods.map((m) => m.count))
+										),
+									],
+									range: ['#E0F2FE', '#2D81E0'],
+								})}
+							/>
+						</div>
 						<svg
 							width={width}
-							height={height}
+							height={h}
 							style={{
 								flexGrow: 1,
 								overflow: 'hidden',
@@ -105,7 +96,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ data }) => {
 								/>
 								<AxisBottom
 									scale={xScale}
-									top={adjustedHeight + 5}
+									top={h - margin.bottom}
 									stroke='#333'
 									tickStroke='#333'
 									hideAxisLine
@@ -114,7 +105,6 @@ const HeatMap: React.FC<HeatMapProps> = ({ data }) => {
 										fontFamily: 'Open Sans',
 										fontWeight: 600,
 										fill: '#706F6F',
-										// dy: '1em',
 										fontSize: '.625rem',
 										textAnchor: 'middle',
 									})}
@@ -138,10 +128,10 @@ const HeatMap: React.FC<HeatMapProps> = ({ data }) => {
 								)}
 							</g>
 						</svg>
-					);
-				}}
-			</ParentSize>
-		</div>
+					</div>
+				);
+			}}
+		</ParentSize>
 	);
 };
 

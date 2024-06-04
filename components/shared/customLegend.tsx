@@ -20,7 +20,9 @@ const CustomLegend: React.FC<CustomLegendProps> = ({ scale }) => {
 				backgroundColor: 'white',
 				color: '#D9D9D9',
 				gap: '0.625rem',
-				fontSize: '0.875rem',
+				fontSize: '0.8125rem',
+				paddingBottom: '0.75rem',
+				lineHeight: '1.25rem',
 			}}
 		>
 			<span style={{}}>Less</span>
@@ -31,6 +33,7 @@ const CustomLegend: React.FC<CustomLegendProps> = ({ scale }) => {
 						backgroundColor: label.color,
 						width: '1.25rem',
 						height: '1.25rem',
+						borderRadius: '0.25rem',
 					}}
 				/>
 			))}
