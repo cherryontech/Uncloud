@@ -31,7 +31,6 @@ const HeatMap: React.FC<HeatMapProps> = ({ data }) => {
 		<div
 			style={{
 				height: '26.9rem',
-				// height: '100%',
 				width: '100%',
 				display: 'flex',
 				flexDirection: 'column',

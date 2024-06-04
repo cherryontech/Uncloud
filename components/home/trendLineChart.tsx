@@ -96,12 +96,10 @@ const TrendLineChart = ({ moods }: Props) => {
 	return (
 		<ParentSize>
 			{({ width, height }) => {
-				// Ensure chart occupies full width and height minus margins
 				return (
 					<div
 						style={{
 							width: '100%',
-							// height: `${height - margin.bottom}px`,
 							height: '100%',
 							display: 'flex',
 							flexDirection: 'column',
@@ -143,7 +141,6 @@ const TrendLineChart = ({ moods }: Props) => {
 									tickComponent={({ formattedValue }) => (
 										<g transform={`translate(${-10},${5})`}>
 											<text
-												// dy='1em'
 												style={{
 													fontSize: '.75rem',
 													fontFamily: 'Open Sans',
@@ -226,7 +223,6 @@ const TrendLineChart = ({ moods }: Props) => {
 													}}
 												>
 													{mood}{' '}
-													{/* Display the mood instead of the data key */}
 												</div>
 												{new Date(
 													tooltipData?.nearestDatum?.datum?.x

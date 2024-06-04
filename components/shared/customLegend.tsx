@@ -9,7 +9,7 @@ interface CustomLegendProps {
 const CustomLegend: React.FC<CustomLegendProps> = ({ scale }) => {
 	const labels = scale.ticks(5).map((tick) => ({
 		label: Math.round(Number(tick)).toString(),
-		color: scale(tick) as string, // Explicitly cast to string
+		color: scale(tick) as string,
 	}));
 
 	return (
@@ -28,7 +28,7 @@ const CustomLegend: React.FC<CustomLegendProps> = ({ scale }) => {
 				<div
 					key={i}
 					style={{
-						backgroundColor: label.color, // Ensure color is correctly typed
+						backgroundColor: label.color,
 						width: '1.25rem',
 						height: '1.25rem',
 					}}

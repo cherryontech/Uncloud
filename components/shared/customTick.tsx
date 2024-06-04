@@ -1,5 +1,5 @@
 import React from 'react';
-import { moodMap } from '../home/trendLineChart'; // Import moodMap
+import { moodMap } from '../home/trendLineChart';
 
 interface CustomTickProps {
 	x: number;
@@ -8,8 +8,8 @@ interface CustomTickProps {
 }
 
 const CustomTick: React.FC<CustomTickProps> = ({ x, y, formattedValue }) => {
-	const mood = formattedValue as keyof typeof moodMap; // Ensure formattedValue is a valid key
-	const icon = moodMap[mood]?.icon ?? ''; // Get the icon from the moodMap
+	const mood = formattedValue as keyof typeof moodMap;
+	const icon = moodMap[mood]?.icon ?? '';
 
 	return (
 		<g transform={`translate(${x - 5}, ${y})`}>
