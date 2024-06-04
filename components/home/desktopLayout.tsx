@@ -89,7 +89,7 @@ export default function DesktopLayout({
 			</div>
 			<div className={`main-container bg-[#F3F5F9]`}>
 				<div className='top-bar flex flex-row'>
-					<div className='col-span-1 flex h-16 w-full flex-row items-center justify-start pl-4'>
+					<div className='col-span-1 flex h-16 w-full flex-row items-center justify-start'>
 						<span className='text-3xl font-semibold text-[#2C2C2C]'>
 							{title}
 						</span>
