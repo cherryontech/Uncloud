@@ -1,4 +1,5 @@
-import { MoodEntry } from "../home/calendar";
+import { MoodEntry } from '../home/calendar';
+import { MoodType } from '../pages/trends';
 
 export const filterMoodsByDateRange = (
 	moods: MoodEntry[],
@@ -10,14 +11,14 @@ export const filterMoodsByDateRange = (
 		return date >= startDate && date <= endDate;
 	});
 };
-export const filterFavoritesByDateRange = (
-	moods: MoodEntry[]
-): MoodEntry[] => {
+
+export const filterFavoritesByDateRange = (moods: MoodEntry[]): MoodEntry[] => {
 	return moods.filter((mood) => {
 		const date = new Date(mood.date);
-		return  mood.favorite;
+		return mood.favorite;
 	});
 };
+
 export const countNonEmptyReflections = (moods: MoodEntry[]): number => {
 	return moods.reduce((count, mood) => {
 		const nonEmptyReflections = mood.reflections.filter(
@@ -26,6 +27,7 @@ export const countNonEmptyReflections = (moods: MoodEntry[]): number => {
 		return count + nonEmptyReflections.length;
 	}, 0);
 };
+
 export const countNonEmptyWins = (moods: MoodEntry[]): number => {
 	return moods.reduce((count, mood) => {
 		const nonEmptyWins = mood.wins.filter(
@@ -34,6 +36,7 @@ export const countNonEmptyWins = (moods: MoodEntry[]): number => {
 		return count + nonEmptyWins.length;
 	}, 0);
 };
+
 export const calculatePercentageIncrease = (
 	currentCountMoods: number,
 	pastCount: number
@@ -41,6 +44,7 @@ export const calculatePercentageIncrease = (
 	if (pastCount === 0) return currentCountMoods > 0 ? 100 : 0;
 	return ((currentCountMoods - pastCount) / pastCount) * 100;
 };
+
 export const calculatePastDateRange = (
 	currentStartDate: Date,
 	currentEndDate: Date
@@ -53,4 +57,40 @@ export const calculatePastDateRange = (
 		pastEndDate.getTime() - currentRangeDays * (1000 * 60 * 60 * 24)
 	);
 	return { pastStartDate, pastEndDate };
+};
+
+export const getFrequentPrompts = (
+	moods: MoodEntry[]
+): {
+	mood: MoodType;
+	prompt: string;
+	count: number;
+}[] => {
+	const promptCounts: Record<string, Record<string, number>> = {};
+
+	moods.forEach((mood) => {
+		const moodType = mood.mood as MoodType;
+		mood.reflections.forEach((reflection) => {
+			const prompt = reflection.question;
+			if (!promptCounts[moodType]) {
+				promptCounts[moodType] = {};
+			}
+			if (!promptCounts[moodType][prompt]) {
+				promptCounts[moodType][prompt] = 0;
+			}
+			promptCounts[moodType][prompt]++;
+		});
+	});
+
+	return Object.keys(promptCounts).map((mood) => {
+		const prompts = promptCounts[mood as MoodType];
+		const mostFrequentPrompt = Object.keys(prompts).reduce((a, b) =>
+			prompts[a] > prompts[b] ? a : b
+		);
+		return {
+			mood: mood as MoodType,
+			prompt: mostFrequentPrompt,
+			count: prompts[mostFrequentPrompt],
+		};
+	});
 };

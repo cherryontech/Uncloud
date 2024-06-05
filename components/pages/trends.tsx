@@ -17,16 +17,25 @@ import {
 	countNonEmptyWins,
 	filterFavoritesByDateRange,
 	filterMoodsByDateRange,
+	getFrequentPrompts,
 } from './trendsUtils';
 import DonutChart from '../home/donutChart';
+import FrequentReflectionPrompts from '../home/frequentPromptsChart'; // Import the new component
 
-type MoodType = 'Rainbow' | 'Sunny' | 'Cloudy' | 'Stormy' | 'Rainy';
+export type MoodType = 'Rainbow' | 'Sunny' | 'Cloudy' | 'Stormy' | 'Rainy';
 
 const Trends = () => {
 	const { user, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<MoodEntry[]>([]);
 	const [currentCountMoods, setCurrentCountMoods] = useState<number>(0);
 	const [heatMapData, setHeatMapData] = useState<any[]>([]);
+	const [frequentPrompts, setFrequentPrompts] = useState<
+		{
+			mood: MoodType;
+			prompt: string;
+			count: number;
+		}[]
+	>([]);
 
 	// Tooltip state
 	const { tooltipData, tooltipLeft, tooltipTop, showTooltip, hideTooltip } =
@@ -97,6 +106,9 @@ const Trends = () => {
 		setPercentageIncreaseWins(
 			calculatePercentageIncrease(currentWinCount, pastWinCount)
 		);
+
+		const prompts = getFrequentPrompts(currentMoods);
+		setFrequentPrompts(prompts);
 	}, [moods, currentStartDate, currentEndDate]);
 
 	useEffect(() => {
@@ -212,6 +224,8 @@ const Trends = () => {
 					}
 				/>
 			</div>
+
+			{/* Line Chart and Heat Map */}
 			<div className='grid h-fit w-full gap-5 md:grid-cols-2'>
 				<div className='trends-card gap-12'>
 					{moods && moods.length > 0 && (
@@ -291,10 +305,10 @@ const Trends = () => {
 					</div>
 					<DonutChart data={moodData} />
 				</div>
-				<div className='trends-card gap-4'>
+				<div className='trends-card gap-8'>
 					<div className='flex w-full flex-row items-center justify-between'>
 						<span className='h-[2.0625rem] text-2xl font-semibold leading-normal'>
-							Frequent Words
+							Frequent Reflection Prompts
 						</span>
 						<div
 							ref={questionMarkRefs.promptFrequency}
@@ -302,7 +316,7 @@ const Trends = () => {
 							onMouseEnter={(event) =>
 								handleMouseEnter(
 									event,
-									'This chart shows the most frequently used words in your entries.',
+									'This chart shows the most frequently used prompts for your reflections.',
 									'promptFrequency'
 								)
 							}
@@ -311,7 +325,7 @@ const Trends = () => {
 							<Question size={24} color={'#706F6F'} />
 						</div>
 					</div>
-					<div>Prompt Frequency placeholder</div>
+					<FrequentReflectionPrompts prompts={frequentPrompts} />
 				</div>
 			</div>
 			{tooltipData && (
