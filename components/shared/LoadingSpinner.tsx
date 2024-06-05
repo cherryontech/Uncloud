@@ -7,7 +7,7 @@ const LoadingSpinner = () => {
 		<div className='fixed inset-0 z-50 mt-[-20px] flex flex-col items-center justify-center bg-[#F3F5F9]'>
 			<Image
 				src='Uncloud_Logo_2.svg'
-				alt='Logo'
+				alt='Uncloud Logo'
 				className='logo'
 				width={123}
 				height={58}
