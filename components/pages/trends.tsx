@@ -18,6 +18,9 @@ import {
 	filterFavoritesByDateRange,
 	filterMoodsByDateRange,
 } from './trendsUtils';
+import DonutChart from '../home/donutChart';
+
+type MoodType = 'Rainbow' | 'Sunny' | 'Cloudy' | 'Stormy' | 'Rainy';
 
 const Trends = () => {
 	const { user, isUpdated } = useAuth();
@@ -32,16 +35,13 @@ const Trends = () => {
 	const [percentageIncreaseMoods, setPercentageIncreaseMoods] =
 		useState<number>(0);
 	const [currentCountFavorites, setCurrentCountFavorites] = useState<number>(0);
-
 	const [percentageIncreaseFavorites, setPercentageIncreaseFavorites] =
 		useState<number>(0);
 	const [currentCountWins, setCurrentCountWins] = useState<number>(0);
-
 	const [percentageIncreaseWins, setPercentageIncreaseWins] =
 		useState<number>(0);
 	const [currentCountReflections, setCurrentCountReflections] =
 		useState<number>(0);
-
 	const [percentageIncreaseReflections, setPercentageIncreaseReflections] =
 		useState<number>(0);
 	const [currentStartDate, setCurrentStartDate] =
@@ -62,12 +62,11 @@ const Trends = () => {
 			currentEnd
 		);
 		const pastMoods = filterMoodsByDateRange(moods, pastStartDate, pastEndDate);
-		console.log(currentMoods);
+
 		const currentMoodCount = currentMoods.length;
 		const pastMoodCount = pastMoods.length;
 
 		setCurrentCountMoods(currentMoodCount);
-
 		setPercentageIncreaseMoods(
 			calculatePercentageIncrease(currentMoodCount, pastMoodCount)
 		);
@@ -79,39 +78,26 @@ const Trends = () => {
 		const pastFavoriteCount = pastFavorites.length;
 
 		setCurrentCountFavorites(currentFavoriteCount);
-
 		setPercentageIncreaseFavorites(
 			calculatePercentageIncrease(currentFavoriteCount, pastFavoriteCount)
 		);
+
 		const currentReflectionCount = countNonEmptyReflections(currentMoods);
 		const pastReflectionCount = countNonEmptyReflections(pastMoods);
 
 		setCurrentCountReflections(currentReflectionCount);
-
 		setPercentageIncreaseReflections(
 			calculatePercentageIncrease(currentReflectionCount, pastReflectionCount)
 		);
+
 		const currentWinCount = countNonEmptyWins(currentMoods);
 		const pastWinCount = countNonEmptyWins(pastMoods);
 
 		setCurrentCountWins(currentWinCount);
-
 		setPercentageIncreaseWins(
 			calculatePercentageIncrease(currentWinCount, pastWinCount)
 		);
 	}, [moods, currentStartDate, currentEndDate]);
-	console.log(currentCountMoods);
-	useEffect(() => {
-		if (user) {
-			getUser(user.uid);
-		}
-	}, [user, isUpdated]);
-
-	// Create separate references for each question mark
-	const questionMarkRefs = {
-		moodFlow: useRef<HTMLDivElement>(null),
-		frequentWords: useRef<HTMLDivElement>(null),
-	};
 
 	useEffect(() => {
 		if (user) {
@@ -125,10 +111,18 @@ const Trends = () => {
 		}
 	}, [user, isUpdated]);
 
+	// Create separate references for each question mark
+	const questionMarkRefs = {
+		moodFlow: useRef<HTMLDivElement>(null),
+		frequentWords: useRef<HTMLDivElement>(null),
+		moodAnalysis: useRef<HTMLDivElement>(null),
+		promptFrequency: useRef<HTMLDivElement>(null),
+	};
+
 	const handleMouseEnter = (
 		event: React.MouseEvent<HTMLDivElement, MouseEvent>,
 		message: string,
-		refKey: 'moodFlow' | 'frequentWords'
+		refKey: 'moodFlow' | 'frequentWords' | 'moodAnalysis' | 'promptFrequency'
 	) => {
 		const targetRect =
 			questionMarkRefs[refKey].current?.getBoundingClientRect();
@@ -140,6 +134,23 @@ const Trends = () => {
 			});
 		}
 	};
+
+	const moodCounts = moods.reduce(
+		(acc, mood) => {
+			const moodType = mood.mood as MoodType; // Type assertion
+			acc[moodType] = (acc[moodType] || 0) + 1;
+			return acc;
+		},
+		{} as Record<MoodType, number>
+	);
+
+	const moodData: { mood: MoodType; value: number }[] = [
+		{ mood: 'Rainbow', value: moodCounts['Rainbow'] || 0 },
+		{ mood: 'Sunny', value: moodCounts['Sunny'] || 0 },
+		{ mood: 'Cloudy', value: moodCounts['Cloudy'] || 0 },
+		{ mood: 'Stormy', value: moodCounts['Stormy'] || 0 },
+		{ mood: 'Rainy', value: moodCounts['Rainy'] || 0 },
+	];
 
 	return (
 		<div className='flex flex-col gap-5'>
@@ -253,6 +264,54 @@ const Trends = () => {
 							<HeatMap data={heatMapData} />
 						</>
 					)}
+				</div>
+			</div>
+
+			{/* Donut and Prompt Frequency */}
+			<div className='grid grid-cols-[2fr_5fr] gap-5'>
+				<div className='trends-card gap-12'>
+					<div className='flex w-full flex-row items-center justify-between'>
+						<span className='h-[2.0625rem] text-2xl font-semibold leading-normal'>
+							Mood Analysis
+						</span>
+						<div
+							ref={questionMarkRefs.moodAnalysis}
+							className='relative flex max-h-[1.5rem] items-center justify-center'
+							onMouseEnter={(event) =>
+								handleMouseEnter(
+									event,
+									'This chart shows a breakdown of your selected moods.',
+									'moodAnalysis'
+								)
+							}
+							onMouseLeave={hideTooltip}
+						>
+							<Question size={24} color={'#706F6F'} />
+						</div>
+					</div>
+					<DonutChart data={moodData} />
+				</div>
+				<div className='trends-card gap-4'>
+					<div className='flex w-full flex-row items-center justify-between'>
+						<span className='h-[2.0625rem] text-2xl font-semibold leading-normal'>
+							Frequent Words
+						</span>
+						<div
+							ref={questionMarkRefs.promptFrequency}
+							className='relative flex max-h-[1.5rem] items-center justify-center'
+							onMouseEnter={(event) =>
+								handleMouseEnter(
+									event,
+									'This chart shows the most frequently used words in your entries.',
+									'promptFrequency'
+								)
+							}
+							onMouseLeave={hideTooltip}
+						>
+							<Question size={24} color={'#706F6F'} />
+						</div>
+					</div>
+					<div>Prompt Frequency placeholder</div>
 				</div>
 			</div>
 			{tooltipData && (
