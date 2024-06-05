@@ -38,6 +38,7 @@ interface DesktopLayoutProps {
 	isPopupOpen: boolean;
 	isLoading: boolean;
 	mobile: boolean;
+	title: string;
 }
 
 export default function DesktopLayout({
@@ -61,6 +62,7 @@ export default function DesktopLayout({
 	isPopupOpen,
 	isLoading,
 	mobile,
+	title,
 }: DesktopLayoutProps) {
 	console.log(selectedMenuItem);
 	return (
@@ -87,8 +89,10 @@ export default function DesktopLayout({
 			</div>
 			<div className={`main-container bg-[#F3F5F9]`}>
 				<div className='top-bar flex flex-row'>
-					<div className='col-span-1 flex w-full flex-row items-center justify-start'>
-						<span className='text-3xl font-semibold'>My Log</span>
+					<div className='col-span-1 flex h-16 w-full flex-row items-center justify-start'>
+						<span className='text-3xl font-semibold text-[#2C2C2C]'>
+							{title}
+						</span>
 					</div>
 
 					<Userbar mobile={false} />
@@ -100,12 +104,15 @@ export default function DesktopLayout({
 						(selectedMenuItem === 'Calendar' ||
 							selectedMenuItem === 'Favorites')
 							? 'right-bar-open'
-							: 'right-bar-collapsed'
+							: selectedMenuItem !== 'Favorites' &&
+								  selectedMenuItem !== 'Calendar'
+								? 'right-bar-collapsed-hidden'
+								: 'right-bar-collapsed'
 					}`}
 				>
 					<div className='main-content flex flex-col items-center  bg-[#F3F5F9]'>
 						<div
-							className={`h-full w-full rounded-2xl border   ${selectedMenuItem === 'Calendar' ? 'border-[#DEE9F5] bg-white' : ''}  px-4 py-6`}
+							className={`h-full w-full   ${selectedMenuItem === 'Calendar' ? ' rounded-2xl border border-[#DEE9F5] bg-white px-4 py-6' : ''}`}
 						>
 							<UserProvider>{component}</UserProvider>
 						</div>

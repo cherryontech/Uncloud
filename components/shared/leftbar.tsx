@@ -124,12 +124,15 @@ const Leftbar = ({
 			) : (
 				<>
 					<div className='flex h-full w-full flex-col gap-4 bg-[#FAFCFF] px-6 py-2'>
-						<div className='flex h-16 flex-row items-center justify-start gap-2'>
+						<div className='flex h-16  items-center justify-center'>
 							<Link href='/'>
-								<CloudSun className='h-8 w-8' />
-							</Link>
-							<Link href='/'>
-								<span className='text-2xl font-semibold'>Uncloud</span>
+								<Image
+									src='Uncloud_Logo_2.svg'
+									alt='Uncloud Logo'
+									width={123}
+									height={58}
+									// layout='fill'
+								/>
 							</Link>
 						</div>
 

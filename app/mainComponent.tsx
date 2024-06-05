@@ -161,6 +161,7 @@ export default function MainComponent({
 	};
 
 	let component;
+	let title;
 	switch (selectedMenuItem) {
 		case 'Calendar':
 			component = (
@@ -179,15 +180,19 @@ export default function MainComponent({
 					mobile={mobile}
 				/>
 			);
+			title = 'My Log';
 			break;
 		case 'FAQ':
 			component = <FAQ />;
+			title = 'FAQ';
 			break;
 		case 'Goals':
 			component = <Goals />;
+			title = 'Goals';
 			break;
 		case 'Trends':
 			component = <Trends />;
+			title = 'Overview';
 			break;
 		case 'Favorites':
 			component = (
@@ -197,9 +202,11 @@ export default function MainComponent({
 					mobile={mobile}
 				/>
 			);
+			title = 'Favorites';
 			break;
 		case 'Profile':
 			component = <Profile />;
+			title = 'Profile';
 			break;
 		default:
 			component = (
@@ -218,6 +225,7 @@ export default function MainComponent({
 					mobile={mobile}
 				/>
 			);
+			title = 'My Log';
 	}
 
 	const [currentPage, setCurrentPage] = useState(1);
@@ -250,6 +258,7 @@ export default function MainComponent({
 					rightBarContent={rightBarContent}
 					isPopupOpen={isPopupOpen}
 					mobile={mobile}
+					title={title}
 				/>
 			) : (
 				// Mobile layout
@@ -274,6 +283,7 @@ export default function MainComponent({
 					rightBarContent={rightBarContent}
 					isPopupOpen={isPopupOpen}
 					mobile={mobile}
+					title={title}
 				/>
 			)}
 		</>

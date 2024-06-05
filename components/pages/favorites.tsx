@@ -45,7 +45,6 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 	}, [favoriteLogs]);
 	return (
 		<div>
-			<h2>Favorited Logs</h2>
 			{favoriteLogDates.length > 0 ? (
 				favoriteLogDates.map((date) => {
 					const log = favoriteLogs[date];

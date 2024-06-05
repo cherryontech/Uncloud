@@ -37,6 +37,7 @@ interface MobileLayoutProps {
 	isPopupOpen: boolean;
 	isLoading: boolean;
 	mobile: boolean;
+	title: string;
 }
 
 export default function MobileLayout({
@@ -60,6 +61,7 @@ export default function MobileLayout({
 	isPopupOpen,
 	isLoading,
 	mobile,
+	title,
 }: MobileLayoutProps) {
 	return (
 		<div className='mobile-grid-container'>
@@ -74,8 +76,10 @@ export default function MobileLayout({
 			</div>
 			<div className={`mobile-main-container bg-[#F3F5F9]`}>
 				<div className='mobile-top-bar flex flex-row'>
-					<div className='col-span-1 flex w-full flex-row items-center justify-start'>
-						<span className='text-3xl font-semibold'>My Log</span>
+					<div className='col-span-1 flex h-16 w-full flex-row items-center justify-start'>
+						<span className='text-3xl font-semibold text-[#2C2C2C]'>
+							{title}
+						</span>
 					</div>
 				</div>
 

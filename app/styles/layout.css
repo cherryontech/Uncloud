@@ -88,8 +88,6 @@
 }
 
 .content.right-bar-collapsed {
-	/* grid-template-columns: 1fr 4rem; */
-
 	.main-content {
 		width: 95%;
 	}
@@ -98,6 +96,14 @@
 	}
 }
 
+.content.right-bar-collapsed-hidden {
+	.main-content {
+		width: 100%;
+	}
+	.right-bar {
+		width: 0;
+	}
+}
 /*  MOBILE */
 .mobile-grid-container {
 	display: grid;
