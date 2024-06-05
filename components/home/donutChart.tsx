@@ -132,7 +132,7 @@ const DonutChart: React.FC<DonutChartProps> = ({ data }) => {
 					display: 'flex',
 					flexWrap: 'wrap',
 					justifyContent: 'center',
-					paddingTop: '3rem',
+					paddingTop: '2rem',
 				}}
 			>
 				<LegendOrdinal scale={colorScale} direction='row'>
