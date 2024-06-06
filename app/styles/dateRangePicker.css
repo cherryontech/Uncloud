@@ -1,0 +1,33 @@
+.rdrDateRangePickerWrapper {
+	display: flex;
+	flex-direction: column;
+}
+.rdrInputRanges {
+	display: none;
+}
+
+.rdrDefinedRangesWrapper {
+	width: 350px !important;
+}
+
+.rdrStaticRanges {
+	flex-wrap: wrap;
+	flex-direction: row !important;
+}
+.rdrStaticRanges button {
+	flex: 1 1 30%; 
+	margin: 5px; 
+}
+.rdrStaticRanges button:first-child {
+	position: absolute;
+	bottom: 5px;
+	font-size: 14px;
+}
+.rdrStaticRanges button:nth-child(2),
+.rdrStaticRanges button:nth-child(4) {
+	display: none;
+}
+
+.rdrMonth {
+	width: 100% !important;
+}
