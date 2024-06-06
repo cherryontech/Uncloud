@@ -64,7 +64,7 @@ export default function DesktopLayout({
 	mobile,
 	title,
 }: DesktopLayoutProps) {
-	console.log(selectedMenuItem);
+
 	return (
 		<div className='grid-container'>
 			{isLoading && <LoadingSpinner />}

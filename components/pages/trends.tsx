@@ -17,16 +17,20 @@ import {
 	countNonEmptyWins,
 	filterFavoritesByDateRange,
 	filterMoodsByDateRange,
+	getCurrentMonthRange,
 	getFrequentPrompts,
 } from './trendsUtils';
 import DonutChart from '../home/donutChart';
 import FrequentReflectionPrompts from '../home/frequentPromptsChart'; // Import the new component
+import { DateRangePicker } from 'react-date-range';
+import CustomDateRangePicker, { DateRangeState } from '../home/dateRangePicker';
 
 export type MoodType = 'Rainbow' | 'Sunny' | 'Cloudy' | 'Stormy' | 'Rainy';
 
 const Trends = () => {
 	const { user, isUpdated } = useAuth();
 	const [moods, setMoods] = useState<MoodEntry[]>([]);
+	const [currentMoodsState, setCurrentMoodsState] = useState<MoodEntry[]>([]);
 	const [currentCountMoods, setCurrentCountMoods] = useState<number>(0);
 	const [heatMapData, setHeatMapData] = useState<any[]>([]);
 	const [frequentPrompts, setFrequentPrompts] = useState<
@@ -53,23 +57,30 @@ const Trends = () => {
 		useState<number>(0);
 	const [percentageIncreaseReflections, setPercentageIncreaseReflections] =
 		useState<number>(0);
-	const [currentStartDate, setCurrentStartDate] =
-		useState<string>('2024-05-03');
-	const [currentEndDate, setCurrentEndDate] = useState<string>('2024-06-03');
+	const currentMonthRange = getCurrentMonthRange();
 
+	const [state, setState] = useState<DateRangeState[]>([
+		{
+			startDate: currentMonthRange.start,
+			endDate: currentMonthRange.end,
+			key: 'selection',
+		},
+	]);
 	useEffect(() => {
-		const currentStart = new Date(currentStartDate);
-		const currentEnd = new Date(currentEndDate);
 		const { pastStartDate, pastEndDate } = calculatePastDateRange(
-			currentStart,
-			currentEnd
+			state[0].startDate,
+			state[0].endDate
 		);
 
 		const currentMoods = filterMoodsByDateRange(
 			moods,
-			currentStart,
-			currentEnd
+			state[0].startDate,
+			state[0].endDate
 		);
+		console.log(currentMoods);
+		setCurrentMoodsState(currentMoods);
+		const heatmapData = prepareHeatMapData(currentMoods);
+		setHeatMapData(heatmapData);
 		const pastMoods = filterMoodsByDateRange(moods, pastStartDate, pastEndDate);
 
 		const currentMoodCount = currentMoods.length;
@@ -109,15 +120,13 @@ const Trends = () => {
 
 		const prompts = getFrequentPrompts(currentMoods);
 		setFrequentPrompts(prompts);
-	}, [moods, currentStartDate, currentEndDate]);
+	}, [moods, state[0].startDate, state[0].endDate]);
 
 	useEffect(() => {
 		if (user) {
 			getUser(user.uid).then((userData) => {
 				if (userData && userData.moods) {
 					setMoods(userData.moods);
-					const heatmapData = prepareHeatMapData(userData.moods);
-					setHeatMapData(heatmapData);
 				}
 			});
 		}
@@ -147,7 +156,7 @@ const Trends = () => {
 		}
 	};
 
-	const moodCounts = moods.reduce(
+	const moodCounts = currentMoodsState.reduce(
 		(acc, mood) => {
 			const moodType = mood.mood as MoodType; // Type assertion
 			acc[moodType] = (acc[moodType] || 0) + 1;
@@ -163,9 +172,12 @@ const Trends = () => {
 		{ mood: 'Stormy', value: moodCounts['Stormy'] || 0 },
 		{ mood: 'Rainy', value: moodCounts['Rainy'] || 0 },
 	];
-
+	console.log(currentMoodsState);
 	return (
 		<div className='flex flex-col gap-5'>
+			<div>
+				<CustomDateRangePicker state={state} setState={setState} />
+			</div>
 			<div className='mb-4 grid grid-cols-2 gap-4 md:grid-cols-4'>
 				<PercentageCard
 					count={currentCountMoods}
@@ -228,7 +240,7 @@ const Trends = () => {
 			{/* Line Chart and Heat Map */}
 			<div className='grid h-fit w-full gap-5 md:grid-cols-2'>
 				<div className='trends-card gap-12'>
-					{moods && moods.length > 0 && (
+					{currentMoodsState && currentMoodsState.length > 0 && (
 						<>
 							<div className='flex w-full flex-row items-center justify-between'>
 								<span className='h-[2.0625rem] text-2xl font-semibold leading-normal'>
@@ -249,7 +261,7 @@ const Trends = () => {
 									<Question size={24} color={'#706F6F'} />
 								</div>
 							</div>
-							<TrendLineChart moods={moods} />
+							<TrendLineChart moods={currentMoodsState} />
 						</>
 					)}
 				</div>

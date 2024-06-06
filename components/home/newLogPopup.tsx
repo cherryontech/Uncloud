@@ -123,7 +123,11 @@ const NewLogPopup = ({
 		wins: Win[]
 	) => {
 		if (!user) return;
+		if (!selectedMood) {
+			setPopupOpen(false);
 
+			return;
+		}
 		// Show the final progress bar briefly
 		setShowFinalProgress(true);
 		await new Promise((resolve) => setTimeout(resolve, 500)); // Wait for 500 milliseconds
