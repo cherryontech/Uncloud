@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 import { BiDownArrow, BiUpArrow } from 'react-icons/bi';
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
+import { ArrowDown, ArrowUp } from '@phosphor-icons/react';
 
 type Props = {
 	count: number;
@@ -21,23 +22,31 @@ const PercentageCard = ({
 	description,
 }: Props) => {
 	return (
-		<div className='w-full rounded-2xl bg-white px-10 py-4 shadow-xl'>
-			<div className='mb-1 flex w-full flex-row items-center justify-between'>
-				<Image src={icon} alt='icon' width={40} height={40} />
-				{growthArrow}
-			</div>
-			<div className='flex flex-row items-center gap-1'>
-				<p className='text-xl font-bold'>{count}</p>
-				<div>
-					{isNegative ? (
-						<IoIosArrowRoundDown size={16} color='#D40C0C' />
-					) : (
-						<IoIosArrowRoundUp size={16} color='#46FF59' />
-					)}
+		<div className='flex h-[10.25rem] w-full flex-col gap-3 rounded-2xl bg-white p-5 shadow-xl'>
+			<div className='flex w-full flex-row items-center justify-between'>
+				<div className='relative h-[3rem] w-[3rem]'>
+					<Image src={icon} alt='icon' layout='fill' />
 				</div>
-				<p className='text-xs text-gray-600'>{percentage}%</p>
+				<div className='h-[3rem] w-[3rem]'> {growthArrow}</div>
 			</div>
-			<p className='text-sm text-gray-400'>{description}</p>
+			<div className='flex flex-col'>
+				<div className='flex flex-row items-center gap-2'>
+					<span className='text-3xl font-bold'>{count}</span>
+					<div className='flex h-full flex-row items-center justify-center gap-1'>
+						<div className='flex h-5 w-5 items-center justify-center'>
+							{isNegative ? (
+								<ArrowDown className='h-full w-full' color='#D40C0C' />
+							) : (
+								<ArrowUp className='h-full w-full' color='#46FF59' />
+							)}
+						</div>
+						<span className='text-sm font-semibold text-[#706F6F]'>
+							{percentage}%
+						</span>
+					</div>
+				</div>
+				<p className='text-base font-semibold text-[#D9D9D9]'>{description}</p>
+			</div>
 		</div>
 	);
 };
