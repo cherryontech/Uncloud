@@ -18,12 +18,9 @@ import {
 } from 'react-country-state-city';
 import 'react-country-state-city/dist/react-country-state-city.css';
 import {
-	collection,
 	doc,
 	DocumentReference,
 	getDoc,
-	getDocs,
-	query,
 	updateDoc,
 	where,
 } from 'firebase/firestore';
@@ -38,7 +35,7 @@ import { useAuth } from '@/app/context/UserProvider';
 import CustomInput from '@/stories/customInput';
 import { getUser } from '../utils/serverFunctions';
 import { useRouter } from 'next/navigation';
-import CustomDropdown from '../shared/customDropdown';
+import '/app/styles/profile.css';
 import CustomSelectDropdown from '../shared/customSelectDropdown';
 
 interface UserDataForm {
@@ -78,7 +75,6 @@ const Profile: React.FC = () => {
 					careerStatus: userData?.careerStatus || '',
 					gender: userData?.gender || '',
 				});
-				console.log(userData);
 
 				userData?.location?.country &&
 					setCountryObj(userData?.location?.country);
@@ -147,9 +143,14 @@ const Profile: React.FC = () => {
 			setError(error.message);
 		}
 	};
-	console.log(userDataForm);
-	console.log(countryObj);
-	const genderOptions = ['male', 'female', 'other'];
+
+	const genderOptions = [
+		'Male',
+		'Female',
+		'Non-binary',
+		'Prefer not to say',
+		'Other',
+	];
 	return (
 		<div className='backgroundPrimary mx-3 h-full min-h-[80vh] w-full rounded-lg'>
 			<div className=' p-5 md:p-10'>
@@ -176,9 +177,9 @@ const Profile: React.FC = () => {
 									/>
 								) : (
 									<Image
-										src='/profileIcon.jpg'
-										width={400}
-										height={400}
+										src='/profile.svg'
+										width={600}
+										height={600}
 										className='h-40 w-40 rounded-full object-cover'
 										alt='Preview'
 									/>
@@ -196,11 +197,11 @@ const Profile: React.FC = () => {
 										setChangeFormUserData(true);
 									}}
 								>
-									Remove Image
+									Remove
 								</div>
 								<label htmlFor='fileInput'>
 									<div className='button--primary  w-fit cursor-pointer rounded-full px-4 py-2 text-sm !font-[12px] text-white'>
-										Upload Image
+										Upload New
 									</div>
 									<input
 										id='fileInput'
@@ -240,7 +241,7 @@ const Profile: React.FC = () => {
 												gender: e.target.value,
 											}))
 										}
-										placeholder='Select Gender'
+										placeholder='Select'
 										name='gender'
 										options={genderOptions}
 										value={userDataForm.gender}
@@ -273,6 +274,7 @@ const Profile: React.FC = () => {
 										}}
 										containerClassName='w-full'
 										placeHolder='Select Country'
+										showFlag={false}
 									/>
 
 									<StateSelect
@@ -287,30 +289,30 @@ const Profile: React.FC = () => {
 									/>
 								</div>
 							</div>
+							<div className='mr-10 flex w-full items-end justify-end space-x-4'>
+								<button
+									className='bg-grayBackground text-grayTextColor w-fit cursor-pointer rounded-full px-5 py-2 text-[16px] hover:bg-[#DEE9F5] hover:text-blueColor'
+									type='button'
+									onClick={() => {
+										setUserDataForm({ ...userPopData });
+										setImageUpload(null);
+									}}
+									disabled={!changeFormUserData}
+								>
+									Cancel
+								</button>
+
+								<button
+									className='button--primary mt-0 w-auto rounded-full px-6 py-2.5 text-[14px] text-white'
+									type='submit'
+									disabled={!changeFormUserData}
+								>
+									Save Changes
+								</button>
+							</div>
 						</div>
 
 						{error && <p className='text-red-600'>{error}</p>}
-						<div className='w-full items-end'>
-							<button
-								className='bg-grayBackground text-grayTextColor  w-fit cursor-pointer rounded-full px-4 py-2 !font-[12px]  hover:bg-[#DEE9F5] hover:text-blueColor'
-								type='button'
-								onClick={() => {
-									setUserDataForm({ ...userPopData });
-									setImageUpload(null);
-								}}
-								disabled={!changeFormUserData}
-							>
-								Cancel
-							</button>
-
-							<button
-								className='button--primary mt-2 w-fit rounded-full px-4 py-2 font-[12px]  text-white'
-								type='submit'
-								disabled={!changeFormUserData}
-							>
-								Save
-							</button>
-						</div>
 					</form>
 				</div>
 			</div>
