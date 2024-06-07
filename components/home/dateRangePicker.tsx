@@ -44,7 +44,7 @@ const CustomDateRangePicker: React.FC<CustomDateRangePickerProps> = ({
 						// rangeColors={['#DEE9F5']}
 					/>
 					<div
-						className='mb-2 mr-4 w-auto rounded-lg bg-[#D9D9D9] px-4 py-2 !font-[12px] text-[#706F6F] hover:bg-[#DEE9F5] hover:text-blueColor'
+						className='bg-grayBackground text-grayTextColor mb-2 mr-4 w-auto rounded-lg px-4 py-2 !font-[12px] hover:bg-[#DEE9F5] hover:text-blueColor'
 						onClick={() => setOpen(false)}
 					>
 						Select

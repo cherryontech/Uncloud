@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import '/app/styles/customSelect.css';
 
 const CustomDropdown = ({
+	
 	options,
 	value,
 	onChange,
 }: {
 	options: any[];
 	value: any;
+	
 	onChange: (option: any) => void;
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
