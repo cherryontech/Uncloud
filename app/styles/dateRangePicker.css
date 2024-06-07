@@ -33,7 +33,9 @@
 	background: #fff;
 	line-height: 1.5rem;
 }
-
+.rdrStaticRanges button > span {
+	background-color: transparent !important;
+}
 .rdrStaticRanges button:hover {
 	background-color: #dee9f5 !important;
 	border: 0.0625rem solid #2d81e0;
@@ -45,6 +47,19 @@
 		font-weight: 600;
 	}
 }
+
+.rdrStaticRanges button:focus {
+	background-color: #dee9f5 !important;
+	border: 0.0625rem solid #2d81e0;
+	box-shadow: 0 0 0 0.0625rem rgba(45, 129, 224, 1);
+}
+
+/* .rdrStaticRangesActive {
+	background-color: #dee9f5 !important;
+	border: 0.0625rem solid #2d81e0;
+	box-shadow: 0 0 0 0.0625rem rgba(45, 129, 224, 1);
+} */
+
 .rdrStaticRangeLabel {
 	background-color: transparent;
 }
@@ -116,7 +131,12 @@
 	margin: 0.6rem !important;
 }
 .rdrDateDisplayWrapper > .rdrDateDisplay span {
-	font-size: 1rem !important;
+	font-size: 0.75rem !important;
+}
+
+.rdrDateDisplayItemActive {
+	border: 0.0625rem solid #2d81e0;
+	box-shadow: 0 0 0 0.0625rem rgba(45, 129, 224, 1);
 }
 
 /* Modifying the MonthAndYearWrapper (above the calendar) */
@@ -210,6 +230,14 @@
 }
 
 /* Modifying the range */
+.rdrStartEdge {
+	border-top-left-radius: 1rem !important;
+	border-bottom-left-radius: 1rem !important;
+}
+.rdrEndEdge {
+	border-top-right-radius: 1rem !important;
+	border-bottom-right-radius: 1rem !important;
+}
 .rdrStartEdge,
 .rdrEndEdge,
 .rdrInRange {
@@ -247,9 +275,9 @@
 	font-weight: 300 !important;
 	border-radius: 50%;
 	display: inline-block;
-	width: 1.5rem;
-	height: 1.5rem;
-	line-height: 1.5rem;
+	width: 2rem;
+	height: 2rem;
+	line-height: 2rem;
 	text-align: center;
 }
 
@@ -259,11 +287,13 @@
 }
 
 .rdrDayNumber span {
-	font-size: 1rem !important;
+	/* font-size: 1rem !important; */
+	font-size: 0.875rem !important;
 }
 
 .rdrWeekDays > .rdrWeekDay {
 	font-size: 1rem !important;
+	font-weight: 600 !important;
 }
 
 .rdrDay {
