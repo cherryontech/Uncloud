@@ -1,7 +1,5 @@
 import Image from 'next/image';
 import React from 'react';
-import { BiDownArrow, BiUpArrow } from 'react-icons/bi';
-import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
 import { ArrowDown, ArrowUp } from '@phosphor-icons/react';
 
 type Props = {
