@@ -176,7 +176,7 @@ export default function MainComponent({
 					setPopupOpen={setPopupOpen}
 					handleDateChange={handleDateChange}
 					handleLogClick={handleLogClick}
-					onLoadComplete={() => setIsLoading(false)}
+					onLoadComplete={() => setIsLoading(true)}
 					mobile={mobile}
 				/>
 			);
@@ -221,7 +221,7 @@ export default function MainComponent({
 					setPopupOpen={setPopupOpen}
 					handleDateChange={handleDateChange}
 					handleLogClick={handleLogClick}
-					onLoadComplete={() => setIsLoading(false)}
+					onLoadComplete={() => setIsLoading(true)}
 					mobile={mobile}
 				/>
 			);
