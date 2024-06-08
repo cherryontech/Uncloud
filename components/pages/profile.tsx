@@ -257,7 +257,7 @@ const Profile: React.FC<ProfileProps> = ({ mobile, ...props }) => {
 							Personal Information
 						</span>
 						<div
-							className={`flex flex-col gap-[1rem] ${mobile ? 'w-full items-center' : 'w-[70%]'}`}
+							className={`flex flex-col gap-[1rem] ${mobile ? 'w-full items-center' : 'w-[80%]'}`}
 						>
 							<div
 								className={`flex justify-between ${mobile ? 'w-fit flex-col gap-2' : 'flex-row'}`}
