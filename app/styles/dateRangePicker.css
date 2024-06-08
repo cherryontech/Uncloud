@@ -1,33 +1,301 @@
 .rdrDateRangePickerWrapper {
 	display: flex;
 	flex-direction: column;
+	width: 100%;
 }
 .rdrInputRanges {
 	display: none;
 }
 
 .rdrDefinedRangesWrapper {
-	width: 350px !important;
+	width: 100% !important;
+	padding-bottom: 1.5rem;
+	border: 0;
 }
 
 .rdrStaticRanges {
 	flex-wrap: wrap;
 	flex-direction: row !important;
+	display: flex;
+	align-items: flex-start;
+	gap: 0.25rem;
+	align-self: stretch;
 }
 .rdrStaticRanges button {
-	flex: 1 1 30%; 
-	margin: 5px; 
+	display: flex;
+	padding: 0.375rem 0.75rem;
+	justify-content: center;
+	align-items: center;
+	gap: 0.625rem;
+	flex: 1 0 0;
+	border-radius: 0.5rem;
+	border: 0.0625rem solid #dee9f5;
+	background: #fff;
+	line-height: 1.5rem;
 }
+.rdrStaticRanges button > span {
+	background-color: transparent !important;
+}
+.rdrStaticRanges button:hover {
+	background-color: #dee9f5 !important;
+	border: 0.0625rem solid #2d81e0;
+	box-shadow: 0 0 0 0.0625rem rgba(45, 129, 224, 1);
+
+	.rdrStaticRangeLabel {
+		background-color: transparent !important;
+		color: #2d81e0 !important;
+		font-weight: 600;
+	}
+}
+
+.rdrStaticRanges button:focus {
+	background-color: #dee9f5 !important;
+	border: 0.0625rem solid #2d81e0;
+	box-shadow: 0 0 0 0.0625rem rgba(45, 129, 224, 1);
+}
+
+/* .rdrStaticRangesActive {
+	background-color: #dee9f5 !important;
+	border: 0.0625rem solid #2d81e0;
+	box-shadow: 0 0 0 0.0625rem rgba(45, 129, 224, 1);
+} */
+
+.rdrStaticRangeLabel {
+	background-color: transparent;
+}
+
+/* Today button */
 .rdrStaticRanges button:first-child {
 	position: absolute;
-	bottom: 5px;
-	font-size: 14px;
+	bottom: 1.5rem;
+	font-size: 0.875rem;
+	border: 0;
+	font-weight: 600 !important;
 }
+.rdrStaticRanges button:first-child span {
+	font-weight: 600 !important;
+}
+
 .rdrStaticRanges button:nth-child(2),
 .rdrStaticRanges button:nth-child(4) {
 	display: none;
+	font-size: 0.875rem !important;
 }
 
 .rdrMonth {
 	width: 100% !important;
+	padding-left: 0;
+	padding-right: 0;
+	padding-bottom: 0.2rem !important;
+}
+
+.rdrStaticRangeLabel {
+	color: #706f6f;
+	font-family: 'Open Sans';
+	font-size: 0.75rem;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1.5rem;
+	padding: 0;
+}
+
+/*  CSS to add divider line */
+.rdrMonthAndYearWrapper {
+	margin-bottom: 1rem; /* Adjust spacing as needed */
+}
+
+.rdrMonths {
+	/* rdrMonths is the actual calendar */
+	position: relative;
+}
+
+.rdrMonths::before {
+	content: '';
+	position: absolute;
+	top: -1rem;
+	left: 50%;
+	transform: translateX(-50%);
+	right: 0;
+	width: 100%;
+	height: 0.125rem;
+	background-color: #dee9f5;
+	margin-top: 0.5rem;
+}
+/*  End of CSS for divider line */
+
+.rdrDateDisplayWrapper {
+	border-radius: 0.5rem;
+}
+
+.rdrDateDisplayWrapper > .rdrDateDisplay {
+	margin: 0.6rem !important;
+}
+.rdrDateDisplayWrapper > .rdrDateDisplay span {
+	font-size: 0.75rem !important;
+}
+
+.rdrDateDisplayItemActive {
+	border: 0.0625rem solid #2d81e0;
+	box-shadow: 0 0 0 0.0625rem rgba(45, 129, 224, 1);
+}
+
+/* Modifying the MonthAndYearWrapper (above the calendar) */
+.rdrMonthAndYearWrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: fit-content;
+	margin-top: 1.5rem;
+	padding-top: 0;
+	margin-bottom: 1rem;
+}
+
+.rdrMonthAndYearPickers {
+	flex: 1;
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	width: fit-content !important;
+	font-size: 1.25rem;
+	height: 100%;
+}
+
+/* Change the arrow icons */
+.rdrNextButton i::before,
+.rdrPprevButton i::before {
+	display: none !important;
+}
+
+.rdrNextPrevButton.rdrNextButton,
+.rdrNextPrevButton.rdrPprevButton {
+	height: 100%;
+}
+
+.rdrNextPrevButton.rdrNextButton > i,
+.rdrNextPrevButton.rdrPprevButton > i {
+	border-width: 0; /* Hides the original icons */
+	border-color: 0; /* Hides the original icons */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.5rem;
+	height: 100%;
+}
+
+.rdrNextButton i svg,
+.rdrPprevButton i svg {
+	position: relative;
+	top: 0;
+	left: 0;
+}
+
+.rdrMonthPicker {
+	width: fit-content !important;
+}
+
+.rdrMonthPicker select {
+	width: auto !important;
+}
+
+.rdrMonthAndYearPickers .rdrPickerContainer {
+	display: inline-flex;
+	align-items: center;
+	position: relative;
+}
+
+.rdrMonthAndYearPickers .rdrPickerContainer select {
+	margin-right: 0.5rem; /* Adjust spacing between the select and the icon */
+	width: fit-content !important; /* Ensure width is auto to fit content */
+}
+
+.rdrNextPrevButton {
+	display: flex;
+}
+.rdrMonthAndYearWrapper > .rdrPprevButton,
+.rdrMonthAndYearWrapper > .rdrNextButton {
+	margin: 0;
+	background: none; /* Remove any background */
+	border: none; /* Remove border */
+	cursor: pointer; /* Add pointer cursor */
+}
+
+.rdrMonthAndYearWrapper > .rdrPprevButton {
+	/* Re-order the buttons */
+	order: 1;
+}
+
+.rdrMonthAndYearWrapper > .rdrNextButton {
+	/* Re-order the buttons */
+	order: 2;
+}
+
+/* Modifying the range */
+.rdrStartEdge {
+	border-top-left-radius: 1rem !important;
+	border-bottom-left-radius: 1rem !important;
+}
+.rdrEndEdge {
+	border-top-right-radius: 1rem !important;
+	border-bottom-right-radius: 1rem !important;
+}
+.rdrStartEdge,
+.rdrEndEdge,
+.rdrInRange {
+	background-color: #dee9f5 !important;
+	color: #2c2c2c !important;
+}
+
+.rdrStartEdge ~ .rdrDayNumber > span,
+.rdrEndEdge ~ .rdrDayNumber > span,
+.rdrInRange ~ .rdrDayNumber > span {
+	color: #2c2c2c !important;
+}
+
+/*  Style the first date in a range */
+/* .rdrStartEdge ~ .rdrDayNumber > span {
+	position: absolute;
+	background-color: #a0d1f9;
+	color: #2d81e0 !important;
+	font-weight: 300 !important;
+	border-radius: 50%;
+	display: inline-block;
+	width: 1.6rem;
+	height: 1.6rem;
+	line-height: 1.6rem;
+	text-align: center;
+	border-top-left-radius: 1.042em !important;
+	border-bottom-left-radius: 1.042em !important;
+	left: 2px !important;
+} */
+
+/* Style Today  */
+.rdrDayToday .rdrDayNumber span {
+	background-color: #2d81e0;
+	color: white !important;
+	font-weight: 300 !important;
+	border-radius: 50%;
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	line-height: 2rem;
+	text-align: center;
+}
+
+.rdrDayToday .rdrDayNumber span::after {
+	content: '';
+	visibility: hidden;
+}
+
+.rdrDayNumber span {
+	/* font-size: 1rem !important; */
+	font-size: 0.875rem !important;
+}
+
+.rdrWeekDays > .rdrWeekDay {
+	font-size: 1rem !important;
+	font-weight: 600 !important;
+}
+
+.rdrDay {
+	height: 3rem !important;
 }
