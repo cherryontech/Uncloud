@@ -53,7 +53,6 @@ const Profile: React.FC = () => {
 		gender: '',
 	});
 	const [imageUpload, setImageUpload] = useState<File | null>(null);
-
 	const [changeFormUserData, setChangeFormUserData] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 	const [userPopData, setUserPopData] = useState<any | null>(null);
@@ -70,7 +69,6 @@ const Profile: React.FC = () => {
 				setUserPopData(userData);
 				setUserDataForm({
 					displayName: userData?.displayName,
-
 					photoURL: userData?.photoURL || '',
 					careerStatus: userData?.careerStatus || '',
 					gender: userData?.gender || '',
@@ -108,7 +106,6 @@ const Profile: React.FC = () => {
 			let imageUrl = photoURL;
 			if (imageUpload !== null) {
 				const imageRef = storageRef(storage, `${uuidv4()}`);
-
 				const snapshot = await uploadBytes(imageRef, imageUpload);
 				imageUrl = await getDownloadURL(snapshot.ref);
 			}
@@ -152,47 +149,49 @@ const Profile: React.FC = () => {
 		'Other',
 	];
 	return (
-		<div className='backgroundPrimary mx-3 h-full min-h-[80vh] w-full rounded-lg'>
-			<div className=' p-5 md:p-10'>
-				<div className='w-full rounded-2xl bg-white p-10 '>
-					<form onSubmit={handleUserData} className='space-y-4'>
-						<div className='flex w-full items-center justify-between rounded-xl border border-gray-400 px-10 py-4'>
+		<div className=' min-h-[80vh] w-full rounded-2xl border border-[#DEE9F5] bg-white'>
+			<div className='w-full rounded-2xl px-[6rem] py-[6rem] '>
+				<form onSubmit={handleUserData} className='space-y-4'>
+					<div className='flex w-full flex-col items-start justify-between gap-[1.88rem] rounded-xl border border-[#D9D9D9] px-[6.62rem] py-[1.63rem]'>
+						<span className='w-full text-xl font-semibold'> Profile Image</span>
+						<div className='flex w-full flex-row justify-between'>
 							<div className='flex flex-col items-center justify-center'>
-								<h2 className='text-xl font-bold'> Profile Image</h2>
-								{imageUpload ? (
-									<Image
-										src={URL.createObjectURL(imageUpload)}
-										width={400}
-										height={400}
-										className='h-40 w-40 rounded-full object-cover'
-										alt='Preview'
-									/>
-								) : userDataForm.photoURL && userDataForm.photoURL !== '' ? (
-									<Image
-										src={userDataForm.photoURL}
-										width={400}
-										height={400}
-										className='h-40 w-40 rounded-full object-cover'
-										alt='Preview'
-									/>
-								) : (
-									<Image
-										src='/profile.svg'
-										width={600}
-										height={600}
-										className='h-40 w-40 rounded-full object-cover'
-										alt='Preview'
-									/>
-								)}
+								<div className='h-[7.3125rem] w-[7.3125rem]'>
+									{imageUpload ? (
+										<Image
+											src={URL.createObjectURL(imageUpload)}
+											width={400}
+											height={400}
+											className='rounded-full border border-[#D9D9D9] object-cover shadow-[0px_2px_8px_0px_rgba(0,0,0,0.05)]'
+											alt='Preview'
+										/>
+									) : userDataForm.photoURL && userDataForm.photoURL !== '' ? (
+										<Image
+											src={userDataForm.photoURL}
+											width={400}
+											height={400}
+											className='rounded-full border border-[#D9D9D9] object-cover shadow-[0px_2px_8px_0px_rgba(0,0,0,0.05)]'
+											alt='Preview'
+										/>
+									) : (
+										<Image
+											src='/profile.svg'
+											width={600}
+											height={600}
+											className='rounded-full border border-[#D9D9D9] object-cover shadow-[0px_2px_8px_0px_rgba(0,0,0,0.05)]'
+											alt='Preview'
+										/>
+									)}
+								</div>
 							</div>
 
 							<div className='flex items-center justify-center gap-4'>
 								<div
-									className='bg-grayBackground text-grayTextColor  w-fit cursor-pointer rounded-full px-4 py-2 !font-[12px]  hover:bg-[#DEE9F5] hover:text-blueColor'
+									className='bg-grayBackground text-grayTextColor w-fit cursor-pointer rounded-full px-6 py-[0.625rem] !font-bold leading-6 hover:bg-[#DEE9F5] hover:text-blueColor'
 									onClick={() => {
 										setUserDataForm((prevState) => ({
 											...prevState,
-											photoURL: '',
+											photoURL: '/profile.svg',
 										}));
 										setChangeFormUserData(true);
 									}}
@@ -200,7 +199,7 @@ const Profile: React.FC = () => {
 									Remove
 								</div>
 								<label htmlFor='fileInput'>
-									<div className='button--primary  w-fit cursor-pointer rounded-full px-4 py-2 text-sm !font-[12px] text-white'>
+									<div className='button--primary w-fit !cursor-pointer rounded-full px-6 py-[0.625rem] text-sm !font-bold leading-6 text-white'>
 										Upload New
 									</div>
 									<input
@@ -218,9 +217,15 @@ const Profile: React.FC = () => {
 								</label>
 							</div>
 						</div>
-						<div className='flex w-full flex-col  justify-between gap-2 rounded-xl border border-gray-400 px-10 py-4'>
-							<div className='flex flex-row '>
-								<label className='w-60  text-sm font-bold'>Name:</label>
+					</div>
+					<div className='flex w-full flex-col items-start justify-between gap-[1.88rem] rounded-xl border border-[#D9D9D9] px-[6.62rem] py-[1.63rem]'>
+						<span className='w-full gap-[1.88rem] text-xl font-semibold'>
+							{' '}
+							Personal Information
+						</span>
+						<div className='flex flex-col gap-[1rem]'>
+							<div className='flex w-[39rem] flex-row justify-between'>
+								<label className='text-sm font-bold text-[#706f6f]'>Name</label>
 								<div className='w-80'>
 									<CustomInput
 										name={'displayName'}
@@ -231,8 +236,10 @@ const Profile: React.FC = () => {
 									/>
 								</div>
 							</div>
-							<div className='flex flex-row '>
-								<label className='w-60  text-sm font-bold'>Gender:</label>
+							<div className='flex w-[39rem] flex-row justify-between'>
+								<label className='text-sm font-bold text-[#706f6f]'>
+									Gender
+								</label>
 								<div className='w-80'>
 									<CustomSelectDropdown
 										onChange={(e) =>
@@ -248,9 +255,9 @@ const Profile: React.FC = () => {
 									/>
 								</div>
 							</div>
-							<div className='flex flex-row '>
-								<label className='w-60  text-sm font-bold'>
-									Career Status:
+							<div className='flex w-[39rem] flex-row justify-between'>
+								<label className='text-sm font-bold text-[#706f6f]'>
+									Career Status
 								</label>
 								<div className='w-80'>
 									<CustomInput
@@ -262,8 +269,10 @@ const Profile: React.FC = () => {
 									/>
 								</div>
 							</div>
-							<div className='flex flex-row '>
-								<label className='w-60 text-sm font-bold'>Location:</label>
+							<div className='flex w-[39rem] flex-row justify-between'>
+								<label className='text-sm font-bold text-[#706f6f]'>
+									Location
+								</label>
 								<div className='w-80 space-y-2'>
 									<CountrySelect
 										defaultValue={countryObj}
@@ -289,34 +298,35 @@ const Profile: React.FC = () => {
 									/>
 								</div>
 							</div>
-							<div className='mr-10 flex w-full items-end justify-end space-x-4'>
-								<button
-									className='bg-grayBackground text-grayTextColor w-fit cursor-pointer rounded-full px-5 py-2 text-[16px] hover:bg-[#DEE9F5] hover:text-blueColor'
-									type='button'
-									onClick={() => {
-										setUserDataForm({ ...userPopData });
-										setImageUpload(null);
-									}}
-									disabled={!changeFormUserData}
-								>
-									Cancel
-								</button>
-
-								<button
-									className='button--primary mt-0 w-auto rounded-full px-6 py-2.5 text-[14px] text-white'
-									type='submit'
-									disabled={!changeFormUserData}
-								>
-									Save Changes
-								</button>
-							</div>
 						</div>
+						<div className='mr-10 flex w-full items-end justify-end space-x-4'>
+							<button
+								className='bg-grayBackground text-grayTextColor w-fit cursor-pointer rounded-full px-6 py-[0.625rem] !font-bold leading-6 hover:bg-[#DEE9F5] hover:text-blueColor'
+								type='button'
+								onClick={() => {
+									setUserDataForm({ ...userPopData });
+									setImageUpload(null);
+								}}
+								disabled={!changeFormUserData}
+							>
+								Cancel
+							</button>
 
-						{error && <p className='text-red-600'>{error}</p>}
-					</form>
-				</div>
+							<button
+								className='button--primary w-fit !cursor-pointer rounded-full px-6 py-[0.625rem] text-sm !font-bold leading-6 text-white'
+								type='submit'
+								disabled={!changeFormUserData}
+							>
+								Save Changes
+							</button>
+						</div>
+					</div>
+
+					{error && <p className='text-red-600'>{error}</p>}
+				</form>
 			</div>
 		</div>
 	);
 };
+
 export default Profile;
