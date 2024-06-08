@@ -7,7 +7,15 @@
     
 ## Description
 
-Uncloud is a web application created to support users who are in need career clarity. Users track their daily "weather" (e.g., _sunny, foggy, storming_), and are provided with the option to follow up their log with a written reflection.
+Uncloud is a web application designed to help users gain clarity and self-awareness during their career exploration journey.
+
+Target Audience: Career explorers, job seekers
+
+Key Features:
+1. Mood tracking with cloud icons representing emotional states
+2. Guided prompts for self-reflection based on chosen mood
+3. Goal setting and tracking with up to three customizable goals
+4. Mood log visualization for daily and monthly trend
 
 <div align="center">
     <img width="10%" src="public/moods/cloudy.svg">
