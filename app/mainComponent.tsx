@@ -205,7 +205,7 @@ export default function MainComponent({
 			title = 'Favorites';
 			break;
 		case 'Profile':
-			component = <Profile />;
+			component = <Profile mobile={mobile} />;
 			title = 'Profile';
 			break;
 		default:

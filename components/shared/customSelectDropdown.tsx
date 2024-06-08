@@ -1,21 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '/app/styles/customSelect.css';
 
-const CustomDropdown = ({
-	
+interface DropdownProps {
+	options: string[];
+	value: string;
+	onChange: (option: string) => void;
+	placeholder: string;
+	name: string;
+}
+
+const CustomSelectDropdown: React.FC<DropdownProps> = ({
 	options,
 	value,
 	onChange,
-}: {
-	options: any[];
-	value: any;
-	
-	onChange: (option: any) => void;
+	placeholder,
+	name,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
-	const handleSelect = (option: any) => {
+	const handleSelect = (option: string) => {
 		onChange(option);
 		setIsOpen(false);
 	};
@@ -39,12 +43,24 @@ const CustomDropdown = ({
 	return (
 		<div className='custom-dropdown' ref={dropdownRef}>
 			<div
-				className='custom-dropdown__selected hover:border-[#2D81E0]  focus:border-[#2D81E0] focus:outline-[#2D81E0] focus:ring focus:ring-[#DEE9F5]'
+				className='custom-dropdown__selected !p-2 !pl-3 !pr-10 hover:border-[#2D81E0] focus:border-[#2D81E0] focus:outline-[#2D81E0] focus:ring focus:ring-[#DEE9F5]'
 				onClick={() => setIsOpen(!isOpen)}
 			>
-				<div className='w-[80%] m-0 p-0 truncate'>
-
-				{value}
+				<div className='m-0 w-[80%] truncate p-0'>{value || placeholder}</div>
+				<div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2'>
+					<svg
+						className='h-5 w-5'
+						fill='none'
+						stroke='currentColor'
+						viewBox='0 0 24 24'
+					>
+						<path
+							strokeLinecap='round'
+							strokeLinejoin='round'
+							strokeWidth='2'
+							d='M19 9l-7 7-7-7'
+						/>
+					</svg>
 				</div>
 			</div>
 			{isOpen && (
@@ -55,13 +71,6 @@ const CustomDropdown = ({
 							className='custom-dropdown__item'
 							onClick={() => handleSelect(option)}
 						>
-							<input
-								type='radio'
-								name='custom-dropdown'
-								checked={option === value}
-								onChange={() => handleSelect(option)}
-								className='custom-dropdown__radio'
-							/>
 							{option}
 						</li>
 					))}
@@ -71,4 +80,4 @@ const CustomDropdown = ({
 	);
 };
 
-export default CustomDropdown;
+export default CustomSelectDropdown;

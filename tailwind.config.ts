@@ -47,6 +47,8 @@ const config: Config = {
 				boxBackground: '#FAFCFF',
 				hoverColor: '#DEE9F5',
 				blueColor: '#2d81e0',
+				grayBackground: '#D9D9D9',
+				grayTextColor: '#706F6F',
 			},
 		},
 	},

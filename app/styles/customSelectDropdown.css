@@ -1,0 +1,12 @@
+
+.dropdown-placeholder{
+    background-color: white !important;
+
+}
+
+.dropdown{
+    background-color: white !important;
+}
+select,option{
+    background-color: white !important;
+}
