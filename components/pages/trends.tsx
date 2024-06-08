@@ -7,7 +7,7 @@ import { prepareHeatMapData } from '../utils/textProcessing';
 import PercentageCard from '../trends/percentageCard';
 import { Tooltip, useTooltip } from '@visx/tooltip';
 import { FaArrowTrendDown, FaArrowTrendUp } from 'react-icons/fa6';
-import { Question } from '@phosphor-icons/react';
+import { Question, TrendUp, TrendDown } from '@phosphor-icons/react';
 import '/app/styles/trends.css';
 import { MoodEntry } from '../home/calendar';
 import {
@@ -187,9 +187,9 @@ const Trends = () => {
 					description={'Total logs'}
 					growthArrow={
 						percentageIncreaseMoods < 0 ? (
-							<FaArrowTrendDown className='text-blueColor' size={24} />
+							<TrendDown color='#2D81E0' className='h-full w-full' />
 						) : (
-							<FaArrowTrendUp className='text-blueColor' size={24} />
+							<TrendUp color='#2D81E0' className='h-full w-full' />
 						)
 					}
 				/>
@@ -201,9 +201,9 @@ const Trends = () => {
 					description={'Total favorited'}
 					growthArrow={
 						percentageIncreaseFavorites < 0 ? (
-							<FaArrowTrendDown className='text-[#FE5B90]' size={24} />
+							<TrendDown color='#FE5B90' className='h-full w-full' />
 						) : (
-							<FaArrowTrendUp className='text-[#FE5B90]' size={24} />
+							<TrendUp color='#FE5B90' className='h-full w-full' />
 						)
 					}
 				/>
@@ -215,9 +215,9 @@ const Trends = () => {
 					description={'Total reflection prompts'}
 					growthArrow={
 						percentageIncreaseReflections < 0 ? (
-							<FaArrowTrendDown className='text-[#68DAB8]' size={24} />
+							<TrendDown color='#68DAB8' className='h-full w-full' />
 						) : (
-							<FaArrowTrendUp className='text-[#68DAB8]' size={24} />
+							<TrendUp color='#68DAB8' className='h-full w-full' />
 						)
 					}
 				/>
@@ -229,9 +229,9 @@ const Trends = () => {
 					description={'Total wins'}
 					growthArrow={
 						percentageIncreaseWins < 0 ? (
-							<FaArrowTrendDown className='text-[#FE8034]' size={24} />
+							<TrendDown color='#FE8034' className='h-full w-full' />
 						) : (
-							<FaArrowTrendUp className='text-[#FE8034]' size={24} />
+							<TrendUp color='#FE8034' className='h-full w-full' />
 						)
 					}
 				/>
