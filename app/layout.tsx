@@ -32,7 +32,7 @@ export default function RootLayout({
 				<meta charSet='utf-8' />
 			</head>
 			<body className='bg-[#F3F5F9] text-textPrimary'>
-				<Toaster position='top-center'/>
+				<Toaster position='top-center' />
 				<UserProvider>
 					<Navbar />
 					{children}
