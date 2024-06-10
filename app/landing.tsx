@@ -89,6 +89,7 @@ const Landing: React.FC = () => {
 								alt='Uncloud Preview 1'
 								width={5760}
 								height={4096}
+								priority // Ensures this image is prioritized in Next.js
 							/>
 						</div>
 					</div>
@@ -204,6 +205,7 @@ const Landing: React.FC = () => {
 								alt='Uncloud Preview 1'
 								width={5760}
 								height={4096}
+								priority // Ensures this image is prioritized in Next.js
 							/>
 						</div>
 					</div>
@@ -224,6 +226,7 @@ const Landing: React.FC = () => {
 								alt='sun'
 								width={188}
 								height={179}
+								priority // Ensures this image is prioritized in Next.js
 							/>
 						</div>
 						<span className='text-[3rem] font-semibold'>
@@ -260,6 +263,7 @@ const Landing: React.FC = () => {
 										alt='Uncloud Preview 1'
 										width={5760}
 										height={4096}
+										priority // Ensures this image is prioritized in Next.js
 									/>
 								</div>
 							</div>

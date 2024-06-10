@@ -23,7 +23,6 @@ html {
 	background:
 		linear-gradient(to bottom, transparent, white),
 		url('/landingbg.svg') no-repeat center top fixed;
-
 	background-size: 100% auto;
 	z-index: 0;
 	transition: transform 0.1s ease-out;
@@ -69,8 +68,10 @@ html {
 	flex: 1 0 0;
 	align-self: stretch;
 }
+
 .carousel-button {
 	color: #706f6f;
+	font-family: 'Open Sans';
 	font-size: 0.75rem;
 	font-style: normal;
 	font-weight: 400;
@@ -109,6 +110,7 @@ html {
 	z-index: -1;
 	display: none;
 }
+
 @media screen and (min-width: 640px) {
 	.blue-rectangle {
 		display: block; /* Show the rectangle on larger screens */
