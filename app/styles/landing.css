@@ -127,3 +127,12 @@ html {
 	padding: 3.69rem 0;
 	display: flex;
 }
+
+.scroll-transition {
+	transition: opacity 0.7s ease-in;
+	opacity: 0;
+}
+
+.scroll-transition.in-view {
+	opacity: 1;
+}
