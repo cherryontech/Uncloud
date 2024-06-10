@@ -13,9 +13,7 @@ import {
 	FilmScript,
 } from '@phosphor-icons/react';
 
-const Landing: React.FC = () => {
-	const router = useRouter();
-
+const useIntersectionObserver = () => {
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -28,7 +26,7 @@ const Landing: React.FC = () => {
 				});
 			},
 			{
-				threshold: 0.1, // Adjust this threshold as needed
+				threshold: 0.1,
 			}
 		);
 
@@ -44,6 +42,11 @@ const Landing: React.FC = () => {
 			});
 		};
 	}, []);
+};
+
+const Landing: React.FC = () => {
+	const router = useRouter();
+	useIntersectionObserver();
 
 	return (
 		<div className='landingContainer'>
