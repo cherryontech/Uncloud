@@ -33,7 +33,7 @@ html {
 	transform: translateY(0);
 }
 
-.landing_content {
+.landing-content {
 	position: relative;
 	z-index: 1; /* Ensure it is above the background */
 	padding-top: 4.6875rem; /* Adjust padding to account for the navbar height */
