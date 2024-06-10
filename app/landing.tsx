@@ -18,7 +18,7 @@ const Landing: React.FC = () => {
 	return (
 		<div className='landingContainer'>
 			<div className='svgBackground'></div>
-			<div className='content flex w-full flex-col items-center justify-center'>
+			<div className='landing-content flex w-full flex-col items-center justify-center'>
 				{/* Your content goes here */}
 				<div className='flex flex-col items-center justify-center gap-12 pt-8'>
 					<div className='flex flex-col items-center justify-center gap-3'>

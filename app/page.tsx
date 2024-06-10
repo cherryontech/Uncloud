@@ -40,10 +40,9 @@ const Home: React.FC = () => {
 					<MainComponent />
 				</>
 			) : (
-				<>
-					{/* Landing Page Will Go Here */}
+				<div>
 					<Landing />
-				</>
+				</div>
 			)}
 		</>
 	);
