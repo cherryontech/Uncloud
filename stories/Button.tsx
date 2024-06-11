@@ -24,6 +24,7 @@ interface ButtonProps {
 	 */
 	onClick?: () => void;
 	type?: 'button' | 'submit' | 'reset';
+	className?: string;
 }
 
 /**
@@ -35,6 +36,7 @@ export const Button: React.FC<ButtonProps> = ({
 	size = 'medium',
 	backgroundColor,
 	label,
+	className,
 	...props
 }) => {
 	const mode =
@@ -57,6 +59,7 @@ export const Button: React.FC<ButtonProps> = ({
 				'w-full',
 				'py-[0.625rem]',
 				'px-6',
+				className,
 			].join(' ')}
 			{...props}
 		>

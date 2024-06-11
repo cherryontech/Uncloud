@@ -1,6 +1,6 @@
-'use client';
-import { useAuth, UserProvider } from '@/app/context/UserProvider';
+import { useAuth } from '@/app/context/UserProvider';
 import { useEffect, useState, useCallback } from 'react';
+import { getUser, updateUser } from '@/components/utils/serverFunctions';
 import { Value } from '@/components/home/calendar';
 import FAQ from '@/components/pages/faq';
 import Goals from '@/components/pages/goals';
@@ -20,11 +20,14 @@ import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import Profile from '@/components/pages/profile';
 import DesktopLayout from '@/components/home/desktopLayout';
 import MobileLayout from '@/components/home/mobileLayout';
+import { Tooltip } from 'react-tooltip';
 
 export default function MainComponent({
 	children,
+	isConfirmationClosed,
 }: Readonly<{
 	children?: React.ReactNode;
+	isConfirmationClosed: boolean;
 }>) {
 	const { user } = useAuth();
 	const [selectedMenuItem, setSelectedMenuItem] = useState('Calendar');
@@ -43,6 +46,8 @@ export default function MainComponent({
 
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 	const [mobile, setMobile] = useState(window.innerWidth < 768);
+	const [isFirstLogin, setIsFirstLogin] = useState(false);
+	const [tooltipShake, setTooltipShake] = useState(false);
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -52,7 +57,6 @@ export default function MainComponent({
 
 		window.addEventListener('resize', handleResize);
 
-		// Cleanup
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
@@ -78,6 +82,53 @@ export default function MainComponent({
 
 		fetchFavoriteLogs();
 	}, [user]);
+
+	useEffect(() => {
+		if (user) {
+			getUser(user.uid).then((userData: any) => {
+				if (userData) {
+					console.log(
+						'isFirstLogin fetched from Firestore:',
+						userData.isFirstLogin
+					);
+					setIsFirstLogin(userData.isFirstLogin);
+				}
+			});
+		}
+	}, [user]);
+
+	const handleTooltipClose = async () => {
+		setIsFirstLogin(false);
+		if (user) {
+			await updateUser(user.uid, { isFirstLogin: false });
+		}
+	};
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			const tooltip = document.getElementById('addLogTooltip');
+			if (tooltip && !tooltip.contains(event.target as Node)) {
+				handleTooltipClose();
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
+
+	useEffect(() => {
+		if (isFirstLogin && isConfirmationClosed) {
+			setTooltipShake(true);
+			const timer = setTimeout(() => {
+				setTooltipShake(false);
+			}, 500); // Duration of the shake animation
+
+			return () => clearTimeout(timer);
+		}
+	}, [isFirstLogin, isConfirmationClosed]);
 
 	const onFavoriteToggle = (
 		logDate: string,
@@ -234,8 +285,44 @@ export default function MainComponent({
 		setCurrentPage(value.selected + 1);
 	};
 
+	console.log('First login?', isFirstLogin);
 	return (
 		<>
+			{isFirstLogin && isConfirmationClosed && (
+				<Tooltip
+					id='addLogTooltip'
+					place='right'
+					isOpen={true}
+					clickable={true}
+					afterHide={handleTooltipClose}
+					opacity={0.95}
+					className={tooltipShake ? 'shake-animation' : ''}
+					style={{
+						backgroundColor: '#2D81E0',
+						color: '#fff',
+						borderRadius: '0.5rem',
+						padding: '1.5rem 1.5rem',
+						zIndex: 19,
+					}}
+				>
+					<div className='flex flex-col gap-6'>
+						<div className='flex flex-col gap-4'>
+							<span className='text-lg font-bold'> Get started here!</span>
+							<span>
+								Begin logging your moods by clicking <b>Add a log</b>.
+							</span>
+						</div>
+						<div className='flex justify-end'>
+							<button
+								className='rounded-[6.25rem]  bg-white px-[1.5rem] py-[0.625rem] text-sm font-bold text-[#2d81e0] hover:bg-[#DEE9F5]'
+								onClick={handleTooltipClose}
+							>
+								Got it
+							</button>
+						</div>
+					</div>
+				</Tooltip>
+			)}
 			{windowWidth >= 768 ? (
 				<DesktopLayout
 					isLoading={isLoading}
@@ -261,7 +348,6 @@ export default function MainComponent({
 					title={title}
 				/>
 			) : (
-				// Mobile layout
 				<MobileLayout
 					isLoading={isLoading}
 					setSelectedMenuItem={setSelectedMenuItem}

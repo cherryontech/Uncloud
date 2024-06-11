@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 import './styles/globals.css';
 import './styles/newLogPopup.css';
 import './styles/layout.css';
+// import 'react-tooltip/dist/react-tooltip.css';
 
 // Set font
 import { Open_Sans } from 'next/font/google';

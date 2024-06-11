@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import { updateUser, getUser } from '@/components/utils/serverFunctions';
 import { ConfirmationMessage } from '@/stories/Confirmation';
@@ -10,6 +9,8 @@ import Landing from './landing';
 const Home: React.FC = () => {
 	const { user } = useAuth();
 	const [displayConfirmationMessage, setDisplayConfirmationMessage] =
+		useState<boolean>(false);
+	const [isConfirmationClosed, setIsConfirmationClosed] =
 		useState<boolean>(false);
 
 	useEffect(() => {
@@ -22,8 +23,9 @@ const Home: React.FC = () => {
 
 	const hideConfirmationMessage = async (): Promise<void> => {
 		setDisplayConfirmationMessage(false);
+		setIsConfirmationClosed(true); // Update the state here
 		if (user) {
-			await updateUser(user.uid);
+			await updateUser(user.uid, { closedConfirmationMessage: true });
 		}
 	};
 
@@ -37,7 +39,7 @@ const Home: React.FC = () => {
 							hideConfirmationMessage={hideConfirmationMessage}
 						/>
 					)}
-					<MainComponent />
+					<MainComponent isConfirmationClosed={isConfirmationClosed} />
 				</>
 			) : (
 				<div>
