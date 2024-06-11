@@ -5,6 +5,7 @@ import { updateUser, getUser } from '@/components/utils/serverFunctions';
 import { ConfirmationMessage } from '@/stories/Confirmation';
 import { useAuth } from './context/UserProvider';
 import MainComponent from './mainComponent';
+import Landing from './landing';
 
 const Home: React.FC = () => {
 	const { user } = useAuth();
@@ -39,10 +40,9 @@ const Home: React.FC = () => {
 					<MainComponent />
 				</>
 			) : (
-				<>
-					{/* Landing Page Will Go Here */}
-					<div>no user authenticated</div>
-				</>
+				<div>
+					<Landing />
+				</div>
 			)}
 		</>
 	);

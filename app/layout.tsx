@@ -30,9 +30,11 @@ export default function RootLayout({
 		<html lang='en' className={openSans.className}>
 			<head>
 				<meta charSet='utf-8' />
+				<link rel='preload' href='/landingbg.svg' as='image' />
+				<link rel='preload' href='/landing1.png' as='image' />
 			</head>
 			<body className='bg-[#F3F5F9] text-textPrimary'>
-				<Toaster position='top-center'/>
+				<Toaster position='top-center' />
 				<UserProvider>
 					<Navbar />
 					{children}
