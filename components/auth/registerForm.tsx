@@ -32,6 +32,7 @@ const RegisterForm = () => {
 		password: '',
 	});
 	const router = useRouter();
+
 	const validateField = (name: string, value: string): string => {
 		let errorMessage = '';
 
@@ -58,6 +59,7 @@ const RegisterForm = () => {
 
 		return errors;
 	};
+
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		const errorMessage = validateField(name, value);
@@ -74,7 +76,8 @@ const RegisterForm = () => {
 		}));
 	};
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		console.log('handleSubmit called');
 		e.preventDefault();
 		setError(null);
 
@@ -87,41 +90,39 @@ const RegisterForm = () => {
 			setErrorField(errors);
 			return; // Exit early, do not proceed with form submission
 		}
-		createUserWithEmailAndPassword(auth, emailAddress, password)
-			.then((authUser) => {
-				if (authUser.user) {
-					updateProfile(authUser.user, {
-						displayName: displayName,
-					})
-						.then(() => {
-							setDoc(doc(db, 'authUsers', authUser.user.uid), {
-								email: emailAddress,
-								displayName: displayName,
-								closedConfirmationMessage: false,
-								
-
-							})
-								.then((docRef: any) => {
-									router.push('/');
-								})
-								.catch((e) => {
-									console.error('Error updating document', e);
-								});
-						})
-						.catch((error) => {
-							console.error('Error updating user display name:', error);
-						});
-				}
-			})
-			.catch((error) => {
-				console.error(error.message);
-				setError('This email is already registered');
-			});
+		console.log('Before try block');
+		try {
+			console.log('Inside try block');
+			const authUser = await createUserWithEmailAndPassword(
+				auth,
+				emailAddress,
+				password
+			);
+			console.log('User created:', authUser.user); // Debugging log
+			if (authUser.user) {
+				await updateProfile(authUser.user, { displayName });
+				console.log('Profile updated'); // Debugging log
+				await setDoc(doc(db, 'authUsers', authUser.user.uid), {
+					email: emailAddress,
+					displayName: displayName,
+					closedConfirmationMessage: false,
+					isFirstLogin: true,
+				});
+				console.log('Document set'); // Debugging log
+				console.log(
+					'User registered successfully with isFirstLogin set to true'
+				);
+				router.push('/');
+			}
+		} catch (error) {
+			console.error('Error creating user:', error);
+			setError('This email is already registered');
+		}
 	};
 
 	return (
-		<div className=' flex h-full w-full max-w-[500px] flex-col rounded-2xl bg-backgroundSecondary p-4 shadow-2xl'>
-			<div className='flex  w-full flex-col items-center justify-center gap-2'>
+		<div className='flex h-full w-full max-w-[500px] flex-col rounded-2xl bg-backgroundSecondary p-4 shadow-2xl'>
+			<div className='flex w-full flex-col items-center justify-center gap-2'>
 				<div className='text-2xl font-medium'>Welcome to Uncloud!</div>
 				<div className='text-center text-sm font-light'>
 					Enter your Credentials to Register an Account
@@ -160,11 +161,12 @@ const RegisterForm = () => {
 				<button
 					className='mt-2 w-full rounded-lg bg-buttonColor py-2 text-white hover:scale-105 hover:shadow-lg'
 					type='submit'
+					onClick={() => console.log('Submit button clicked')}
 				>
 					Register
 				</button>
 				<div>
-					Already have an account? <Link href={'/auth/login'}>Login</Link>{' '}
+					Already have an account? <Link href={'/auth/login'}>Login</Link>
 				</div>
 			</form>
 		</div>
