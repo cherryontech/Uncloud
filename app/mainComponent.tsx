@@ -20,6 +20,7 @@ import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import Profile from '@/components/pages/profile';
 import DesktopLayout from '@/components/home/desktopLayout';
 import MobileLayout from '@/components/home/mobileLayout';
+import Settings from '@/components/pages/settings';
 
 export default function MainComponent({
 	children,
@@ -200,6 +201,10 @@ export default function MainComponent({
 					favoriteLogs={favoriteLogs}
 					handleLogClick={handleLogClick}
 					mobile={mobile}
+					setMonth={setMonth}
+					selectedDate={selectedDate}
+					handleDateChange={handleDateChange}
+					onFavoriteToggle={onFavoriteToggle}
 				/>
 			);
 			title = 'Favorites';
@@ -207,6 +212,10 @@ export default function MainComponent({
 		case 'Profile':
 			component = <Profile mobile={mobile} />;
 			title = 'Profile';
+			break;
+		case 'Settings':
+			component = <Settings mobile={mobile} />;
+			title = 'Settings';
 			break;
 		default:
 			component = (

@@ -13,6 +13,7 @@ import {
 	List,
 	ClipboardText,
 	UserCircle,
+	Gear,
 } from '@phosphor-icons/react';
 import { Button } from '@/stories/Button';
 import Image from 'next/image';
@@ -119,7 +120,7 @@ const Leftbar = ({
 							</div>
 						)}
 					</div>
-					<Userbar mobile={mobile} />
+					<Userbar setSelectedMenuItem={setSelectedMenuItem} mobile={mobile} />
 				</>
 			) : (
 				<>
@@ -136,29 +137,52 @@ const Leftbar = ({
 							</Link>
 						</div>
 
-						{/* Calendar */}
-						{MiniCalendar}
-						<Button
-							type='button'
-							label={
-								<span
-									style={{
-										display: 'flex',
-										alignItems: 'center',
-										justifyContent: 'center',
-										gap: '5px',
-									}}
+						{selectedMenuItem === 'Settings' ||
+						selectedMenuItem === 'Profile' ? (
+							<div className='text-sm font-semibold text-[#706F6F] '>
+								<div
+									className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Profile' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+									onClick={() => setSelectedMenuItem('Profile')}
 								>
-									<Plus />
-									<div className='flex content-center items-center justify-center'>
-										Add a Log
-									</div>
-								</span>
-							}
-							primary
-							onClick={handleAddLogClick}
-							version='primary'
-						/>
+									<UserCircle size={24} />
+
+									<span className='leading-6'>My Profile</span>
+								</div>
+								<div
+									className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Settings' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+									onClick={() => setSelectedMenuItem('Settings')}
+								>
+									<Gear size={24} />
+									<span className='leading-6'>Settings</span>
+								</div>
+							</div>
+						) : (
+							<>
+								{/* Calendar */}
+								{MiniCalendar}
+								<Button
+									type='button'
+									label={
+										<span
+											style={{
+												display: 'flex',
+												alignItems: 'center',
+												justifyContent: 'center',
+												gap: '5px',
+											}}
+										>
+											<Plus />
+											<div className='flex content-center items-center justify-center'>
+												Add a Log
+											</div>
+										</span>
+									}
+									primary
+									onClick={handleAddLogClick}
+									version='primary'
+								/>
+							</>
+						)}
 						<div className=' mb-[0.5rem] mt-[0.1rem] h-[0.0625rem] bg-[#dee9f5]'></div>
 						{/* Menu */}
 						<div className='text-sm font-semibold text-[#706F6F] '>
@@ -172,13 +196,13 @@ const Leftbar = ({
 							</div>
 
 							{/* Goal Link */}
-							<div
+							{/* <div
 								className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Goals' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
 								onClick={() => setSelectedMenuItem('Goals')}
 							>
 								<Target size={24} />
 								<span className='leading-6'>Goals</span>
-							</div>
+							</div> */}
 							{/* Trends Link */}
 							<div
 								className={`flex h-[3.5rem] cursor-pointer  items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Trends' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
@@ -195,21 +219,24 @@ const Leftbar = ({
 								<Heart size={24} />
 								<span className='leading-6'>Favorites</span>
 							</div>
-							<div
-								className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Profile' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
-								onClick={() => setSelectedMenuItem('Profile')}
-							>
-								<UserCircle size={24} />
-								<span className='leading-6'>Profile</span>
-							</div>
+							{selectedMenuItem === 'Settings' ||
+							selectedMenuItem === 'Profile' ? null : (
+								<div
+									className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Profile' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+									onClick={() => setSelectedMenuItem('Profile')}
+								>
+									<UserCircle size={24} />
+									<span className='leading-6'>Profile</span>
+								</div>
+							)}
 							{/* FAQ Link */}
-							<div
+							{/* <div
 								className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'FAQ' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
 								onClick={() => setSelectedMenuItem('FAQ')}
 							>
 								<Chats size={24} />
 								<span className='leading-6'>FAQ</span>
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</>

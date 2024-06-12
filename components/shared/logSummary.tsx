@@ -58,14 +58,13 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 
 	const logDate = formatValueTypeToYYYYMMDD(log.date);
 
-	const [favorite, setFavorite] = useState(
-		favoriteLogs[logDate]?.favorite || false
-	);
+	const [favorite, setFavorite] = useState(false);
 	console.log('Checking favoriteLogs', favoriteLogs, logDate, log.date);
 
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 	const [mobile, setMobile] = useState(window.innerWidth < 768);
 	useEffect(() => {
+		console.log(logDate, favoriteLogs);
 		setFavorite(favoriteLogs[logDate]?.favorite || false);
 		const handleResize = () => {
 			setWindowWidth(window.innerWidth);

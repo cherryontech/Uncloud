@@ -1,70 +1,70 @@
-// FavoriteLogs.tsx
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
+'use client';
+import React, { useState, useEffect } from 'react';
+import NewLogPopup, { ReflectionsType } from './newLogPopup';
+import Calendar from 'react-calendar';
+import { getUser, addUserMood } from '../utils/serverFunctions';
 import {
-	ArrowDown,
-	ArrowUp,
+	formatValueTypeToYYYYMMDD,
+	formatDateToDayMonthDateYear,
+	formatDateToYear,
+	formatDateToMonth,
+	isToday,
+} from '../utils/reusableFunctions';
+import Image from 'next/legacy/image';
+import { useAuth } from '@/app/context/UserProvider';
+import { Button } from '@/stories/Button';
+import {
+	Plus,
 	CaretLeft,
 	CaretRight,
-	Heart,
+	ArrowUp,
+	ArrowDown,
 } from '@phosphor-icons/react';
-import { ReflectionsType } from '@/components/home/newLogPopup';
-import { Value } from '../home/calendar';
-import {
-	formatDateToMonth,
-	formatDateToYear,
-} from '../utils/reusableFunctions';
-import { useAuth } from '@/app/context/UserProvider';
-import { updateFavorite } from '../utils/serverFunctions';
+import todayIcon from '/public/moods/today.svg';
 
-interface FavoriteLogsProps {
-	favoriteLogs: {
-		[date: string]: {
-			mood: string;
-			reflections: ReflectionsType[];
-			favorite: boolean;
-		};
-	};
-	handleLogClick: (log: {
-		date: Date;
-		mood: string;
-		icon: string;
-		reflections?: ReflectionsType[];
-		favorite: boolean;
-	}) => void;
-	mobile?: boolean;
+import '/app/styles/calendar.css';
+import { init } from 'next/dist/compiled/webpack/webpack';
+import { Win } from './moodPrompts';
+import { on } from 'events';
+
+type Props = {
+	month: number;
 	setMonth: React.Dispatch<React.SetStateAction<number>>;
+	handleAddLogClick: () => void;
 	selectedDate: Value;
-	handleDateChange: (newValue: Value) => void;
-	onFavoriteToggle: (
-		logDate: string,
-		mood: string,
-		reflections: ReflectionsType[]
-	) => boolean;
-}
-const moodNames = {
-	Rainbow: 'Proud',
-	Sunny: 'Confident',
-	Cloudy: 'Uncertain',
-	Rainy: 'Disappointed',
-	Stormy: 'Stressed',
+		handleDateChange: (newValue: Value) => void;
+
+	onLoadComplete?: () => void;
+	mobile?: boolean;
+};
+type ValuePiece = Date | null;
+
+export type Value = ValuePiece | [ValuePiece, ValuePiece];
+
+export type MoodEntry = {
+	date: string;
+	mood: string;
+	reflections: ReflectionsType[];
+	favorite: boolean;
+	wins: Win[];
 };
 
-const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
-	favoriteLogs,
-	handleLogClick,
-	mobile,
-	setMonth,
-	selectedDate,
+const FavoriteCalendarView = ({
 
+	setMonth,
+
+	selectedDate,
+	
 	handleDateChange,
-	onFavoriteToggle,
-}) => {
-	console.log('Fav logs', favoriteLogs);
-	const { user } = useAuth();
-	const [favoriteLogDates, setFavoriteLogDates] = useState<string[]>([]);
+
+	
+	mobile,
+}: Props) => {
+	
 	const [isYearDropdownOpen, setYearDropdownOpen] = useState(false);
 	const [displayedYear, setDisplayedYear] = useState(new Date().getFullYear());
+	
+	
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -92,6 +92,10 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 		setDisplayedYear((selectedDate as Date).getFullYear());
 	}, [selectedDate]);
 
+	
+
+	
+
 	const changeMonth = (offset: number) => {
 		const newDate = new Date(selectedDate as Date);
 		newDate.setMonth(newDate.getMonth() + offset);
@@ -101,6 +105,7 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 	const changeYear = () => {
 		setYearDropdownOpen((prev) => !prev);
 	};
+
 
 	const handleMonthSelect = (month: number, event: React.MouseEvent) => {
 		event.stopPropagation();
@@ -129,23 +134,6 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 	};
 
 	const iconSize = mobile ? 8 : 16;
-	useEffect(() => {
-		setFavoriteLogDates(
-			Object.keys(favoriteLogs).filter((date) => favoriteLogs[date].favorite)
-		);
-	}, [favoriteLogs]);
-	const favoriteLog = async (
-		logDate: string,
-		mood: string,
-		reflections: ReflectionsType[]
-	) => {
-		onFavoriteToggle(logDate, mood, reflections);
-
-		if (user) {
-			await updateFavorite(user.uid, logDate, false);
-		}
-	};
-	console.log(favoriteLogDates);
 	return (
 		<div className='big-calendar cal-container'>
 			<div className='flex max-h-24 flex-col gap-5'>
@@ -211,9 +199,12 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 					</div>
 					<div className='flex flex-row gap-6'>
 						{/* Add Log Button for Mobile */}
-
+					
 						<div className='flex w-fit cursor-pointer flex-row items-center justify-center gap-4'>
-							<div className='background-white flex min-w-fit items-center justify-center rounded-[1.25rem] border border-[#2D81E0] px-6 py-1 text-sm font-bold text-primary '>
+							<div
+								className='background-white flex min-w-fit items-center justify-center rounded-[1.25rem] border border-[#2D81E0] px-6 py-1 text-sm font-bold text-primary '
+							
+							>
 								Filters
 							</div>
 						</div>
@@ -221,87 +212,9 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 				</div>
 				<div className=' h-[0.125rem] bg-[#dee9f5]'></div>
 			</div>
-			<div className='flex flex-row flex-wrap gap-10'>
-				{favoriteLogDates.length > 0 ? (
-					[...favoriteLogDates]
-						.sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
-						.map((date) => {
-							const log = favoriteLogs[date];
-							if (!log) {
-								return null;
-							}
-							console.log('Current log', log);
-							return (
-								<div
-									key={date}
-									className='group relative flex w-36 cursor-pointer flex-col items-center justify-normal rounded-lg border border-[#DEE9F5]  hover:border-blue-400 '
-									onClick={() => {
-										const dateParts = date
-											.split('-')
-											.map((part) => parseInt(part, 10));
-										const logDate = new Date(
-											dateParts[0],
-											dateParts[1] - 1,
-											dateParts[2]
-										);
-										handleLogClick({
-											date: logDate,
-											mood: log.mood,
-											icon: `/moods/${log.mood.toLowerCase()}.svg`,
-											reflections: log.reflections,
-											favorite: log.favorite,
-										});
-									}}
-								>
-									<button
-										onClick={() => favoriteLog(date, log.mood, log.reflections)}
-										className={`absolute right-2 top-2 ${mobile ? 'h-4 w-4' : ''}`}
-									>
-										{log.favorite ? (
-											<Heart
-												size={mobile ? 12 : 24}
-												weight='fill'
-												color='red'
-											/>
-										) : (
-											<Heart size={mobile ? 12 : 24} weight='bold' />
-										)}
-									</button>
-									<div className='w-full px-3'>
-										<Image
-											src={`/moods/${log.mood.toLowerCase()}.svg`}
-											alt='Mood'
-											width={200}
-											height={200}
-											className='w-full'
-										/>
-									</div>
-
-									<div className='w-full border-t border-[#DEE9F5] bg-[#FAFCFF] px-2 py-1 group-hover:border-[#2D81E0] group-hover:bg-[#E0F1FF]'>
-										<p className='w-full text-end text-base font-medium text-black'>
-											{new Date(date).toLocaleString('default', {
-												month: 'short',
-												timeZone: 'UTC',
-											})}{' '}
-											{new Date(date).getUTCDate()}
-										</p>
-										<div className='mt-1 w-full text-end'>
-											<p className='text-xs text-gray-500'>
-												{log.mood.charAt(0).toUpperCase() + log.mood.slice(1)}
-												<span className='floating-period'>.</span>{' '}
-												{moodNames[log.mood as keyof typeof moodNames]}
-											</p>
-										</div>
-									</div>
-								</div>
-							);
-						})
-				) : (
-					<p>No logs have been favorited yet.</p>
-				)}
-			</div>
+			
 		</div>
 	);
 };
 
-export default FavoriteLogs;
+export default FavoriteCalendarView;
