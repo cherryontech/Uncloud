@@ -14,6 +14,7 @@
     "chromatic": "npx chromatic --project-token=chpt_9f48cc95a6ef287"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "@phosphor-icons/react": "^2.1.5",
     "@rehooks/window-size": "^1.0.2",
     "@visx/heatmap": "^3.3.0",

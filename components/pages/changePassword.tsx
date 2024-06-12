@@ -68,7 +68,11 @@ const ChangePassword = ({ mobile }: Props) => {
 				newPassword: '',
 				confirmPassword: '',
 			});
-			toast.success('Password Changed Successfully');
+		     toast.success('Password Changed Successfully', {
+						style: {
+							background: 'blueColor',
+						},
+					});
 		} catch (error: any) {
 			console.log(error);
 			setErrorPassword(error.message);
@@ -87,7 +91,7 @@ const ChangePassword = ({ mobile }: Props) => {
 					className={`flex flex-col gap-[1rem] ${mobile ? 'w-full items-center' : 'w-[38rem]'}`}
 				>
 					<span
-						className={`w-full gap-[1.88rem] text-xl font-semibold ${mobile ? 'text-center' : ''}`}
+						className={`w-full mb-8 gap-[1.88rem] text-xl font-semibold ${mobile ? 'text-center' : ''}`}
 					>
 						{' '}
 						Change Password
@@ -123,7 +127,7 @@ const ChangePassword = ({ mobile }: Props) => {
 								value={passwordForm.newPassword}
 							/>
 							<p className='text-xs'>
-								Passwords need to have atleast 8 characters
+								Passwords need to have at least 8 characters.
 							</p>
 						</div>
 					</div>

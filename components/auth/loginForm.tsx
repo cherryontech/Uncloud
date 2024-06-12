@@ -69,7 +69,7 @@ const LoginForm: React.FC<Props> = (props) => {
 		const { emailAddress, password } = loginData;
 		const errors = validateForm(loginData);
 
-		// Check if there are any errors
+
 		if (Object.values(errors).some((error) => error)) {
 			// If there are errors, update the state with the errors
 			setErrorField(errors);
@@ -81,7 +81,7 @@ const LoginForm: React.FC<Props> = (props) => {
 				auth,
 				emailAddress,
 				password
-			); // Assuming auth is properly initialized
+			); 
 			
 			console.log('Success. The user is Logged In');
 			router.push('/');

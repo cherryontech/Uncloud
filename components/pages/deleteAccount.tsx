@@ -44,7 +44,7 @@ const DeleteAccountButton: React.FC = () => {
 	return (
 		<div>
 			<div className='w-full space-y-8 md:w-[40rem]'>
-				<p className='text-lg font-bold'>Delete Account</p>
+				<p className='text-lg font-bold mt-10'>Delete Account</p>
 				<div className='w-full'>
 					<p className='text-sm'>
 						We will permanently delete your Uncloud account and all associated
@@ -56,7 +56,7 @@ const DeleteAccountButton: React.FC = () => {
 						account!
 					</p>
 				</div>
-				<button className='text-[#D40C0C]' onClick={handleOpenModal}>
+				<button className='text-[#D40C0C] font-bold' onClick={handleOpenModal}>
 					I want to delete my account
 				</button>
 			</div>
