@@ -152,90 +152,92 @@ const Leftbar = ({
 							</div>
 						) : (
 							<>
-						{/* Calendar */}
-						{MiniCalendar}
-						<div data-tooltip-id='addLogTooltip'>
-							<Button
-								type='button'
-								label={
-									<span
-										style={{
-											display: 'flex',
-											alignItems: 'center',
-											justifyContent: 'center',
-											gap: '5px',
-										}}
+								{/* Calendar */}
+								{MiniCalendar}
+								<div data-tooltip-id='addLogTooltip'>
+									<Button
+										type='button'
+										label={
+											<span
+												style={{
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center',
+													gap: '5px',
+												}}
+											>
+												<Plus />
+												<div
+													className='flex content-center items-center justify-center'
+													// data-tooltip-id='addLogTooltip'
+													// data-tooltip-content='Get started with your first log by clicking "Add a Log"!'
+												>
+													Add a Log
+												</div>
+											</span>
+										}
+										primary
+										onClick={handleAddLogClick}
+										version='primary'
+									/>
+								</div>
+								<div className=' mb-[0.5rem] mt-[0.1rem] h-[0.0625rem] bg-[#dee9f5]'></div>
+								{/* Menu */}
+								<div className='text-sm font-semibold text-[#706F6F] '>
+									{/* Calendar Link */}
+									<div
+										className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Calendar' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+										onClick={() => setSelectedMenuItem('Calendar')}
 									>
-										<Plus />
-										<div
-											className='flex content-center items-center justify-center'
-											// data-tooltip-id='addLogTooltip'
-											// data-tooltip-content='Get started with your first log by clicking "Add a Log"!'
-										>
-											Add a Log
-										</div>
-									</span>
-								}
-								primary
-								onClick={handleAddLogClick}
-								version='primary'
-							/>
-						</div>
-						<div className=' mb-[0.5rem] mt-[0.1rem] h-[0.0625rem] bg-[#dee9f5]'></div>
-						{/* Menu */}
-						<div className='text-sm font-semibold text-[#706F6F] '>
-							{/* Calendar Link */}
-							<div
-								className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Calendar' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
-								onClick={() => setSelectedMenuItem('Calendar')}
-							>
-								<CalendarBlank size={24} />
-								<span className='leading-6'>Calendar</span>
-							</div>
+										<CalendarBlank size={24} />
+										<span className='leading-6'>Calendar</span>
+									</div>
 
-							{/* Goal Link */}
-							{/* <div
+									{/* Goal Link */}
+									{/* <div
 								className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Goals' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
 								onClick={() => setSelectedMenuItem('Goals')}
 							>
 								<Target size={24} />
 								<span className='leading-6'>Goals</span>
 							</div> */}
-							{/* Trends Link */}
-							<div
-								className={`flex h-[3.5rem] cursor-pointer  items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Trends' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
-								onClick={() => setSelectedMenuItem('Trends')}
-							>
-								<ChartBar size={24} />
-								<span className='leading-6'>Trends</span>
-							</div>
-							{/* Favorites Link */}
-							<div
-								className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Favorites' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
-								onClick={() => setSelectedMenuItem('Favorites')}
-							>
-								<Heart size={24} />
-								<span className='leading-6'>Favorites</span>
-							</div>
-							{selectedMenuItem === 'Settings' ||
-							selectedMenuItem === 'Profile' ? null : (
-								<div
-									className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Profile' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
-									onClick={() => setSelectedMenuItem('Profile')}
-								>
-									<UserCircle size={24} />
-									<span className='leading-6'>Profile</span>
-								</div>
-							)}
-							{/* FAQ Link */}
-							{/* <div
+									{/* Trends Link */}
+									<div
+										className={`flex h-[3.5rem] cursor-pointer  items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'Trends' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+										onClick={() => setSelectedMenuItem('Trends')}
+									>
+										<ChartBar size={24} />
+										<span className='leading-6'>Trends</span>
+									</div>
+									{/* Favorites Link */}
+									<div
+										className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Favorites' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+										onClick={() => setSelectedMenuItem('Favorites')}
+									>
+										<Heart size={24} />
+										<span className='leading-6'>Favorites</span>
+									</div>
+									{selectedMenuItem === 'Settings' ||
+									selectedMenuItem === 'Profile' ? null : (
+										<div
+											className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0] ${selectedMenuItem === 'Profile' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
+											onClick={() => setSelectedMenuItem('Profile')}
+										>
+											<UserCircle size={24} />
+											<span className='leading-6'>Profile</span>
+										</div>
+									)}
+									{/* FAQ Link */}
+									{/* <div
 								className={`flex h-[3.5rem] cursor-pointer items-center gap-4 self-stretch rounded-lg px-3 py-2 hover:text-[#2D81E0]  ${selectedMenuItem === 'FAQ' ? 'rounded-lg bg-[#EFF7FE] text-primary' : ''}`}
 								onClick={() => setSelectedMenuItem('FAQ')}
 							>
 								<Chats size={24} />
 								<span className='leading-6'>FAQ</span>
 							</div> */}
-						</div>
+								</div>
+							</>
+						)}
 					</div>
 				</>
 			)}
