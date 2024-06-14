@@ -184,7 +184,7 @@ const Trends = () => {
 					percentage={Math.abs(percentageIncreaseMoods).toFixed(2)}
 					isNegative={percentageIncreaseMoods < 0}
 					icon={'/cloudtrend.svg'}
-					description={'Total logs'}
+					description={'Total mood logs completed'}
 					growthArrow={
 						percentageIncreaseMoods < 0 ? (
 							<TrendDown color='#2D81E0' className='h-full w-full' />
@@ -198,7 +198,7 @@ const Trends = () => {
 					percentage={Math.abs(percentageIncreaseFavorites).toFixed(2)}
 					isNegative={percentageIncreaseFavorites < 0}
 					icon={'/favorite.svg'}
-					description={'Total favorited'}
+					description={'Total mood logs favorited'}
 					growthArrow={
 						percentageIncreaseFavorites < 0 ? (
 							<TrendDown color='#FE5B90' className='h-full w-full' />
@@ -212,7 +212,7 @@ const Trends = () => {
 					percentage={Math.abs(percentageIncreaseReflections).toFixed(2)}
 					isNegative={percentageIncreaseReflections < 0}
 					icon={'/reflections.svg'}
-					description={'Total reflection prompts'}
+					description={'Total reflections completed'}
 					growthArrow={
 						percentageIncreaseReflections < 0 ? (
 							<TrendDown color='#68DAB8' className='h-full w-full' />
@@ -226,7 +226,7 @@ const Trends = () => {
 					percentage={Math.abs(percentageIncreaseWins).toFixed(2)}
 					isNegative={percentageIncreaseWins < 0}
 					icon={'/wins.svg'}
-					description={'Total wins'}
+					description={'Total wins completed'}
 					growthArrow={
 						percentageIncreaseWins < 0 ? (
 							<TrendDown color='#FE8034' className='h-full w-full' />

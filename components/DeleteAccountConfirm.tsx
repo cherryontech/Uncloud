@@ -22,7 +22,7 @@ const DeleteAccountConfirmatiom: React.FC<props> = ({
 	if (!isOpen) return null;
 	return (
 		<div className='fixed bottom-0 left-0 right-0 top-0 flex h-full w-full items-center justify-center bg-black/50'>
-			<div className=' flex flex-col rounded-2xl items-center justify-center text-center max-w-[400px] space-y-2 border-black bg-white p-8 px-12'>
+			<div className=' flex max-w-[400px] flex-col items-center justify-center space-y-2 rounded-2xl border-black bg-white p-8 px-12 text-center'>
 				<Image src='/delete.svg' alt='logo' width={60} height={60} />
 				<p>Please enter your password to confirm :</p>
 
@@ -38,10 +38,10 @@ const DeleteAccountConfirmatiom: React.FC<props> = ({
 					className='button--primary w-fit !cursor-pointer rounded-full px-6 py-[0.625rem] text-sm !font-bold leading-6 text-white'
 					onClick={onClose}
 				>
-					No, I've changed my mind
+					No, I&apos;ve changed my mind
 				</button>
 				<button
-					className='bg-white text-[#D40C0C] w-fit cursor-pointer rounded-full px-6 py-[0.625rem] text-sm !font-bold leading-6 hover:bg-gray-200'
+					className='w-fit cursor-pointer rounded-full bg-white px-6 py-[0.625rem] text-sm !font-bold leading-6 text-[#D40C0C] hover:bg-gray-200'
 					onClick={handleConfirm}
 				>
 					Yes, delete
