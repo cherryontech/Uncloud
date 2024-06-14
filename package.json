@@ -17,6 +17,7 @@
     "@heroicons/react": "^1.0.6",
     "@phosphor-icons/react": "^2.1.5",
     "@rehooks/window-size": "^1.0.2",
+    "@types/react-tooltip": "^4.2.4",
     "@visx/heatmap": "^3.3.0",
     "@visx/legend": "^3.10.3",
     "@visx/xychart": "^3.10.2",
@@ -33,6 +34,7 @@
     "react-icons": "^5.2.0",
     "react-responsive": "^10.0.0",
     "react-spring": "^9.7.3",
+    "react-tooltip": "^5.26.4",
     "sonner": "^1.4.41",
     "stopword": "^3.0.1",
     "stopwords-iso": "^1.1.0"

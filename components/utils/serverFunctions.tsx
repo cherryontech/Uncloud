@@ -1,3 +1,5 @@
+// serverFunctions.ts
+
 'use server';
 
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -18,15 +20,11 @@ export async function updateFavorite(
 		const userData = userDocSnap.data();
 		if (userData) {
 			const moodsArray = userData.moods || [];
-
 			const existingMoodIndex = moodsArray.findIndex(
 				(moodEntry: any) => moodEntry.date === date
 			);
 
 			if (existingMoodIndex !== -1) {
-				// If mood entry for selectedDate exists, update it
-				console.log('Existing mood entry found for today. Updating mood...');
-				console.log('Existing mood entry:', moodsArray[existingMoodIndex]);
 				moodsArray[existingMoodIndex].favorite = favorite;
 			}
 
@@ -72,12 +70,11 @@ export async function getFavoriteLogs(uid: string) {
 	return {};
 }
 
-export async function updateUser(uid: string) {
+export async function updateUser(uid: string, data: object) {
 	const userDocRef = doc(db, 'authUsers', uid);
-	updateDoc(userDocRef, {
-		closedConfirmationMessage: true,
-	});
+	await updateDoc(userDocRef, data);
 }
+
 export async function addUserMood(
 	uid: string,
 	mood: string,
@@ -92,23 +89,17 @@ export async function addUserMood(
 	if (userDocSnap.exists()) {
 		const userData = userDocSnap.data();
 		if (userData) {
-			// Initialize 'moods' array if it doesn't exist initially
 			const moodsArray = userData.moods || [];
-
 			const existingMoodIndex = moodsArray.findIndex(
 				(moodEntry: any) => moodEntry.date === selectedDate
 			);
 
 			if (existingMoodIndex !== -1) {
-				// If mood entry for selectedDate exists, update it
-				console.log('Existing mood entry found for today. Updating mood...');
-				console.log('Existing mood entry:', moodsArray[existingMoodIndex]);
 				moodsArray[existingMoodIndex].mood = mood;
 				moodsArray[existingMoodIndex].reflections = reflections;
 				moodsArray[existingMoodIndex].favorite = favorite;
 				moodsArray[existingMoodIndex].wins = wins;
 			} else {
-				// If mood entry for today doesn't exist, append a new entry
 				moodsArray.push({
 					date: selectedDate,
 					mood: mood,
@@ -118,9 +109,6 @@ export async function addUserMood(
 				});
 			}
 
-			console.log('Updated moods array:', moodsArray);
-
-			// Update the document with the modified moods array
 			await updateDoc(userDocRef, { moods: moodsArray });
 		}
 	}
@@ -130,7 +118,6 @@ export async function getUser(uid: string) {
 	const userDocRef = doc(db, 'authUsers', uid);
 	return getDoc(userDocRef)
 		.then((userDocSnapshot) => {
-			// Extract the custom fields from the document data
 			const userData = userDocSnapshot.data();
 			return userData;
 		})

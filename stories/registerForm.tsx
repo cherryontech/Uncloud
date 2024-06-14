@@ -103,6 +103,7 @@ const RegisterForm = () => {
 								email: emailAddress,
 								displayName: displayName,
 								closedConfirmationMessage: false,
+								isFirstLogin: true,
 							})
 								.then((docRef: any) => {
 									router.push('/');

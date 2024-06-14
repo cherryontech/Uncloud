@@ -1,19 +1,15 @@
-'use client';
-import Link from 'next/link';
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import {
-	CloudSun,
-	CalendarBlank,
-	Info,
 	Plus,
-	Heart,
-	Target,
-	ChartBar,
-	Chats,
 	List,
-	ClipboardText,
+	CalendarBlank,
+	ChartBar,
+	Heart,
 	UserCircle,
 	Gear,
+	Chats,
+	Target,
 } from '@phosphor-icons/react';
 import { Button } from '@/stories/Button';
 import Image from 'next/image';
@@ -37,7 +33,6 @@ const Leftbar = ({
 }: Props) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
-
 	const hamburgerRef = useRef(null);
 
 	useEffect(() => {
@@ -132,7 +127,6 @@ const Leftbar = ({
 									alt='Uncloud Logo'
 									width={123}
 									height={58}
-									// layout='fill'
 								/>
 							</Link>
 						</div>
@@ -158,31 +152,35 @@ const Leftbar = ({
 							</div>
 						) : (
 							<>
-								{/* Calendar */}
-								{MiniCalendar}
-								<Button
-									type='button'
-									label={
-										<span
-											style={{
-												display: 'flex',
-												alignItems: 'center',
-												justifyContent: 'center',
-												gap: '5px',
-											}}
+						{/* Calendar */}
+						{MiniCalendar}
+						<div data-tooltip-id='addLogTooltip'>
+							<Button
+								type='button'
+								label={
+									<span
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center',
+											gap: '5px',
+										}}
+									>
+										<Plus />
+										<div
+											className='flex content-center items-center justify-center'
+											// data-tooltip-id='addLogTooltip'
+											// data-tooltip-content='Get started with your first log by clicking "Add a Log"!'
 										>
-											<Plus />
-											<div className='flex content-center items-center justify-center'>
-												Add a Log
-											</div>
-										</span>
-									}
-									primary
-									onClick={handleAddLogClick}
-									version='primary'
-								/>
-							</>
-						)}
+											Add a Log
+										</div>
+									</span>
+								}
+								primary
+								onClick={handleAddLogClick}
+								version='primary'
+							/>
+						</div>
 						<div className=' mb-[0.5rem] mt-[0.1rem] h-[0.0625rem] bg-[#dee9f5]'></div>
 						{/* Menu */}
 						<div className='text-sm font-semibold text-[#706F6F] '>
