@@ -17,7 +17,6 @@ export async function updateFavorite(
 	if (userDocSnap.exists()) {
 		const userData = userDocSnap.data();
 		if (userData) {
-			// Initialize 'moods' array if it doesn't exist initially
 			const moodsArray = userData.moods || [];
 
 			const existingMoodIndex = moodsArray.findIndex(
@@ -33,12 +32,10 @@ export async function updateFavorite(
 
 			console.log('Updated moods array:', moodsArray);
 
-			// Update the document with the modified moods array
 			await updateDoc(userDocRef, { moods: moodsArray });
 		}
 	}
 }
-
 
 export async function getFavoriteLogs(uid: string) {
 	const userDocRef = doc(db, 'authUsers', uid);

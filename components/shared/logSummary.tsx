@@ -54,8 +54,6 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 
 	const [openReflections, setOpenReflections] = useState<number[]>([]);
 
-	console.log(isUpdated);
-
 	const logDate = formatValueTypeToYYYYMMDD(log.date);
 
 	const [favorite, setFavorite] = useState(false);

@@ -64,10 +64,8 @@ const NewLogPopup = ({
 		if (user && selectedDate) {
 			getUser(user.uid).then((userData) => {
 				if (!userData || !userData.moods || userData.moods.length === 0) {
-					console.log('No mood data found for the user');
 					return;
 				}
-				console.log('All mood entries:', userData.moods);
 
 				const selectedMoodEntry = userData.moods.find(
 					(entry: any) => entry.date === selectedDate
@@ -93,9 +91,6 @@ const NewLogPopup = ({
 	}, [user, selectedDate, isUpdated]);
 
 	if (!isPopupOpen) return null;
-
-	console.log('Selected Date Prop:', selectedDate);
-	console.log('Selected Mood:', selectedMood);
 
 	const handleClickInside = (
 		event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -137,11 +132,9 @@ const NewLogPopup = ({
 		console.log('Favorite:', false);
 		setPopupOpen(false);
 		setCurrentStep(1);
-		setShowFinalProgress(false); 
+		setShowFinalProgress(false);
 		console.log('handleSaveMood: Closing popup');
 	};
-
-
 
 	return (
 		<div

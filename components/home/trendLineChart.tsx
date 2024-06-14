@@ -44,8 +44,6 @@ const moodToColor = (mood: string): { value: number; color: string } => {
 };
 
 const convertMoodsToDataPoints = (moods: singleMood[]): DataPoint[] => {
-	
-
 	return moods
 		.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 		.map((moodEntry) => {
@@ -71,9 +69,8 @@ const CustomTick = ({
 );
 
 const TrendLineChart = ({ moods }: Props) => {
-	console.log(moods);
 	const dataPoints: DataPoint[] = convertMoodsToDataPoints(moods);
-	console.log(dataPoints);
+
 	const accessors = {
 		xAccessor: (d: DataPoint) =>
 			new Date(d.x).toLocaleDateString('en-US', {

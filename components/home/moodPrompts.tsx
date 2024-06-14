@@ -259,14 +259,12 @@ const MoodPrompts = ({
 		{ description: '' },
 		{ description: '' },
 		{ description: '' },
-		
 	];
 	const [wins, setWins] = useState<Win[]>(
 		initialWins && initialWins.length ? initialWins : defaultWins
 	);
 
 	const handleInputChange = (index: number, event: any) => {
-		console.log(index, event.target.value);
 		const newWins = [...wins];
 		newWins[index].description = event.target.value;
 		setWins(newWins);
@@ -350,9 +348,7 @@ const MoodPrompts = ({
 	const moods = ['cloudy', 'rainy', 'stormy', 'rainbow', 'sunny'];
 	const moodIndex = moods.indexOf(selectedMood?.toLowerCase() ?? '');
 
-	
 	const startIndex = (moodIndex + moods.length - 2) % moods.length;
-
 
 	const sortedMoods = [
 		...moods.slice(startIndex, moods.length),
@@ -419,7 +415,7 @@ const MoodPrompts = ({
 							</div>
 							<div
 								className='flex h-full w-fit items-start justify-center'
-								onClick={() => setWinsDropdownOpen(!winsDropdownOpen)} 
+								onClick={() => setWinsDropdownOpen(!winsDropdownOpen)}
 							>
 								{winsDropdownOpen ? (
 									<div className='flex items-center justify-center rounded-full bg-[#E0F1FF] p-1'>
@@ -530,18 +526,16 @@ const MoodPrompts = ({
 									<div className='relative flex h-fit flex-row items-center justify-start gap-3'>
 										<div className='reflection-input ml-12 flex w-full flex-col justify-start gap-2'>
 											<div className='custom-select'>
-
 												<DropdownInput
 													options={availableQuestions(index).map(
 														(q) => q.question
-														)}
-														name={`question-${index}`}
-														value={reflection.question}
-														handleChange={(e: { target: { value: string } }) =>
+													)}
+													name={`question-${index}`}
+													value={reflection.question}
+													handleChange={(e: { target: { value: string } }) =>
 														handleQuestionChange(index, e.target.value)
 													}
-													/>
-												
+												/>
 											</div>
 											<textarea
 												name='answer'

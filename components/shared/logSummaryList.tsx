@@ -63,7 +63,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 			[filter]: !prevState[filter as keyof typeof selectedFilters],
 		}));
 	};
-	console.log(currentPage);
+
 	useEffect(() => {
 		if (user) {
 			getUser(user.uid).then((userData) => {

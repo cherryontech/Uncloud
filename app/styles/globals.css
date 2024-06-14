@@ -115,7 +115,7 @@ a:hover {
 
 .floating-period {
     display: inline-block;
-    margin: 0 2px; /* Adjust the margin as needed */
+    margin: 0 2px; 
     position: relative;
-    top: -2px; /* Adjust the top value to make the period float as needed */
+    top: -2px; 
 }

@@ -34,7 +34,6 @@ const DeleteAccountButton: React.FC = () => {
 			.then(() => {
 				console.log('User account deleted successfully.');
 				handleCloseModal();
-				// Optionally, redirect the user or show a success message
 			})
 			.catch((error) => {
 				console.error('Error deleting user account: ', error);
@@ -44,7 +43,7 @@ const DeleteAccountButton: React.FC = () => {
 	return (
 		<div>
 			<div className='w-full space-y-8 md:w-[40rem]'>
-				<p className='text-lg font-bold mt-10'>Delete Account</p>
+				<p className='mt-10 text-lg font-bold'>Delete Account</p>
 				<div className='w-full'>
 					<p className='text-sm'>
 						We will permanently delete your Uncloud account and all associated
@@ -56,7 +55,7 @@ const DeleteAccountButton: React.FC = () => {
 						account!
 					</p>
 				</div>
-				<button className='text-[#D40C0C] font-bold' onClick={handleOpenModal}>
+				<button className='font-bold text-[#D40C0C]' onClick={handleOpenModal}>
 					I want to delete my account
 				</button>
 			</div>

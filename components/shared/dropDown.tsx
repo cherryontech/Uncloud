@@ -27,11 +27,10 @@ export default function Dropdown({
 	const [isOpen, setIsOpen] = useState(false);
 	const router = useRouter();
 	const dropdownRef = useRef<HTMLDivElement>(null);
-	
+
 	const handleLogOut = () => {
 		signOut(auth)
 			.then(() => {
-				console.log('logged out');
 				router.push('/auth/confirmLogout');
 			})
 			.catch((error) => {

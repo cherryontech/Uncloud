@@ -77,7 +77,7 @@ const Trends = () => {
 			state[0].startDate,
 			state[0].endDate
 		);
-		console.log(currentMoods);
+
 		setCurrentMoodsState(currentMoods);
 		const heatmapData = prepareHeatMapData(currentMoods);
 		setHeatMapData(heatmapData);
@@ -172,7 +172,7 @@ const Trends = () => {
 		{ mood: 'Stormy', value: moodCounts['Stormy'] || 0 },
 		{ mood: 'Rainy', value: moodCounts['Rainy'] || 0 },
 	];
-	console.log(currentMoodsState);
+
 	return (
 		<div className='flex flex-col gap-5'>
 			<div>
