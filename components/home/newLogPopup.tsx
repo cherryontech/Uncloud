@@ -7,6 +7,9 @@ import { Check, CalendarBlank } from '@phosphor-icons/react';
 import { Button } from '@/stories/Button';
 import ProgressBar from '@/stories/progressBar';
 import MoodPrompts, { Win } from './moodPrompts';
+import { FaArrowLeft } from 'react-icons/fa6';
+import { GoArrowDownLeft, GoArrowLeft } from 'react-icons/go';
+import { LuArrowLeft } from 'react-icons/lu';
 
 export type ReflectionsType = {
 	question: string;
@@ -147,6 +150,18 @@ const NewLogPopup = ({
 			>
 				{showFinalProgress && <ProgressBar progress={100} />}
 				<ProgressBar progress={currentStep * 33} />
+				{currentStep > 1 && (
+					<button
+						className='absolute left-2 top-2 text-sm text-gray-500 hover:text-gray-700'
+						onClick={() => handleChangeStep(1)}
+					>
+						{mobile ? (
+							<LuArrowLeft size={20} color='#2D81E0' />
+						) : (
+							<LuArrowLeft size={28} color='#2D81E0' />
+						)}
+					</button>
+				)}
 				<button
 					className='absolute right-2 top-2 text-sm text-gray-500 hover:text-gray-700'
 					onClick={handleLogPopupToggle}
@@ -253,6 +268,7 @@ const NewLogPopup = ({
 				{currentStep === 2 && (
 					<MoodPrompts
 						selectedMood={selectedMood}
+						handleChangeStep={handleChangeStep}
 						handleSaveMood={handleSaveMood}
 						initialReflections={initialReflections}
 						initialWins={initialWins}

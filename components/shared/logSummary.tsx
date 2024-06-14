@@ -95,7 +95,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 	};
 
 	const nonEmptyWins = log.wins.filter((win) => win.description.trim() !== '');
-
+	console.log(log.mood);
 	return (
 		<>
 			{mobile ? (
@@ -114,18 +114,20 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 									</span>
 								</button>
 							</div>
-							<div className='flex text-[#706F6F]'>
-								<button
-									onClick={favoriteLog}
-									className='flex flex-row items-center justify-center gap-2'
-								>
-									{favorite ? (
-										<Heart size={12} weight='fill' color='red' />
-									) : (
-										<Heart size={12} weight='bold' />
-									)}
-								</button>
-							</div>
+							{log.mood && log.mood !=='No Log Yet' && (
+								<div className='flex text-[#706F6F]'>
+									<button
+										onClick={favoriteLog}
+										className='flex flex-row items-center justify-center gap-2'
+									>
+										{favorite ? (
+											<Heart size={12} weight='fill' color='red' />
+										) : (
+											<Heart size={12} weight='bold' />
+										)}
+									</button>
+								</div>
+							)}
 						</div>
 						{/* Divider */}
 						<div className='h-[0.125rem] bg-[#dee9f5]'></div>
@@ -249,18 +251,20 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 									</span>
 								</button>
 							</div>
-							<div className='flex text-[#706F6F]'>
-								<button
-									onClick={favoriteLog}
-									className='flex flex-row items-center justify-center gap-2'
-								>
-									{favorite ? (
-										<Heart size={24} weight='fill' color='red' />
-									) : (
-										<Heart size={24} weight='bold' />
-									)}
-								</button>
-							</div>
+							{log.mood && log.mood !=='No Log Yet'&& (
+								<div className='flex text-[#706F6F]'>
+									<button
+										onClick={favoriteLog}
+										className='flex flex-row items-center justify-center gap-2'
+									>
+										{favorite ? (
+											<Heart size={24} weight='fill' color='red' />
+										) : (
+											<Heart size={24} weight='bold' />
+										)}
+									</button>
+								</div>
+							)}
 						</div>
 						{/* Divider */}
 						<div className='h-[0.125rem] bg-[#dee9f5]'></div>

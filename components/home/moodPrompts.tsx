@@ -24,6 +24,7 @@ type Props = {
 		wins: Win[]
 	) => Promise<void>;
 	mobile?: boolean;
+	handleChangeStep: (step: number) => void;
 };
 export interface Win {
 	description: string;
@@ -35,6 +36,7 @@ const MoodPrompts = ({
 	initialWins,
 	handleSaveMood,
 	mobile,
+	handleChangeStep,
 }: Props) => {
 	const [winsDropdownOpen, setWinsDropdownOpen] = useState(false);
 	const [reflectionsDropdownOpen, setReflectionsDropdownOpen] = useState(false);
@@ -398,7 +400,10 @@ const MoodPrompts = ({
 
 					{/* Wins */}
 					<div className='flex w-full flex-col items-center justify-center gap-4 rounded-lg border bg-white p-6'>
-						<div className='flex w-full flex-row items-center justify-center gap-4 rounded-lg  bg-white '>
+						<div
+							className='flex w-full flex-row items-center justify-center gap-4 rounded-lg  bg-white '
+							onClick={() => setWinsDropdownOpen(!winsDropdownOpen)}
+						>
 							<div className='flex h-full w-8 items-start justify-center'>
 								<div className='flex h-8 w-8 items-center justify-center rounded-full border border-[#D9D9D9] bg-white'>
 									<Confetti size={20} color='#2D81E0' />
@@ -413,10 +418,7 @@ const MoodPrompts = ({
 									today.
 								</span>
 							</div>
-							<div
-								className='flex h-full w-fit items-start justify-center'
-								onClick={() => setWinsDropdownOpen(!winsDropdownOpen)}
-							>
+							<div className='flex h-full w-fit items-start justify-center'>
 								{winsDropdownOpen ? (
 									<div className='flex items-center justify-center rounded-full bg-[#E0F1FF] p-1'>
 										{mobile ? (
@@ -473,6 +475,9 @@ const MoodPrompts = ({
 										</div>
 									</div>
 								))}
+								<div className='w-full text-right text-primary font-bold '>
+									<p onClick={() => setWins(defaultWins)}>Clear</p>
+								</div>
 							</div>
 						)}
 					</div>
@@ -483,7 +488,10 @@ const MoodPrompts = ({
 							key={index}
 							className='flex w-full flex-col items-center justify-center gap-4 rounded-lg border bg-white p-6'
 						>
-							<div className='flex w-full flex-row items-center justify-center gap-4 rounded-lg bg-white '>
+							<div
+								className='flex w-full flex-row items-center justify-center gap-4 rounded-lg bg-white '
+								onClick={() => toggleReflection(index)}
+							>
 								<div className='flex h-full w-8 items-start justify-center'>
 									<div className='flex h-8 w-8 items-center justify-center rounded-full border border-[#D9D9D9] bg-white'>
 										<Confetti size={20} color='#2D81E0' />
@@ -498,10 +506,7 @@ const MoodPrompts = ({
 										are feeling.
 									</span>
 								</div>
-								<div
-									className='flex h-full w-fit items-start justify-center'
-									onClick={() => toggleReflection(index)}
-								>
+								<div className='flex h-full w-fit items-start justify-center'>
 									{openReflections.includes(index) ? (
 										<div className='flex items-center justify-center rounded-full bg-[#E0F1FF] p-1'>
 											{mobile ? (
@@ -549,8 +554,11 @@ const MoodPrompts = ({
 												}
 											/>
 										</div>
-									</div>
-								</div>
+												</div>
+													<div className='w-full text-right text-primary font-bold'>
+														<p className='mr-4' onClick={() => handleAnswerChange(index, '')}>Clear</p>
+													</div>
+											</div>
 							)}
 						</div>
 					))}

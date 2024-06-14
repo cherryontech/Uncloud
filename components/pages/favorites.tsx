@@ -16,6 +16,7 @@ import {
 } from '../utils/reusableFunctions';
 import { useAuth } from '@/app/context/UserProvider';
 import { updateFavorite } from '../utils/serverFunctions';
+import FilterDropdown from '../shared/filterDropdown';
 
 interface FavoriteLogsProps {
 	favoriteLogs: {
@@ -36,6 +37,7 @@ interface FavoriteLogsProps {
 	setMonth: React.Dispatch<React.SetStateAction<number>>;
 	selectedDate: Value;
 	handleDateChange: (newValue: Value) => void;
+	month: number;
 	onFavoriteToggle: (
 		logDate: string,
 		mood: string,
@@ -56,7 +58,7 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 	mobile,
 	setMonth,
 	selectedDate,
-
+	month,
 	handleDateChange,
 	onFavoriteToggle,
 }) => {
@@ -65,7 +67,15 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 	const [favoriteLogDates, setFavoriteLogDates] = useState<string[]>([]);
 	const [isYearDropdownOpen, setYearDropdownOpen] = useState(false);
 	const [displayedYear, setDisplayedYear] = useState(new Date().getFullYear());
-
+	const [selectedFilters, setSelectedFilters] = useState({
+		Rainbow: false,
+		Sunny: false,
+		Cloudy: false,
+		Rainy: false,
+		Stormy: false,
+	});
+	console.log(month);
+	console.log(selectedDate);
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			const dropdownElement = document.querySelector('.calendar-dropdown');
@@ -130,10 +140,24 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 
 	const iconSize = mobile ? 8 : 16;
 	useEffect(() => {
-		setFavoriteLogDates(
-			Object.keys(favoriteLogs).filter((date) => favoriteLogs[date].favorite)
+		const selectedMonth = new Date(selectedDate as Date).getMonth();
+
+		// Extract the selected moods
+		const activeFilters = Object.keys(selectedFilters).filter(
+			(mood) => selectedFilters[mood as keyof typeof selectedFilters]
 		);
-	}, [favoriteLogs]);
+
+		const filteredDates = Object.keys(favoriteLogs).filter((date) => {
+			const logDate = new Date(date);
+			const log = favoriteLogs[date];
+			return (
+				log.favorite &&
+				logDate.getMonth() === selectedMonth &&
+				(activeFilters.length === 0 || activeFilters.includes(log.mood))
+			);
+		});
+		setFavoriteLogDates(filteredDates);
+	}, [favoriteLogs, selectedDate, selectedFilters]);
 	const favoriteLog = async (
 		logDate: string,
 		mood: string,
@@ -145,7 +169,15 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 			await updateFavorite(user.uid, logDate, false);
 		}
 	};
+	const handleCheckboxChange = (filter: string) => {
+		setSelectedFilters((prevState) => ({
+			...prevState,
+			[filter]: !prevState[filter as keyof typeof selectedFilters],
+		}));
+	};
+
 	console.log(favoriteLogDates);
+	console.log(selectedDate);
 	return (
 		<div className='big-calendar cal-container'>
 			<div className='flex max-h-24 flex-col gap-5'>
@@ -212,11 +244,11 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 					<div className='flex flex-row gap-6'>
 						{/* Add Log Button for Mobile */}
 
-						<div className='flex w-fit cursor-pointer flex-row items-center justify-center gap-4'>
-							<div className='background-white flex min-w-fit items-center justify-center rounded-[1.25rem] border border-[#2D81E0] px-6 py-1 text-sm font-bold text-primary '>
-								Filters
-							</div>
-						</div>
+						<FilterDropdown
+							handleCheckboxChange={handleCheckboxChange}
+							selectedFilters={selectedFilters}
+							mobile={mobile}
+						/>
 					</div>
 				</div>
 				<div className=' h-[0.125rem] bg-[#dee9f5]'></div>
