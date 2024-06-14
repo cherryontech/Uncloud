@@ -137,11 +137,11 @@ const NewLogPopup = ({
 		console.log('Favorite:', false);
 		setPopupOpen(false);
 		setCurrentStep(1);
-		setShowFinalProgress(false); // Hide the progress bar after closing
+		setShowFinalProgress(false); 
 		console.log('handleSaveMood: Closing popup');
 	};
 
-	console.log(selectedDate);
+
 
 	return (
 		<div
@@ -240,7 +240,7 @@ const NewLogPopup = ({
 							<div className='flex w-[22.5rem] flex-col justify-center gap-3 text-sm'>
 								<Button
 									type='button'
-									label='Continue'
+									label='Continue to Reflection'
 									primary
 									onClick={() => handleChangeStep(2)}
 									version='primary'
@@ -251,7 +251,7 @@ const NewLogPopup = ({
 									}}
 									className='px-6 py-[0.625rem] text-sm font-bold text-[#2D81E0]'
 								>
-									Done
+									Done Logging
 								</button>
 							</div>
 						</div>

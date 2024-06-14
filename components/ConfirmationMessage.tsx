@@ -11,7 +11,7 @@ const ConfirmationMessage: React.FC<ConfirmationMessageProps> = ({
 }) => {
 return (
    <div className="absolute left-1/2 top-1/2 w-1/3 -translate-x-1/2 -translate-y-1/2 transform border border-black p-8">
-      <h1 className="text-3xl">Welcome, {userDisplayName} </h1>
+      <h1 className="text-3xl">Welcome, {userDisplayName}!</h1>
       <p>
         You can now start logging your reflections. Let’s get started with your
         first one!

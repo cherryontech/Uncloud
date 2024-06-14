@@ -413,13 +413,13 @@ const MoodPrompts = ({
 									3 Wins of the Day
 								</span>
 								<span className='text-left text-xs leading-6 text-[#706F6F]'>
-									Get specific! use details to describe what you accomplished
+									Get specific! Use details to describe what you accomplished
 									today.
 								</span>
 							</div>
 							<div
 								className='flex h-full w-fit items-start justify-center'
-								onClick={() => setWinsDropdownOpen(!winsDropdownOpen)} // Toggle the dropdown on click
+								onClick={() => setWinsDropdownOpen(!winsDropdownOpen)} 
 							>
 								{winsDropdownOpen ? (
 									<div className='flex items-center justify-center rounded-full bg-[#E0F1FF] p-1'>
@@ -581,7 +581,7 @@ const MoodPrompts = ({
 			<div className='flex w-[22.5rem] justify-center'>
 				<Button
 					type='button'
-					label='Done'
+					label='Done '
 					primary
 					onClick={() => handleSaveMood(reflections, wins)}
 					version='primary'

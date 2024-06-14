@@ -3,13 +3,14 @@ import { Button } from './Button';
 import { Heading } from './Heading';
 import { Icon } from './Icons';
 import { CloudSun } from '@phosphor-icons/react';
+import Image from 'next/image';
 
 interface ConfirmationMessageProps {
 	userDisplayName: string;
 	hideConfirmationMessage: () => void;
 }
 
-console.log('Here?');
+
 export const ConfirmationMessage = ({
 	userDisplayName,
 	hideConfirmationMessage,
@@ -19,7 +20,13 @@ export const ConfirmationMessage = ({
 		<div className='absolute left-1/2 top-1/2 z-30 flex h-[45rem] w-[33rem] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center gap-14 rounded-md  bg-white p-12 ring-2 ring-gray-400 ring-opacity-20 ring-offset-2'>
 			<div className='flex flex-col items-center gap-8'>
 				<div className='flex w-[23rem] flex-col items-center justify-center gap-6'>
-					<Icon type='cloud-sun' size='6rem' weight='regular' />
+					<Image
+						src='/Uncloud_Logo_1.svg'
+						alt='My SVG Image'
+						width={80}
+						height={80}
+						
+					/>
 					<div className='flex flex-col items-center justify-center gap-2'>
 						<h4 className='text-center'>Welcome in {userDisplayName}!</h4>
 						<span className='text-center text-base'>
