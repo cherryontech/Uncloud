@@ -13,9 +13,10 @@ import '/app/styles/layout.css';
 
 type Props = {
 	mobile: boolean;
+	setSelectedMenuItem: (item: any) => void;
 };
 
-const Userbar = ({ mobile }: Props) => {
+const Userbar = ({ mobile, setSelectedMenuItem }: Props) => {
 	const router = useRouter();
 
 	const handleLogOut = () => {
@@ -37,7 +38,11 @@ const Userbar = ({ mobile }: Props) => {
 		>
 			{user && (
 				<div className='flex w-full flex-row items-center gap-4'>
-					<Dropdown user={user} mobile={mobile} />
+					<Dropdown
+						setSelectedMenuItem={setSelectedMenuItem}
+						user={user}
+						mobile={mobile}
+					/>
 				</div>
 			)}
 		</div>

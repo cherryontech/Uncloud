@@ -4,9 +4,9 @@ interface CustomInputProps {
 	name: string;
 	value: string;
 	placeholder: string;
-	label: string;
+	label?: string;
 	type: string;
-    error?: string;
+	error?: string;
 	handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -17,13 +17,15 @@ const CustomInput: React.FC<CustomInputProps> = ({
 	label,
 	type,
 	handleChange,
-    error
+	error,
 }) => {
 	return (
 		<div className='my-3 w-full'>
-			<label className='text-base' htmlFor={name}>
-				{label}
-			</label>
+			{label && (
+				<label className='text-base' htmlFor={name}>
+					{label}
+				</label>
+			)}
 			<input
 				type={type}
 				placeholder={placeholder}
@@ -33,7 +35,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 				onChange={handleChange}
 				className='block w-full rounded-lg border border-[#d9d9d9] p-2 text-sm font-medium shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base'
 			/>
-			{error && <p className='text-red-600 text-sm'>{error}</p>}
+			{error && <p className='text-sm text-red-600'>{error}</p>}
 		</div>
 	);
 };

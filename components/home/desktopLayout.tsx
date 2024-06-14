@@ -64,7 +64,6 @@ export default function DesktopLayout({
 	mobile,
 	title,
 }: DesktopLayoutProps) {
-
 	return (
 		<div className='grid-container'>
 			{isLoading && <LoadingSpinner />}
@@ -95,7 +94,7 @@ export default function DesktopLayout({
 						</span>
 					</div>
 
-					<Userbar mobile={false} />
+					<Userbar mobile={false} setSelectedMenuItem={setSelectedMenuItem} />
 				</div>
 
 				<div
@@ -112,7 +111,7 @@ export default function DesktopLayout({
 				>
 					<div className='main-content flex flex-col items-center  bg-[#F3F5F9]'>
 						<div
-							className={`h-full w-full   ${selectedMenuItem === 'Calendar' ? ' rounded-2xl border border-[#DEE9F5] bg-white px-4 py-6' : ''}`}
+							className={`h-full w-full   ${selectedMenuItem === 'Calendar' || selectedMenuItem === 'Settings' || selectedMenuItem === 'Favorites' ? ' rounded-2xl border border-[#DEE9F5] bg-white px-4 py-6' : ''}`}
 						>
 							<UserProvider>{component}</UserProvider>
 						</div>

@@ -156,7 +156,7 @@ const Rightbar: React.FC<RightbarProps> = ({
 			});
 		}
 	}, [user, isUpdated, month, isPopupOpen]);
-	console.log(filteredMoods.length);
+
 	return (
 		<div
 			className={` flex w-full flex-col gap-4 rounded-2xl border  border-[#DEE9F5] bg-white  py-6 ${isRightBarOpen ? 'px-5' : 'px-2'} ${mobile ? 'mobile-right-bar' : 'right-bar'} ${mobile && isRightBarOpen ? 'h-full' : 'h-fit'}`}

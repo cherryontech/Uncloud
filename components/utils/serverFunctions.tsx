@@ -28,6 +28,8 @@ export async function updateFavorite(
 				moodsArray[existingMoodIndex].favorite = favorite;
 			}
 
+			console.log('Updated moods array:', moodsArray);
+
 			await updateDoc(userDocRef, { moods: moodsArray });
 		}
 	}

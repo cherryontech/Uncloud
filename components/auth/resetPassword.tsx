@@ -33,7 +33,6 @@ const ResetPasswordForm: React.FC<Props> = (props) => {
 	const searchParams = useSearchParams();
 
 	const oobCode = searchParams.get('oobCode');
-	// console.log(oobCode);
 
 	const router = useRouter();
 	const validateField = (name: string, value: string): string => {
@@ -83,9 +82,7 @@ const ResetPasswordForm: React.FC<Props> = (props) => {
 		const { password, confirmPassword } = resetPass;
 		const errors = validateForm(resetPass);
 
-		// Check if there are any errors
 		if (Object.values(errors).some((error) => error)) {
-			// If there are errors, update the state with the errors
 			setErrorField(errors);
 			return;
 		}

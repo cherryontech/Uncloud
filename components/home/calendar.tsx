@@ -89,7 +89,6 @@ const CalendarView = ({
 
 	useEffect(() => {
 		if (user) {
-			console.log('User found:', user);
 			getUser(user.uid).then((userData) => {
 				if (userData && userData.moods) {
 					let moodMap: {
