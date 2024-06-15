@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Calendar, Target, ChartBar, Heart } from '@phosphor-icons/react';
+import { Calendar, ChartBar, Heart } from '@phosphor-icons/react';
 import '/app/styles/carousel2.css';
 
 const carouselOptions = [
 	{
-		icon: <Calendar style={{ height: '3rem', width: '3rem' }} />,
+		icon: Calendar,
 		label: 'Calendar',
 		imageSrc: '/landing/scrum28.png',
+		color: '#2D81E0',
 	},
 	{
-		icon: <ChartBar style={{ height: '3rem', width: '3rem' }} />,
+		icon: ChartBar,
 		label: 'Trends',
 		imageSrc: '/landing/trends.png',
+		color: '#AA52BF',
 	},
 	{
-		icon: <Heart style={{ height: '3rem', width: '3rem' }} />,
+		icon: Heart,
 		label: 'Favorites',
 		imageSrc: '/landing/favorites.png',
+		color: '#FF4682',
 	},
 ];
 
@@ -63,20 +66,44 @@ const Carousel2: React.FC = () => {
 	return (
 		<>
 			<div className='carousel-menu flex flex-row gap-12 pt-[7.56rem]'>
-				{carouselOptions.map((option, index) => (
-					<div
-						key={index}
-						className={`carousel-option flex flex-col items-center justify-center gap-2 hover:cursor-pointer ${
-							activeIndex === index ? 'active' : ''
-						}`}
-						onClick={() => handleOptionClick(index)}
-					>
-						<div className='icon h-12 w-12'>{option.icon}</div>
-						<span className='icon-label text-center text-2xl font-semibold'>
-							{option.label}
-						</span>
-					</div>
-				))}
+				{carouselOptions.map((option, index) => {
+					const IconComponent = option.icon;
+					return (
+						<button
+							key={index}
+							className={`carousel-option ${
+								activeIndex === index ? 'active' : ''
+							}`}
+							onClick={() => handleOptionClick(index)}
+							style={{
+								color: activeIndex === index ? '#2C2C2C' : '#706f6f',
+							}}
+						>
+							<div
+								className='icon h-12 w-12'
+								style={{
+									color: activeIndex === index ? option.color : 'inherit',
+								}}
+							>
+								<IconComponent
+									style={{
+										height: '3rem',
+										width: '3rem',
+										fill: activeIndex === index ? option.color : '#706f6f',
+									}}
+								/>
+							</div>
+							<span
+								className='icon-label text-center text-2xl font-semibold'
+								style={{
+									color: activeIndex === index ? '#2C2C2C' : '#706f6f',
+								}}
+							>
+								{option.label}
+							</span>
+						</button>
+					);
+				})}
 			</div>
 			<div>
 				<span className='text-base font-semibold'>

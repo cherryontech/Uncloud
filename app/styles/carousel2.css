@@ -18,24 +18,33 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-
+	gap: 0.5rem;
 	cursor: pointer;
 	transition: color 0.3s ease;
-}
-
-.carousel-option:hover {
-	color: #2d81e0;
+	color: #706f6f;
 }
 
 .carousel-option.active {
 	color: #2c2c2c;
 }
 
+.carousel-option .icon {
+	color: inherit;
+}
+
+.carousel-option.active .icon {
+	color: inherit;
+}
+
+.carousel-option:hover .icon {
+	color: inherit;
+}
+
 .icon-label {
 	text-align: center;
 	font-size: 2rem;
 	font-weight: 600;
-	color: #706f6f;
+	color: inherit;
 }
 
 .carousel-content {

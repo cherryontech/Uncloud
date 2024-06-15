@@ -10,14 +10,7 @@ import CustomerTestimonials from '@/components/shared/customerTestimonials';
 import MainFeatureCard from '@/components/shared/featureCard';
 import Carousel from '@/components/shared/carousel';
 import Carousel2 from '@/components/shared/carousel2';
-import {
-	Calendar,
-	Target,
-	ChartBar,
-	Heart,
-	Lightbulb,
-	FilmScript,
-} from '@phosphor-icons/react';
+import { Lightbulb, FilmScript } from '@phosphor-icons/react';
 
 const useIntersectionObserver = () => {
 	useEffect(() => {
