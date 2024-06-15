@@ -1,0 +1,88 @@
+/* carousel2.css */
+:root {
+	--transition-duration: 0.5s; /* Default transition duration */
+	--transition-distance: 100%; /* Default transition distance */
+	--transition-easing: ease-in-out; /* Default easing function */
+}
+
+.carousel-2 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 3rem;
+}
+
+.carousel-option {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	cursor: pointer;
+	transition: color 0.3s ease;
+}
+
+.carousel-option:hover {
+	color: #2d81e0;
+}
+
+.carousel-option.active {
+	color: #2c2c2c;
+}
+
+.icon-label {
+	text-align: center;
+	font-size: 2rem;
+	font-weight: 600;
+	color: #706f6f;
+}
+
+.carousel-content {
+	width: 100%;
+	height: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.image-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	width: 62.5rem;
+	height: auto;
+	overflow: hidden;
+	border-radius: 1rem;
+	box-shadow: 0 15px 20px 0 rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	aspect-ratio: 1.41;
+}
+
+.carousel-image {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: auto;
+	transition:
+		transform var(--transition-duration) var(--transition-easing),
+		opacity var(--transition-duration) var(--transition-easing);
+	opacity: 0;
+	transform: translateX(var(--transition-distance));
+}
+
+.carousel-image.active {
+	opacity: 1;
+	transform: translateX(0);
+	z-index: 2;
+}
+
+.carousel-image.left {
+	transform: translateX(calc(-1 * var(--transition-distance)));
+}
+
+.carousel-image.right {
+	transform: translateX(var(--transition-distance));
+}
