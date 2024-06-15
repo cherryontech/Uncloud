@@ -404,6 +404,19 @@ const CalendarView = ({
 						/>
 					);
 				}}
+				tileClassName={({ date, view }) => {
+					if (isToday(date)) {
+						return 'react-calendar__tile--today';
+					}
+					if (
+						date.getDate() === (selectedDate as Date).getDate() &&
+						date.getMonth() === (selectedDate as Date).getMonth() &&
+						date.getFullYear() === (selectedDate as Date).getFullYear()
+					) {
+						return 'react-calendar__tile--selected';
+					}
+					return '';
+				}}
 				tileDisabled={({ date, view }) =>
 					date.getFullYear() > todayYear ||
 					(date.getFullYear() === todayYear && date.getMonth() > todayMonth) ||

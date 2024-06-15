@@ -110,10 +110,17 @@
 	max-width: 1.5rem;
 	padding: 0.55rem;
 }
+
 .big-calendar .react-calendar__tile--active abbr {
+	background: #dee9f5;
+	color: #2d81e0;
+}
+
+.big-calendar .react-calendar__tile--today abbr {
 	background: #2d81e0;
 	color: white;
 }
+
 
 .big-calendar .react-calendar__month-view__weekdays__weekday {
 	font-size: 0.875rem;

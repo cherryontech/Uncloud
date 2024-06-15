@@ -252,6 +252,7 @@ export default function MainComponent({
 					favoriteLogs={favoriteLogs}
 					handleLogClick={handleLogClick}
 					mobile={mobile}
+					month={month}
 					setMonth={setMonth}
 					selectedDate={selectedDate}
 					handleDateChange={handleDateChange}

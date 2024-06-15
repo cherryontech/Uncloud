@@ -19,6 +19,7 @@ interface PasswordForm {
 }
 import { toast } from 'sonner';
 import CustomInput from '@/stories/customInput';
+import PasswordInput from '@/stories/passwordInput';
 
 const ChangePassword = ({ mobile }: Props) => {
 	const [errorPassword, setErrorPassword] = useState<string | null>(null);
@@ -68,14 +69,21 @@ const ChangePassword = ({ mobile }: Props) => {
 				newPassword: '',
 				confirmPassword: '',
 			});
-		     toast.success('Password Changed Successfully', {
-						style: {
-							background: 'blueColor',
-						},
-					});
+			toast.success('Password Changed Successfully', {
+				style: {
+					background: 'blueColor',
+				},
+			});
 		} catch (error: any) {
 			console.log(error);
-			setErrorPassword(error.message);
+			if (
+				error.code ===
+				'auth/invalid-credential'
+			) {
+				setErrorPassword('The password is invalid');
+			} else {
+				setErrorPassword(error.message);
+			}
 		}
 	};
 	return (
@@ -91,7 +99,7 @@ const ChangePassword = ({ mobile }: Props) => {
 					className={`flex flex-col gap-[1rem] ${mobile ? 'w-full items-center' : 'w-[38rem]'}`}
 				>
 					<span
-						className={`w-full mb-8 gap-[1.88rem] text-xl font-semibold ${mobile ? 'text-center' : ''}`}
+						className={`mb-8 w-full gap-[1.88rem] text-xl font-semibold ${mobile ? 'text-center' : ''}`}
 					>
 						{' '}
 						Change Password
@@ -103,7 +111,7 @@ const ChangePassword = ({ mobile }: Props) => {
 							Old Password:
 						</label>
 						<div className={`${mobile ? 'w-80' : 'w-80'}`}>
-							<CustomInput
+							<PasswordInput
 								name={'oldPassword'}
 								handleChange={handleSecondFormChange}
 								type='password'
@@ -119,7 +127,7 @@ const ChangePassword = ({ mobile }: Props) => {
 							New Password:
 						</label>
 						<div className={`${mobile ? 'w-80' : 'w-80'}`}>
-							<CustomInput
+							<PasswordInput
 								name={'newPassword'}
 								handleChange={handleSecondFormChange}
 								type='password'
@@ -138,7 +146,7 @@ const ChangePassword = ({ mobile }: Props) => {
 							Confirm New Password:
 						</label>
 						<div className={`${mobile ? 'w-80' : 'w-80'}`}>
-							<CustomInput
+							<PasswordInput
 								name={'confirmPassword'}
 								handleChange={handleSecondFormChange}
 								type='password'
@@ -153,7 +161,7 @@ const ChangePassword = ({ mobile }: Props) => {
 					className={`mr-10 flex w-full items-end space-x-4 ${mobile ? 'justify-center' : 'justify-end'}`}
 				>
 					<button
-						className='bg-grayBackground text-grayTextColor w-fit cursor-pointer rounded-full px-6 py-[0.625rem] text-sm !font-bold leading-6 hover:bg-[#DEE9F5] hover:text-blueColor'
+						className='w-fit cursor-pointer rounded-full bg-grayBackground px-6 py-[0.625rem] text-sm !font-bold leading-6 text-grayTextColor hover:bg-[#DEE9F5] hover:text-blueColor'
 						type='button'
 						onClick={() => {
 							setPasswordForm({
