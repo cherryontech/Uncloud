@@ -17,6 +17,7 @@ import {
 import { useAuth } from '@/app/context/UserProvider';
 import { updateFavorite } from '../utils/serverFunctions';
 import FilterDropdown from '../shared/filterDropdown';
+import { useRouter } from 'next/navigation';
 
 interface FavoriteLogsProps {
 	favoriteLogs: {
@@ -43,6 +44,7 @@ interface FavoriteLogsProps {
 		mood: string,
 		reflections: ReflectionsType[]
 	) => boolean;
+	handleGoBack: () => void;
 }
 const moodNames = {
 	Rainbow: 'Proud',
@@ -61,6 +63,7 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 	month,
 	handleDateChange,
 	onFavoriteToggle,
+	handleGoBack,
 }) => {
 	console.log('Fav logs', favoriteLogs);
 	const { user } = useAuth();
@@ -74,6 +77,7 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 		Rainy: false,
 		Stormy: false,
 	});
+	const router = useRouter();
 	console.log(month);
 	console.log(selectedDate);
 	useEffect(() => {
@@ -148,7 +152,16 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 		);
 
 		const filteredDates = Object.keys(favoriteLogs).filter((date) => {
-			const logDate = new Date(date);
+			const dateParts = date.split('-').map((part) => parseInt(part, 10));
+			const logDate = new Date(
+				dateParts[0],
+				dateParts[1] - 1,
+				dateParts[2],
+				0,
+				0,
+				0
+			);
+
 			const log = favoriteLogs[date];
 			return (
 				log.favorite &&
@@ -164,6 +177,7 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 		reflections: ReflectionsType[]
 	) => {
 		onFavoriteToggle(logDate, mood, reflections);
+		handleGoBack();
 
 		if (user) {
 			await updateFavorite(user.uid, logDate, false);
@@ -286,7 +300,10 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 									}}
 								>
 									<button
-										onClick={() => favoriteLog(date, log.mood, log.reflections)}
+										onClick={(event) => {
+											event.stopPropagation();
+											favoriteLog(date, log.mood, log.reflections);
+										}}
 										className={`absolute right-2 top-2 ${mobile ? 'h-4 w-4' : ''}`}
 									>
 										{log.favorite ? (

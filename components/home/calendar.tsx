@@ -155,11 +155,22 @@ const CalendarView = ({
 		wins: Win[]
 	) => {
 		if (user) {
+			console.log(date);
 			await addUserMood(user.uid, mood, date, reflections, favorite, wins);
 			updateData();
+			const dateParts = date.split('-').map((part) => parseInt(part, 10));
+			const logDate = new Date(
+				dateParts[0],
+				dateParts[1] - 1,
+				dateParts[2],
+				0,
+				0,
+				0
+			);
+
 			// Call handleLogClick after the new log is saved
 			handleLogClick({
-				date: new Date(date),
+				date: logDate,
 				mood: mood,
 				icon: `/moods/${mood.toLowerCase()}.svg`,
 				reflections: reflections,
