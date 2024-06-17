@@ -257,6 +257,7 @@ export default function MainComponent({
 					selectedDate={selectedDate}
 					handleDateChange={handleDateChange}
 					onFavoriteToggle={onFavoriteToggle}
+					handleGoBack={handleGoBack}
 				/>
 			);
 			title = 'Favorites';

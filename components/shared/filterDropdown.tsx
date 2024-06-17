@@ -28,7 +28,7 @@ const FilterDropdown = ({
 		Stormy: '#AA52BF',
 	};
 	return (
-		<div className='relative inline-block text-left'>
+		<div className='relative z-10 inline-block text-left'>
 			<div>
 				<button
 					onClick={toggleDropdown}
