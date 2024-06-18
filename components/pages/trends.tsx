@@ -6,10 +6,10 @@ import { useAuth } from '@/app/context/UserProvider';
 import { prepareHeatMapData } from '../utils/textProcessing';
 import PercentageCard from '../trends/percentageCard';
 import { Tooltip, useTooltip } from '@visx/tooltip';
-import { FaArrowTrendDown, FaArrowTrendUp } from 'react-icons/fa6';
 import { Question, TrendUp, TrendDown } from '@phosphor-icons/react';
 import '/app/styles/trends.css';
 import { MoodEntry } from '../home/calendar';
+import Image from 'next/image';
 import {
 	calculatePastDateRange,
 	calculatePercentageIncrease,
@@ -21,8 +21,7 @@ import {
 	getFrequentPrompts,
 } from './trendsUtils';
 import DonutChart from '../home/donutChart';
-import FrequentReflectionPrompts from '../home/frequentPromptsChart'; // Import the new component
-import { DateRangePicker } from 'react-date-range';
+import FrequentReflectionPrompts from '../home/frequentPromptsChart';
 import CustomDateRangePicker, { DateRangeState } from '../home/dateRangePicker';
 
 export type MoodType = 'Rainbow' | 'Sunny' | 'Cloudy' | 'Stormy' | 'Rainy';
@@ -66,6 +65,9 @@ const Trends = () => {
 			key: 'selection',
 		},
 	]);
+
+	const [hasData, setHasData] = useState<boolean>(false);
+
 	useEffect(() => {
 		const { pastStartDate, pastEndDate } = calculatePastDateRange(
 			state[0].startDate,
@@ -120,6 +122,14 @@ const Trends = () => {
 
 		const prompts = getFrequentPrompts(currentMoods);
 		setFrequentPrompts(prompts);
+
+		// Check if there is data for any chart
+		setHasData(
+			currentMoods.length > 0 ||
+				heatmapData.length > 0 ||
+				prompts.length > 0 ||
+				moodData.some((data) => data.value > 0)
+		);
 	}, [moods, state[0].startDate, state[0].endDate]);
 
 	useEffect(() => {
@@ -237,109 +247,127 @@ const Trends = () => {
 				/>
 			</div>
 
-			{/* Line Chart and Heat Map */}
-			<div className='grid h-fit w-full gap-5 md:grid-cols-2'>
-				<div className='trends-card gap-12'>
-					{currentMoodsState && currentMoodsState.length > 0 && (
-						<>
-							<div className='flex w-full flex-row items-center justify-between'>
-								<span className='h-[2.0625rem] text-2xl font-semibold leading-normal'>
-									Mood Flow
-								</span>
-								<div
-									ref={questionMarkRefs.moodFlow}
-									className='relative flex max-h-[1.5rem] items-center justify-center'
-									onMouseEnter={(event) =>
-										handleMouseEnter(
-											event,
-											'This chart shows the flow of your moods over time.',
-											'moodFlow'
-										)
-									}
-									onMouseLeave={hideTooltip}
-								>
-									<Question size={24} color={'#706F6F'} />
+			{/* Conditional rendering based on the presence of data */}
+			{hasData ? (
+				<>
+					<div className='grid h-fit w-full gap-5 md:grid-cols-2'>
+						{currentMoodsState.length > 0 && (
+							<div className='trends-card gap-12'>
+								<div className='flex w-full flex-row items-center justify-between'>
+									<span className='h-[2.0625rem] text-2xl font-semibold leading-normal'>
+										Mood Flow
+									</span>
+									<div
+										ref={questionMarkRefs.moodFlow}
+										className='relative flex max-h-[1.5rem] items-center justify-center'
+										onMouseEnter={(event) =>
+											handleMouseEnter(
+												event,
+												'This chart shows the flow of your moods over time.',
+												'moodFlow'
+											)
+										}
+										onMouseLeave={hideTooltip}
+									>
+										<Question size={24} color={'#706F6F'} />
+									</div>
 								</div>
+								<TrendLineChart moods={currentMoodsState} />
 							</div>
-							<TrendLineChart moods={currentMoodsState} />
-						</>
-					)}
-				</div>
-				<div className='trends-card gap-4'>
-					{heatMapData.length > 0 && (
-						<>
-							<div className='flex w-full flex-row items-center justify-between'>
-								<span className='h-[2.0625rem] text-2xl font-semibold leading-normal'>
-									Frequent Words
-								</span>
-								<div
-									ref={questionMarkRefs.frequentWords}
-									className='relative flex max-h-[1.5rem] items-center justify-center'
-									onMouseEnter={(event) =>
-										handleMouseEnter(
-											event,
-											'This chart shows the most frequently used words in your entries.',
-											'frequentWords'
-										)
-									}
-									onMouseLeave={hideTooltip}
-								>
-									<Question size={24} color={'#706F6F'} />
+						)}
+						{heatMapData.length > 0 && (
+							<div className='trends-card gap-4'>
+								<div className='flex w-full flex-row items-center justify-between'>
+									<span className='h-[2.0625rem] text-2xl font-semibold leading-normal'>
+										Frequent Words
+									</span>
+									<div
+										ref={questionMarkRefs.frequentWords}
+										className='relative flex max-h-[1.5rem] items-center justify-center'
+										onMouseEnter={(event) =>
+											handleMouseEnter(
+												event,
+												'This chart shows the most frequently used words in your entries.',
+												'frequentWords'
+											)
+										}
+										onMouseLeave={hideTooltip}
+									>
+										<Question size={24} color={'#706F6F'} />
+									</div>
 								</div>
+								<HeatMap data={heatMapData} />
 							</div>
-							<HeatMap data={heatMapData} />
-						</>
-					)}
+						)}
+					</div>
+					<div className='grid gap-5 md:grid-cols-[2fr_5fr]'>
+						{moodData.some((data) => data.value > 0) && (
+							<div className='trends-card gap-12'>
+								<div className='flex w-full flex-row items-center justify-between'>
+									<span className='h-[2.0625rem] text-2xl font-semibold leading-normal'>
+										Mood Analysis
+									</span>
+									<div
+										ref={questionMarkRefs.moodAnalysis}
+										className='relative flex max-h-[1.5rem] items-center justify-center'
+										onMouseEnter={(event) =>
+											handleMouseEnter(
+												event,
+												'This chart shows a breakdown of your selected moods.',
+												'moodAnalysis'
+											)
+										}
+										onMouseLeave={hideTooltip}
+									>
+										<Question size={24} color={'#706F6F'} />
+									</div>
+								</div>
+								<DonutChart data={moodData} />
+							</div>
+						)}
+						{frequentPrompts.length > 0 && (
+							<div className='trends-card gap-8'>
+								<div className='flex w-full flex-row items-center justify-between'>
+									<span className='h-[2.0625rem] text-2xl font-semibold leading-normal'>
+										Frequent Reflection Prompts
+									</span>
+									<div
+										ref={questionMarkRefs.promptFrequency}
+										className='relative flex max-h-[1.5rem] items-center justify-center'
+										onMouseEnter={(event) =>
+											handleMouseEnter(
+												event,
+												'This chart shows the most frequently used prompts for your reflections.',
+												'promptFrequency'
+											)
+										}
+										onMouseLeave={hideTooltip}
+									>
+										<Question size={24} color={'#706F6F'} />
+									</div>
+								</div>
+								<FrequentReflectionPrompts prompts={frequentPrompts} />
+							</div>
+						)}
+					</div>
+				</>
+			) : (
+				<div className='flex flex-col items-center justify-center p-5'>
+					<div className='h-auto w-[11.125rem]'>
+						<Image
+							src='/moods/greyWithFace.svg'
+							alt='Empty'
+							width={200}
+							height={200}
+							className='w-full'
+						/>
+					</div>
+					<span className='text-lg font-semibold text-gray-500'>
+						Start logging your moods to view your trends!
+					</span>
 				</div>
-			</div>
+			)}
 
-			{/* Donut and Prompt Frequency */}
-			<div className='grid grid-cols-[2fr_5fr] gap-5'>
-				<div className='trends-card gap-12'>
-					<div className='flex w-full flex-row items-center justify-between'>
-						<span className='h-[2.0625rem] text-2xl font-semibold leading-normal'>
-							Mood Analysis
-						</span>
-						<div
-							ref={questionMarkRefs.moodAnalysis}
-							className='relative flex max-h-[1.5rem] items-center justify-center'
-							onMouseEnter={(event) =>
-								handleMouseEnter(
-									event,
-									'This chart shows a breakdown of your selected moods.',
-									'moodAnalysis'
-								)
-							}
-							onMouseLeave={hideTooltip}
-						>
-							<Question size={24} color={'#706F6F'} />
-						</div>
-					</div>
-					<DonutChart data={moodData} />
-				</div>
-				<div className='trends-card gap-8'>
-					<div className='flex w-full flex-row items-center justify-between'>
-						<span className='h-[2.0625rem] text-2xl font-semibold leading-normal'>
-							Frequent Reflection Prompts
-						</span>
-						<div
-							ref={questionMarkRefs.promptFrequency}
-							className='relative flex max-h-[1.5rem] items-center justify-center'
-							onMouseEnter={(event) =>
-								handleMouseEnter(
-									event,
-									'This chart shows the most frequently used prompts for your reflections.',
-									'promptFrequency'
-								)
-							}
-							onMouseLeave={hideTooltip}
-						>
-							<Question size={24} color={'#706F6F'} />
-						</div>
-					</div>
-					<FrequentReflectionPrompts prompts={frequentPrompts} />
-				</div>
-			</div>
 			{tooltipData && (
 				<Tooltip
 					left={tooltipLeft}

@@ -233,18 +233,20 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 								);
 							})
 						) : (
-							<div className='flex w-full flex-col items-center justify-center'>
-								<p className='text-base font-medium text-black'>
+							<div className='flex h-full w-full flex-col items-center justify-center'>
+								<p className='text-sm font-medium text-black'>
 									No summaries yet
 								</p>
-								<Image
-									src='/moods/greyWithFace.svg'
-									alt='Empty'
-									width={200}
-									height={200}
-									className='w-full'
-								/>
-								<p className='text-base font-medium text-gray-500'>
+								<div className='h-auto w-[11.125rem]'>
+									<Image
+										src='/moods/default.svg'
+										alt='Empty'
+										width={200}
+										height={200}
+										className='w-full'
+									/>
+								</div>
+								<p className='text-sm font-normal text-gray-500'>
 									Add a log to get started!
 								</p>
 							</div>
@@ -330,18 +332,20 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 								);
 							})
 						) : (
-							<div className='flex w-full flex-col items-center justify-center'>
-								<p className='text-base font-medium text-black'>
+							<div className='flex h-full w-full flex-col items-center justify-center'>
+								<p className='text-sm font-medium text-black'>
 									No summaries yet
 								</p>
-								<Image
-									src='/moods/greyWithFace.svg'
-									alt='Empty'
-									width={200}
-									height={200}
-									className='w-full'
-								/>
-								<p className='text-base font-medium text-gray-500'>
+								<div className='h-auto w-[11.125rem]'>
+									<Image
+										src='/moods/greyWithFace.svg'
+										alt='Empty'
+										width={200}
+										height={200}
+										className='w-full'
+									/>
+								</div>
+								<p className='text-sm font-normal text-gray-500'>
 									Add a log to get started!
 								</p>
 							</div>

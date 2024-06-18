@@ -9,18 +9,23 @@ const carouselOptions = [
 		label: 'Calendar',
 		imageSrc: '/landing/scrum28.png',
 		color: '#2D81E0',
+		description:
+			'Quickly access and review your past reflection logs by selecting specific dates.',
 	},
 	{
 		icon: ChartBar,
 		label: 'Trends',
 		imageSrc: '/landing/trends.png',
 		color: '#AA52BF',
+		description:
+			'Get an insightful overview of your mood patterns, activity logs, and frequently used words to help track your journey.',
 	},
 	{
 		icon: Heart,
 		label: 'Favorites',
 		imageSrc: '/landing/favorites.png',
 		color: '#FF4682',
+		description: 'Easily access and revisit your most valued reflection logs.',
 	},
 ];
 
@@ -105,9 +110,10 @@ const Carousel2: React.FC = () => {
 					);
 				})}
 			</div>
-			<div>
-				<span className='text-base font-semibold'>
-					Easily keep track of your moods and translate them to career success
+			<div className='flex'>
+				<span className='text-center text-base font-semibold'>
+					{/* Dynamic Description */}
+					{carouselOptions[activeIndex].description}
 				</span>
 			</div>
 			<div className='flex w-full items-center justify-center pt-0'>

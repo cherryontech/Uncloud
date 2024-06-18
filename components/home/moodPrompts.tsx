@@ -39,7 +39,8 @@ const MoodPrompts = ({
 	handleChangeStep,
 }: Props) => {
 	const [winsDropdownOpen, setWinsDropdownOpen] = useState(false);
-	const [reflectionsDropdownOpen, setReflectionsDropdownOpen] = useState(false);
+	const [openReflections, setOpenReflections] = useState<number[]>([]);
+	const [focusedBox, setFocusedBox] = useState<string | number | null>(null);
 
 	const defaultQuestions = useMemo(
 		() => ({
@@ -256,7 +257,6 @@ const MoodPrompts = ({
 			: [initialQuestion]
 	);
 
-	const [openReflections, setOpenReflections] = useState<number[]>([]);
 	const defaultWins = [
 		{ description: '' },
 		{ description: '' },
@@ -292,6 +292,7 @@ const MoodPrompts = ({
 				? prevState.filter((i) => i !== index)
 				: [...prevState, index]
 		);
+		setFocusedBox(index);
 	};
 
 	const handleAnswerChange = (index: number, answer: string) => {
@@ -362,6 +363,13 @@ const MoodPrompts = ({
 		defaultQuestions[selectedMood as keyof typeof defaultQuestions]?.length || 3
 	);
 
+	const handleSave = () => {
+		const nonEmptyReflections = reflections.filter(
+			(reflection) => reflection.answer.trim() !== ''
+		);
+		handleSaveMood(nonEmptyReflections, wins);
+	};
+
 	return (
 		<div className='flex flex-col items-center gap-8 overflow-auto px-12'>
 			<div className='flex w-[36.125rem] flex-col gap-12'>
@@ -399,11 +407,17 @@ const MoodPrompts = ({
 					</div>
 
 					{/* Wins */}
-					<div className='flex w-full flex-col items-center justify-center gap-4 rounded-lg border bg-white p-6'>
-						<div
-							className='flex w-full flex-row items-center justify-center gap-4 rounded-lg  bg-white '
-							onClick={() => setWinsDropdownOpen(!winsDropdownOpen)}
-						>
+					<div
+						className={`flex w-full flex-col items-center justify-center gap-4 rounded-lg border bg-white p-6
+              hover:border-[#2D81E0] ${focusedBox === 'wins' ? 'focus-ring' : ''}
+              focus:outline-none focus:outline-0 focus:ring focus:ring-[#DEE9F5]
+            `}
+						onClick={() => {
+							setWinsDropdownOpen(!winsDropdownOpen);
+							setFocusedBox('wins');
+						}}
+					>
+						<div className='flex w-full flex-row items-center justify-center gap-4 rounded-lg bg-white '>
 							<div className='flex h-full w-8 items-start justify-center'>
 								<div className='flex h-8 w-8 items-center justify-center rounded-full border border-[#D9D9D9] bg-white'>
 									<Confetti size={20} color='#2D81E0' />
@@ -454,11 +468,11 @@ const MoodPrompts = ({
 													{index + 1}
 												</div>
 											) : (
-												<div className='flex h-[1.25rem] w-[1.25rem] items-center justify-center  rounded-full bg-[#DEE9F5] p-2'></div>
+												<div className='flex h-[1.25rem] w-[1.25rem] items-center justify-center rounded-full bg-[#DEE9F5] p-2'></div>
 											)}
 											{index !== 2 && (
 												<div
-													className={`h-[1.9rem] w-[0.125rem] flex-grow  ${win.description ? 'bg-[#2D81E0]' : 'bg-[#DEE9F5]'}`}
+													className={`h-[1.9rem] w-[0.125rem] flex-grow ${win.description ? 'bg-[#2D81E0]' : 'bg-[#DEE9F5]'}`}
 												></div>
 											)}
 										</div>
@@ -471,11 +485,12 @@ const MoodPrompts = ({
 												handleChange={(event) =>
 													handleInputChange(index, event)
 												}
+												onClick={(e) => e.stopPropagation()}
 											/>
 										</div>
 									</div>
 								))}
-								<div className='w-full text-right text-primary font-bold '>
+								<div className='w-full text-right font-bold text-primary '>
 									<p onClick={() => setWins(defaultWins)}>Clear</p>
 								</div>
 							</div>
@@ -486,12 +501,13 @@ const MoodPrompts = ({
 					{reflections.map((reflection, index) => (
 						<div
 							key={index}
-							className='flex w-full flex-col items-center justify-center gap-4 rounded-lg border bg-white p-6'
+							className={`flex w-full flex-col items-center justify-center gap-4 rounded-lg border bg-white p-6
+                hover:border-[#2D81E0] ${focusedBox === index ? 'focus-ring' : ''}
+                focus:outline-none focus:outline-0 focus:ring focus:ring-[#DEE9F5]
+              `}
+							onClick={() => toggleReflection(index)}
 						>
-							<div
-								className='flex w-full flex-row items-center justify-center gap-4 rounded-lg bg-white '
-								onClick={() => toggleReflection(index)}
-							>
+							<div className='flex w-full flex-row items-center justify-center gap-4 rounded-lg bg-white '>
 								<div className='flex h-full w-8 items-start justify-center'>
 									<div className='flex h-8 w-8 items-center justify-center rounded-full border border-[#D9D9D9] bg-white'>
 										<Confetti size={20} color='#2D81E0' />
@@ -516,7 +532,7 @@ const MoodPrompts = ({
 											)}
 										</div>
 									) : (
-										<div className='flex items-center justify-center rounded-full  p-1'>
+										<div className='flex items-center justify-center rounded-full p-1'>
 											{mobile ? (
 												<CaretDown size={12} color='#706f6f' />
 											) : (
@@ -529,7 +545,10 @@ const MoodPrompts = ({
 							{openReflections.includes(index) && (
 								<div className='flex w-full flex-col gap-4'>
 									<div className='relative flex h-fit flex-row items-center justify-start gap-3'>
-										<div className='reflection-input ml-12 flex w-full flex-col justify-start gap-2'>
+										<div
+											className='reflection-input ml-12 flex w-full flex-col justify-start gap-2'
+											onClick={(e) => e.stopPropagation()}
+										>
 											<div className='custom-select'>
 												<DropdownInput
 													options={availableQuestions(index).map(
@@ -546,19 +565,25 @@ const MoodPrompts = ({
 												name='answer'
 												id={`answer-${index}`}
 												placeholder='Type what you want to write'
-												className='h-[11.5625rem] rounded-lg border border-[#D9D9D9] p-2 hover:border-[#2D81E0] focus:border-[#2D81E0] focus:outline-none focus:outline-0 focus:outline-[#2D81E0] focus:ring focus:ring-[#DEE9F5]'
+												className='h-[11.5625rem] rounded-lg border border-[#D9D9D9] p-2 hover:border-[#2D81E0] focus:border-[#2D81E0] focus:outline-none focus:outline-0 focus:ring focus:ring-[#DEE9F5]'
 												rows={10}
 												value={reflection.answer}
-												onChange={(e) =>
-													handleAnswerChange(index, e.target.value)
-												}
+												onChange={(e) => {
+													e.stopPropagation();
+													handleAnswerChange(index, e.target.value);
+												}}
 											/>
 										</div>
-												</div>
-													<div className='w-full text-right text-primary font-bold'>
-														<p className='mr-4' onClick={() => handleAnswerChange(index, '')}>Clear</p>
-													</div>
-											</div>
+									</div>
+									<div className='w-full text-right font-bold text-primary'>
+										<p
+											className='mr-4'
+											onClick={() => handleAnswerChange(index, '')}
+										>
+											Clear
+										</p>
+									</div>
+								</div>
 							)}
 						</div>
 					))}
@@ -585,7 +610,7 @@ const MoodPrompts = ({
 					type='button'
 					label='Done '
 					primary
-					onClick={() => handleSaveMood(reflections, wins)}
+					onClick={handleSave}
 					version='primary'
 				/>
 			</div>

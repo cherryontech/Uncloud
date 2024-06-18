@@ -10,6 +10,7 @@ interface CustomInputProps {
 	type: string;
 	error?: string | null;
 	handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+	onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -20,6 +21,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 	type,
 	handleChange,
 	error,
+	onClick,
 }) => {
 	const handleClear = () => {
 		handleChange({
@@ -28,7 +30,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 	};
 
 	return (
-		<div className='w-full space-y-1.5'>
+		<div className='w-full space-y-1.5' onClick={onClick}>
 			{label && (
 				<label className='text-sm font-bold' htmlFor={name}>
 					{label}
@@ -76,12 +78,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
 					</div>
 				)}
 			</div>
-			{/* If error is not "Incorrect email or password." then display the message */}
 			{error && error !== 'Incorrect email or password.' && (
 				<p className='text-xs font-semibold text-red-600'>{error}</p>
 			)}
-
-			{/* {error && <p className='text-sm font-semibold text-red-600'>{error}</p>} */}
 		</div>
 	);
 };

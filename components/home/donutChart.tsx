@@ -70,7 +70,12 @@ const DonutChart: React.FC<DonutChartProps> = ({ data }) => {
 
 	return (
 		<div
-			style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+			style={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				width: '100%',
+			}}
 		>
 			<svg ref={svgRef} width={outerRadius * 2} height={outerRadius * 2}>
 				<Group top={outerRadius} left={outerRadius}>
