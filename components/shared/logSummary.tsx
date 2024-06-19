@@ -1,15 +1,10 @@
-// LogSummary.tsx
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import {
-	formatDateToMonthDayYear,
-	formatValueTypeToYYYYMMDD,
-} from '../utils/reusableFunctions';
+import { formatValueTypeToYYYYMMDD } from '../utils/reusableFunctions';
 import { CaretLeft, Plus, Minus, Heart } from '@phosphor-icons/react';
 import { ReflectionsType } from '../home/newLogPopup';
 import { useAuth } from '@/app/context/UserProvider';
-import { getUser, updateFavorite } from '../utils/serverFunctions';
-import { on } from 'events';
+import { updateFavorite } from '../utils/serverFunctions';
 import { Win } from '../home/moodPrompts';
 
 interface LogSummaryProps {
@@ -50,19 +45,18 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 		Stormy: 'Stressed',
 	};
 
-	const { user, isUpdated } = useAuth();
+	const { user } = useAuth();
 
 	const [openReflections, setOpenReflections] = useState<number[]>([]);
 
 	const logDate = formatValueTypeToYYYYMMDD(log.date);
 
 	const [favorite, setFavorite] = useState(false);
-	console.log('Checking favoriteLogs', favoriteLogs, logDate, log.date);
 
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 	const [mobile, setMobile] = useState(window.innerWidth < 768);
+
 	useEffect(() => {
-		console.log(logDate, favoriteLogs);
 		setFavorite(favoriteLogs[logDate]?.favorite || false);
 		const handleResize = () => {
 			setWindowWidth(window.innerWidth);
@@ -71,7 +65,6 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 
 		window.addEventListener('resize', handleResize);
 
-		// Cleanup
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
@@ -95,13 +88,16 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 	};
 
 	const nonEmptyWins = log.wins.filter((win) => win.description.trim() !== '');
-	console.log(log.mood);
+	const nonEmptyReflections = log.reflections.filter(
+		(reflection) => reflection.answer.trim() !== ''
+	);
+
 	return (
 		<>
 			{mobile ? (
 				<>
 					<div className='flex max-h-24 flex-col gap-5 pb-4'>
-						<div className='flex w-full flex-row items-center justify-between gap-4  px-1 text-base font-semibold'>
+						<div className='flex w-full flex-row items-center justify-between gap-4 px-1 text-base font-semibold'>
 							<div className='flex flex-row gap-2 text-primary'>
 								<button
 									onClick={handleGoBack}
@@ -109,12 +105,11 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 								>
 									<CaretLeft size={8} weight='bold' />
 									<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
-										{/* {formatDateToMonthDayYear(log.date)} */}
 										Back to Summary
 									</span>
 								</button>
 							</div>
-							{log.mood && log.mood !=='No Log Yet' && (
+							{log.mood && log.mood !== 'No Log Yet' && (
 								<div className='flex text-[#706F6F]'>
 									<button
 										onClick={favoriteLog}
@@ -129,11 +124,9 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 								</div>
 							)}
 						</div>
-						{/* Divider */}
 						<div className='h-[0.125rem] bg-[#dee9f5]'></div>
 					</div>
 					<div className='flex h-full flex-row items-start gap-8 overflow-auto p-2'>
-						{/* Icon and Mood Name */}
 						<div className='flex flex-col items-center justify-center gap-2'>
 							<div className='rounded-xl border border-[#DEE9F5] bg-[#FAFCFF]'>
 								<Image src={log.icon} alt={log.mood} width={60} height={60} />
@@ -147,7 +140,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 						</div>
 
 						<div className='w-full rounded-xl border border-[#DEE9F5] p-4'>
-							{log.wins.some((win) => win.description.trim() !== '') && (
+							{nonEmptyWins.length > 0 && (
 								<div className='flex flex-col gap-3 '>
 									<span className='text-sm font-semibold'>My Wins</span>
 									<div className='pl-[1.62rem]'>
@@ -172,24 +165,22 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 									</div>
 								</div>
 							)}
-							{/* Reflections */}
-							{log.reflections.length > 0 ? (
+							{nonEmptyReflections.length > 0 ? (
 								<div className='flex flex-col gap-3'>
-									<div className='flex flex-row items-center justify-start  gap-2 text-sm'>
+									<div className='flex flex-row items-center justify-start gap-2 text-sm'>
 										<span className='font-semibold'>Reflections</span>
 										<span className='text-[#706F6F]'>
-											({log.reflections.length})
+											({nonEmptyReflections.length})
 										</span>
 									</div>
-									{/* render a div for every item in reflections */}
 
-									{log.reflections.map((reflection, index) => (
+									{nonEmptyReflections.map((reflection, index) => (
 										<div
 											key={index}
 											className={`grid gap-x-5 px-4 py-2 ${openReflections.includes(index) ? 'question-opened grid-cols-[1fr_min-content] grid-rows-2 items-center' : 'question-closed grid-cols-[1fr_min-content] grid-rows-1 rounded-lg border border-[#DEE9F5] bg-[#FAFCFF]'}`}
 										>
 											<div
-												className={`question-div flex flex-row items-center justify-between  text-sm text-[#706F6F] ${openReflections.includes(index) ? 'question-opened bg-white' : 'question-closed'}`}
+												className={`question-div flex flex-row items-center justify-between text-sm text-[#706F6F] ${openReflections.includes(index) ? 'question-opened bg-white' : 'question-closed'}`}
 												onClick={() => toggleReflection(index)}
 											>
 												<span className='font-semibold'>
@@ -210,7 +201,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 													<Plus
 														size={16}
 														weight='light'
-														className='h-8 w-8 rounded-full  px-1'
+														className='h-8 w-8 rounded-full px-1'
 													/>
 												)}
 											</div>
@@ -238,7 +229,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 			) : (
 				<>
 					<div className='flex max-h-24 flex-col gap-5 pb-4'>
-						<div className='flex w-full flex-row items-center justify-between gap-4  px-1 text-base font-semibold'>
+						<div className='flex w-full flex-row items-center justify-between gap-4 px-1 text-base font-semibold'>
 							<div className='flex flex-row gap-2 text-primary'>
 								<button
 									onClick={handleGoBack}
@@ -246,12 +237,11 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 								>
 									<CaretLeft size={16} weight='bold' />
 									<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
-										{/* {formatDateToMonthDayYear(log.date)} */}
 										Back to Summary
 									</span>
 								</button>
 							</div>
-							{log.mood && log.mood !=='No Log Yet'&& (
+							{log.mood && log.mood !== 'No Log Yet' && (
 								<div className='flex text-[#706F6F]'>
 									<button
 										onClick={favoriteLog}
@@ -266,11 +256,9 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 								</div>
 							)}
 						</div>
-						{/* Divider */}
 						<div className='h-[0.125rem] bg-[#dee9f5]'></div>
 					</div>
 					<div className='flex h-full flex-col overflow-auto px-3'>
-						{/* Icon and Mood Name */}
 						<div className='flex flex-col items-center justify-center gap-4 py-10'>
 							<div className='rounded-xl border border-[#DEE9F5] bg-[#FAFCFF]'>
 								<Image src={log.icon} alt={log.mood} width={150} height={150} />
@@ -283,7 +271,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 							</div>
 						</div>
 
-						{log.wins.some((win) => win.description.trim() !== '') && (
+						{nonEmptyWins.length > 0 && (
 							<div className='flex flex-col gap-3 '>
 								<span className='text-sm font-semibold'>My Wins</span>
 								<div className='pl-[1.62rem]'>
@@ -308,24 +296,22 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 								</div>
 							</div>
 						)}
-						{/* Reflections */}
-						{log.reflections.length > 0 ? (
+						{nonEmptyReflections.length > 0 ? (
 							<div className='flex flex-col gap-3'>
-								<div className='flex flex-row items-center justify-start  gap-2 text-sm'>
+								<div className='flex flex-row items-center justify-start gap-2 text-sm'>
 									<span className='font-semibold'>Reflections</span>
 									<span className='text-[#706F6F]'>
-										({log.reflections.length})
+										({nonEmptyReflections.length})
 									</span>
 								</div>
-								{/* render a div for every item in reflections */}
 
-								{log.reflections.map((reflection, index) => (
+								{nonEmptyReflections.map((reflection, index) => (
 									<div
 										key={index}
 										className={`grid gap-x-5 px-4 py-2 ${openReflections.includes(index) ? 'question-opened grid-cols-[1fr_min-content] grid-rows-2 items-center' : 'question-closed grid-cols-[1fr_min-content] grid-rows-1 rounded-lg border border-[#DEE9F5] bg-[#FAFCFF]'}`}
 									>
 										<div
-											className={`question-div flex flex-row items-center justify-between  text-sm text-[#706F6F] ${openReflections.includes(index) ? 'question-opened bg-white' : 'question-closed'}`}
+											className={`question-div flex flex-row items-center justify-between text-sm text-[#706F6F] ${openReflections.includes(index) ? 'question-opened bg-white' : 'question-closed'}`}
 											onClick={() => toggleReflection(index)}
 										>
 											<span className='font-semibold'>
@@ -346,7 +332,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 												<Plus
 													size={16}
 													weight='light'
-													className='h-8 w-8 rounded-full  px-1'
+													className='h-8 w-8 rounded-full px-1'
 												/>
 											)}
 										</div>

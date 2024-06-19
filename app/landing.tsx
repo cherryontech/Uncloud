@@ -130,14 +130,14 @@ const Landing: React.FC = () => {
 				</div>
 				{/* Reflections Overview */}
 				<div className='scroll-transition flex w-full flex-col  items-start pl-[6rem] pr-[6.5rem] pt-[9rem]'>
-					<div className='flex w-full flex-row items-center gap-2 pb-8'>
+					<div className='flex w-full flex-row items-center gap-2 pb-2'>
 						<div className='max-h-[11.1875rem] max-w-[11.75rem]'>
 							<Image
-								src='/landing/sun.png'
+								src='/moods/greyWithFace.svg'
 								alt='sun'
 								width={188}
 								height={179}
-								priority // Ensures this image is prioritized in Next.js
+								priority
 							/>
 						</div>
 						<span className='text-[3rem] font-semibold'>
@@ -146,29 +146,7 @@ const Landing: React.FC = () => {
 					</div>
 					<div className='flex w-full flex-col gap-8'>
 						<div className='flex flex-col items-start gap-6 rounded-[1.25rem] bg-[#f6f5f4] py-12 '>
-							<div className='ml-[7.38rem] mr-[7.28rem] flex max-w-[41.625rem] flex-col items-start gap-8 '>
-								<div className='max-h-12 max-w-12'>
-									<Lightbulb
-										style={{ height: '3rem', width: '3rem' }}
-										color='#2D81E0'
-									/>
-								</div>
-								<div className='flex flex-col gap-3'>
-									<span className='text-2xl font-semibold'>
-										Empowered Reflection: Personalized Prompts For You
-									</span>
-									<span className='text-justify text-base font-normal text-[#706F6F]'>
-										Feeling stuck in a career rut? Traditional reflection
-										prompts can be generic and leave you scratching your head.
-										Our app goes beyond basic journaling by offering
-										personalized career reflection prompts tailored specifically
-										to your mood.
-									</span>
-								</div>
-							</div>
-							<div className='flex h-full w-full flex-col items-center justify-center gap-12'>
-								<Carousel />
-							</div>
+							<Carousel />
 						</div>
 					</div>
 				</div>
@@ -177,7 +155,7 @@ const Landing: React.FC = () => {
 						<MainFeatureCard
 							icon={<Lightbulb style={{ height: '3rem', width: '3rem' }} />}
 							title='Summary page'
-							description='Feeling stuck in a career rut? Traditional reflection prompts can be generic and leave you scratching your head. Our app goes beyond basic journaling by offering personalized career reflection prompts tailored specifically to your mood.'
+							description='The Summary page allows you to see a history of your moods and reflections, and you can also filter this section by a specific mood to gain deeper insights and track your progress more effectively. Additionally, you can favorite your reflections within the Summary page by selecting the desired reflection log. All favorited logs will be stored on the Favorites page, giving you quick and easy access to your most meaningful entries and helping you stay connected to your journey.'
 							imageSrc='/landing/Preview_SummaryPage.png'
 							imageAlt='Summary Page Preview'
 						/>

@@ -20,7 +20,7 @@ const PercentageCard = ({
 	description,
 }: Props) => {
 	return (
-		<div className='flex h-[10.25rem] w-full flex-col gap-3 rounded-2xl bg-white p-5 shadow-xl'>
+		<div className='flex w-full flex-col gap-3 rounded-2xl bg-white p-5 shadow-xl'>
 			<div className='flex w-full flex-row items-center justify-between'>
 				<div className='relative h-[3rem] w-[3rem]'>
 					<Image src={icon} alt='icon' layout='fill' />
