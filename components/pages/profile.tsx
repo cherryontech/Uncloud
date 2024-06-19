@@ -185,13 +185,13 @@ const Profile: React.FC<ProfileProps> = ({ mobile, ...props }) => {
 							className={`flex w-full justify-between ${mobile ? 'flex-col justify-start gap-4' : 'flex-row'}`}
 						>
 							<div className='flex flex-col items-center justify-center'>
-								<div className='h-[7.3125rem] w-[7.3125rem]'>
+								<div className='h-[9rem] w-[9rem]'>
 									{imageUpload ? (
 										<Image
 											src={URL.createObjectURL(imageUpload)}
 											width={400}
 											height={400}
-											className='rounded-full border border-[#D9D9D9] object-cover shadow-[0px_2px_8px_0px_rgba(0,0,0,0.05)]'
+											className='h-full w-full rounded-full border border-[#D9D9D9] object-cover shadow-[0px_2px_8px_0px_rgba(0,0,0,0.05)]'
 											alt='Preview'
 										/>
 									) : userDataForm.photoURL && userDataForm.photoURL !== '' ? (
@@ -199,7 +199,7 @@ const Profile: React.FC<ProfileProps> = ({ mobile, ...props }) => {
 											src={userDataForm.photoURL}
 											width={400}
 											height={400}
-											className='rounded-full border border-[#D9D9D9] object-cover shadow-[0px_2px_8px_0px_rgba(0,0,0,0.05)]'
+											className='h-full w-full rounded-full border border-[#D9D9D9] object-cover shadow-[0px_2px_8px_0px_rgba(0,0,0,0.05)]'
 											alt='Preview'
 										/>
 									) : (
@@ -207,7 +207,7 @@ const Profile: React.FC<ProfileProps> = ({ mobile, ...props }) => {
 											src='/profile.svg'
 											width={600}
 											height={600}
-											className='rounded-full border border-[#D9D9D9] object-cover shadow-[0px_2px_8px_0px_rgba(0,0,0,0.05)]'
+											className='h-full w-full rounded-full border border-[#D9D9D9] object-cover shadow-[0px_2px_8px_0px_rgba(0,0,0,0.05)]'
 											alt='Preview'
 										/>
 									)}
@@ -216,7 +216,7 @@ const Profile: React.FC<ProfileProps> = ({ mobile, ...props }) => {
 
 							<div className='flex items-center justify-center gap-4'>
 								<div
-									className='bg-grayBackground text-grayTextColor w-fit cursor-pointer rounded-full px-6 py-[0.625rem] text-sm  !font-bold leading-6 hover:bg-[#DEE9F5] hover:text-blueColor'
+									className='w-fit cursor-pointer rounded-full bg-grayBackground px-6 py-[0.625rem] text-sm !font-bold  leading-6 text-grayTextColor hover:bg-[#DEE9F5] hover:text-blueColor'
 									onClick={() => {
 										setUserDataForm((prevState) => ({
 											...prevState,
@@ -372,7 +372,7 @@ const Profile: React.FC<ProfileProps> = ({ mobile, ...props }) => {
 							className={`mr-10 flex w-full items-end space-x-4 ${mobile ? 'justify-center' : 'justify-end'}`}
 						>
 							<button
-								className='bg-grayBackground text-grayTextColor w-fit cursor-pointer rounded-full px-6 py-[0.625rem] text-sm !font-bold leading-6 hover:bg-[#DEE9F5] hover:text-blueColor'
+								className='w-fit cursor-pointer rounded-full bg-grayBackground px-6 py-[0.625rem] text-sm !font-bold leading-6 text-grayTextColor hover:bg-[#DEE9F5] hover:text-blueColor'
 								type='button'
 								onClick={() => {
 									setUserDataForm({ ...userPopData });

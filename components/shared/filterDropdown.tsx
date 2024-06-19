@@ -1,5 +1,5 @@
 // components/FilterDropdown.js
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { IoMdFunnel } from 'react-icons/io';
 import { MoodNames } from './logSummaryList';
 
@@ -10,13 +10,30 @@ type props = {
 		[key: string]: boolean;
 	};
 };
+
 const FilterDropdown = ({
 	handleCheckboxChange,
 	selectedFilters,
 	mobile,
 }: props) => {
 	const [isOpen, setIsOpen] = useState(false);
+	const dropdownRef = useRef<HTMLDivElement>(null);
 
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				dropdownRef.current &&
+				!dropdownRef.current.contains(event.target as Node)
+			) {
+				setIsOpen(false);
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
 	const toggleDropdown = () => {
 		setIsOpen(!isOpen);
 	};
@@ -28,7 +45,7 @@ const FilterDropdown = ({
 		Stormy: '#AA52BF',
 	};
 	return (
-		<div className='relative z-10 inline-block text-left'>
+		<div className='relative  inline-block text-left'>
 			<div>
 				<button
 					onClick={toggleDropdown}
@@ -40,7 +57,10 @@ const FilterDropdown = ({
 				</button>
 			</div>
 			{isOpen && (
-				<div className='absolute right-0 mt-2 w-fit origin-top-right rounded-md border border-lineColor bg-white text-[#706F6F] shadow-lg ring-1 ring-black ring-opacity-5'>
+				<div
+					ref={dropdownRef}
+					className='absolute right-0 z-10 mt-2 w-fit origin-top-right rounded-md border border-lineColor bg-white text-[#706F6F] shadow-lg ring-1 ring-black ring-opacity-5'
+				>
 					<div className='p-2'>
 						{Object.keys(selectedFilters).map((filter) => (
 							<label
