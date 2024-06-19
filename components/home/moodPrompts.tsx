@@ -265,7 +265,7 @@ const MoodPrompts = ({
 	const [wins, setWins] = useState<Win[]>(
 		initialWins && initialWins.length ? initialWins : defaultWins
 	);
-
+	console.log(wins);
 	const handleInputChange = (index: number, event: any) => {
 		const newWins = [...wins];
 		newWins[index].description = event.target.value;
@@ -412,12 +412,14 @@ const MoodPrompts = ({
               hover:border-[#2D81E0] ${focusedBox === 'wins' ? 'focus-ring' : ''}
               focus:outline-none focus:outline-0 focus:ring focus:ring-[#DEE9F5]
             `}
-						onClick={() => {
-							setWinsDropdownOpen(!winsDropdownOpen);
-							setFocusedBox('wins');
-						}}
 					>
-						<div className='flex w-full flex-row items-center justify-center gap-4 rounded-lg bg-white '>
+						<div
+							onClick={() => {
+								setWinsDropdownOpen(!winsDropdownOpen);
+								setFocusedBox('wins');
+							}}
+							className='flex w-full flex-row items-center justify-center gap-4 rounded-lg bg-white '
+						>
 							<div className='flex h-full w-8 items-start justify-center'>
 								<div className='flex h-8 w-8 items-center justify-center rounded-full border border-[#D9D9D9] bg-white'>
 									<Confetti size={20} color='#2D81E0' />
@@ -491,7 +493,13 @@ const MoodPrompts = ({
 									</div>
 								))}
 								<div className='w-full text-right font-bold text-primary '>
-									<p onClick={() => setWins(defaultWins)}>Clear</p>
+									<p
+										onClick={(e) => {
+											setWins(defaultWins);
+										}}
+									>
+										Clear
+									</p>
 								</div>
 							</div>
 						)}
@@ -505,9 +513,11 @@ const MoodPrompts = ({
                 hover:border-[#2D81E0] ${focusedBox === index ? 'focus-ring' : ''}
                 focus:outline-none focus:outline-0 focus:ring focus:ring-[#DEE9F5]
               `}
-							onClick={() => toggleReflection(index)}
 						>
-							<div className='flex w-full flex-row items-center justify-center gap-4 rounded-lg bg-white '>
+							<div
+								onClick={() => toggleReflection(index)}
+								className='flex w-full flex-row items-center justify-center gap-4 rounded-lg bg-white '
+							>
 								<div className='flex h-full w-8 items-start justify-center'>
 									<div className='flex h-8 w-8 items-center justify-center rounded-full border border-[#D9D9D9] bg-white'>
 										<Confetti size={20} color='#2D81E0' />
