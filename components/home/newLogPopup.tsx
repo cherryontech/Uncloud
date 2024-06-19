@@ -10,6 +10,7 @@ import MoodPrompts, { Win } from './moodPrompts';
 import { FaArrowLeft } from 'react-icons/fa6';
 import { GoArrowDownLeft, GoArrowLeft } from 'react-icons/go';
 import { LuArrowLeft } from 'react-icons/lu';
+import { useRouter } from 'next/navigation';
 
 export type ReflectionsType = {
 	question: string;
@@ -62,7 +63,7 @@ const NewLogPopup = ({
 	const [initialWins, setInitialWins] = useState<Win[]>([]);
 	const [showFinalProgress, setShowFinalProgress] = useState<boolean>(false); // State for final progress bar
 	const { user, isUpdated } = useAuth();
-
+	
 	useEffect(() => {
 		if (user && selectedDate) {
 			getUser(user.uid).then((userData) => {
@@ -136,6 +137,7 @@ const NewLogPopup = ({
 		setPopupOpen(false);
 		setCurrentStep(1);
 		setShowFinalProgress(false);
+		
 		console.log('handleSaveMood: Closing popup');
 	};
 
