@@ -29,6 +29,8 @@ interface LogSummaryProps {
 			favorite: boolean;
 		};
 	};
+	fromFavorites: boolean;
+	displayedFavoriteLogDates: string[];
 }
 
 const LogSummary: React.FC<LogSummaryProps> = ({
@@ -36,6 +38,8 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 	handleGoBack,
 	onFavoriteToggle,
 	favoriteLogs,
+	fromFavorites,
+	displayedFavoriteLogDates,
 }) => {
 	const moodNames = {
 		Rainbow: 'Proud',
@@ -92,23 +96,36 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 		(reflection) => reflection.answer.trim() !== ''
 	);
 
+	// Check if fromFavorites is true and there are no displayed favorite logs
+	if (fromFavorites && displayedFavoriteLogDates.length === 0) {
+		return (
+			<div className='flex h-full w-full flex-col items-center justify-center'>
+				<p className='text-base font-normal text-[#2c2c2c]'>
+					No logs have been favorited yet.
+				</p>
+			</div>
+		);
+	}
+
 	return (
 		<>
 			{mobile ? (
 				<>
-					<div className='flex max-h-24 flex-col gap-5 pb-4'>
-						<div className='flex w-full flex-row items-center justify-between gap-4 px-1 text-base font-semibold'>
-							<div className='flex flex-row gap-2 text-primary'>
-								<button
-									onClick={handleGoBack}
-									className='flex flex-row items-center justify-center gap-2'
-								>
-									<CaretLeft size={8} weight='bold' />
-									<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
-										Back to Summary
-									</span>
-								</button>
-							</div>
+					<div className=' flex max-h-24 flex-col gap-5 pb-4 '>
+						<div className='flex  w-full flex-row items-center justify-between gap-4 px-1 text-base font-semibold'>
+							{!fromFavorites && (
+								<div className='flex flex-row gap-2 text-primary'>
+									<button
+										onClick={handleGoBack}
+										className='flex flex-row items-center justify-center gap-2 '
+									>
+										<CaretLeft size={8} weight='bold' />
+										<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
+											Back to Summary
+										</span>
+									</button>
+								</div>
+							)}
 							{log.mood && log.mood !== 'No Log Yet' && (
 								<div className='flex text-[#706F6F]'>
 									<button
@@ -228,19 +245,24 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 				</>
 			) : (
 				<>
-					<div className='flex max-h-24 flex-col gap-5 pb-4'>
-						<div className='flex w-full flex-row items-center justify-between gap-4 px-1 text-base font-semibold'>
-							<div className='flex flex-row gap-2 text-primary'>
-								<button
-									onClick={handleGoBack}
-									className='flex flex-row items-center justify-center gap-2'
-								>
-									<CaretLeft size={16} weight='bold' />
-									<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
-										Back to Summary
-									</span>
-								</button>
-							</div>
+					<div className='flex h-24 flex-col gap-5 pb-4 '>
+						<div
+							className={`flex min-h-12 w-full flex-row items-center ${fromFavorites ? 'justify-end' : 'justify-between'} gap-4 px-1 text-base font-semibold`}
+						>
+							{' '}
+							{!fromFavorites && ( // Conditionally render Back to Summary button
+								<div className='flex flex-row gap-2 text-primary'>
+									<button
+										onClick={handleGoBack}
+										className='flex flex-row items-center justify-center gap-2'
+									>
+										<CaretLeft size={16} weight='bold' />
+										<span className='flex min-h-12 w-fit items-center justify-center py-1 text-base'>
+											Back to Summary
+										</span>
+									</button>
+								</div>
+							)}
 							{log.mood && log.mood !== 'No Log Yet' && (
 								<div className='flex text-[#706F6F]'>
 									<button

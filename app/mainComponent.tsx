@@ -1,6 +1,10 @@
 import { useAuth } from '@/app/context/UserProvider';
 import { useEffect, useState, useCallback } from 'react';
-import { getUser, updateUser } from '@/components/utils/serverFunctions';
+import {
+	getUser,
+	updateUser,
+	getFavoriteLogs,
+} from '@/components/utils/serverFunctions';
 import { Value } from '@/components/home/calendar';
 import FAQ from '@/components/pages/faq';
 import Goals from '@/components/pages/goals';
@@ -14,7 +18,6 @@ import LogSummary from '@/components/shared/logSummary';
 import MiniCalendarView from '@/components/shared/miniCalendar';
 import LogSummaryList from '@/components/shared/logSummaryList';
 import { ReflectionsType } from '@/components/home/newLogPopup';
-import { getFavoriteLogs } from '@/components/utils/serverFunctions';
 import { Win } from '@/components/home/moodPrompts';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import Profile from '@/components/pages/profile';
@@ -50,6 +53,23 @@ export default function MainComponent({
 	const [isFirstLogin, setIsFirstLogin] = useState(false);
 	const [tooltipShake, setTooltipShake] = useState(false);
 
+	const [favoriteLogs, setFavoriteLogs] = useState<{
+		[date: string]: {
+			mood: string;
+			reflections: ReflectionsType[];
+			favorite: boolean;
+			wins: Win[];
+		};
+	}>({});
+
+	const [rightBarContent, setRightBarContent] = useState<JSX.Element | null>(
+		null
+	);
+	const [rightBarHistory, setRightBarHistory] = useState<JSX.Element[]>([]);
+	const [displayedFavoriteLogDates, setDisplayedFavoriteLogDates] = useState<
+		string[]
+	>([]);
+
 	useEffect(() => {
 		const handleResize = () => {
 			setWindowWidth(window.innerWidth);
@@ -62,16 +82,6 @@ export default function MainComponent({
 			window.removeEventListener('resize', handleResize);
 		};
 	}, []);
-
-	const [favoriteLogs, setFavoriteLogs] = useState<{
-		[date: string]: {
-			mood: string;
-			reflections: ReflectionsType[];
-			favorite: boolean;
-		};
-	}>({});
-
-	const [profilePageOpen, setProfilePageOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchFavoriteLogs = async () => {
@@ -97,13 +107,6 @@ export default function MainComponent({
 			});
 		}
 	}, [user]);
-
-	const handleTooltipClose = async () => {
-		setIsFirstLogin(false);
-		if (user) {
-			await updateUser(user.uid, { isFirstLogin: false });
-		}
-	};
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -131,6 +134,73 @@ export default function MainComponent({
 		}
 	}, [isFirstLogin, isConfirmationClosed]);
 
+	const updateRightBarContent = useCallback(() => {
+		if (selectedMenuItem === 'Favorites') {
+			const latestFavoritedLogDate = Object.keys(favoriteLogs).sort(
+				(a, b) => new Date(b).getTime() - new Date(a).getTime()
+			)[0];
+			console.log('latestFavoritedLogDate:', latestFavoritedLogDate);
+			console.log('favoriteLogs:', favoriteLogs);
+			if (latestFavoritedLogDate && favoriteLogs[latestFavoritedLogDate]) {
+				const latestLog = favoriteLogs[latestFavoritedLogDate];
+				console.log('latestLog:', latestLog);
+				const logDateParts = latestFavoritedLogDate
+					.split('-')
+					.map((part) => parseInt(part, 10));
+				const logDate = new Date(
+					logDateParts[0],
+					logDateParts[1] - 1,
+					logDateParts[2]
+				);
+				setRightBarContent(
+					<LogSummary
+						log={{
+							date: logDate,
+							mood: latestLog.mood,
+							icon: `/moods/${latestLog.mood.toLowerCase()}.svg`,
+							reflections: latestLog.reflections || [],
+							favorite: latestLog.favorite,
+							wins: latestLog.wins || [],
+						}}
+						handleGoBack={handleGoBack}
+						onFavoriteToggle={onFavoriteToggle}
+						favoriteLogs={favoriteLogs}
+						fromFavorites={true}
+						displayedFavoriteLogDates={displayedFavoriteLogDates}
+					/>
+				);
+				setRightBarOpen(false);
+			} else {
+				setRightBarContent(
+					<div className='flex w-full flex-col items-center justify-center'>
+						<p className='text-base font-medium text-black'>
+							No logs have been favorited yet.
+						</p>
+					</div>
+				);
+			}
+		}
+	}, [favoriteLogs, selectedMenuItem, displayedFavoriteLogDates]);
+
+	useEffect(() => {
+		updateRightBarContent();
+	}, [selectedMenuItem, favoriteLogs, updateRightBarContent]);
+
+	useEffect(() => {
+		if (selectedMenuItem === 'Calendar') {
+			setIsSummaryList(true);
+			setRightBarContent(null);
+			setRightBarOpen(true); // Ensure the right bar is open
+		}
+	}, [selectedMenuItem]);
+
+	const handleTooltipClose = async () => {
+		setIsFirstLogin(false);
+		if (user) {
+			await updateUser(user.uid, { isFirstLogin: false });
+		}
+	};
+
 	const onFavoriteToggle = (
 		logDate: string,
 		mood: string,
@@ -144,28 +214,29 @@ export default function MainComponent({
 					mood,
 					reflections,
 					favorite: newFavorite,
+					wins: favoriteLogs[logDate]?.wins || [],
 				};
 			} else {
 				delete updatedFavoriteLogs[logDate];
 			}
 			return updatedFavoriteLogs;
 		});
+		// Update right bar content
+		updateRightBarContent();
 		return newFavorite;
 	};
 
-	const [rightBarContent, setRightBarContent] = useState<JSX.Element | null>(
-		null
-	);
-	const [rightBarHistory, setRightBarHistory] = useState<JSX.Element[]>([]);
-
-	const handleLogClick = (log: {
-		date: Date;
-		mood: string;
-		icon: string;
-		reflections?: ReflectionsType[];
-		favorite: boolean;
-		wins?: Win[];
-	}) => {
+	const handleLogClick = (
+		log: {
+			date: Date;
+			mood: string;
+			icon: string;
+			reflections?: ReflectionsType[];
+			favorite: boolean;
+			wins?: Win[];
+		},
+		fromFavorites: boolean = false // Add a default value for fromFavorites
+	) => {
 		setIsSummaryList(false);
 		setRightBarHistory((prevHistory) =>
 			rightBarContent ? [...prevHistory, rightBarContent] : prevHistory
@@ -177,15 +248,14 @@ export default function MainComponent({
 					reflections: log.reflections || [],
 					wins: log.wins || [],
 				}}
-				handleGoBack={handleGoBack}
+				handleGoBack={() => setIsSummaryList(true)}
 				onFavoriteToggle={onFavoriteToggle}
 				favoriteLogs={favoriteLogs}
+				fromFavorites={fromFavorites}
+				displayedFavoriteLogDates={displayedFavoriteLogDates}
 			/>
 		);
-		console.log('Checking date', log.date.toString());
-
 		setRightBarOpen(true);
-		console.log('Log clicked:', log);
 	};
 
 	const handleRightBarToggle = (open: boolean) => {
@@ -199,8 +269,7 @@ export default function MainComponent({
 
 	const handlePopupToggle = useCallback(() => {
 		setPopupOpen((prev) => !prev);
-		console.log('Popup state toggled:', !isPopupOpen);
-	}, [isPopupOpen]);
+	}, []);
 
 	const handleAddLogClick = useCallback(() => {
 		setValue(selectedDate);
@@ -258,6 +327,7 @@ export default function MainComponent({
 					handleDateChange={handleDateChange}
 					onFavoriteToggle={onFavoriteToggle}
 					handleGoBack={handleGoBack}
+					setDisplayedFavoriteLogDates={setDisplayedFavoriteLogDates}
 				/>
 			);
 			title = 'Favorites';
@@ -353,10 +423,13 @@ export default function MainComponent({
 					currentPage={currentPage}
 					handlePagination={handlePagination}
 					isSummaryList={isSummaryList}
+					setIsSummaryList={setIsSummaryList} // Pass this prop
 					rightBarContent={rightBarContent}
+					setRightBarContent={setRightBarContent} // Pass this prop
 					isPopupOpen={isPopupOpen}
 					mobile={mobile}
 					title={title}
+					displayedFavoriteLogDates={displayedFavoriteLogDates} // Pass this prop
 				/>
 			) : (
 				<MobileLayout
@@ -377,10 +450,13 @@ export default function MainComponent({
 					currentPage={currentPage}
 					handlePagination={handlePagination}
 					isSummaryList={isSummaryList}
+					setIsSummaryList={setIsSummaryList} // Pass this prop
 					rightBarContent={rightBarContent}
+					setRightBarContent={setRightBarContent} // Pass this prop
 					isPopupOpen={isPopupOpen}
 					mobile={mobile}
 					title={title}
+					displayedFavoriteLogDates={displayedFavoriteLogDates} // Pass this prop
 				/>
 			)}
 		</>

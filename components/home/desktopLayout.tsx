@@ -1,4 +1,3 @@
-// DesktopLayout.tsx
 import React, { Dispatch, SetStateAction } from 'react';
 import Leftbar from '@/components/shared/leftbar';
 import Userbar from '@/components/shared/userbar';
@@ -12,7 +11,7 @@ import { Win } from '@/components/home/moodPrompts';
 
 interface DesktopLayoutProps {
 	value: Value;
-	setSelectedMenuItem: (item: any) => void; // replace `any` with the actual type
+	setSelectedMenuItem: (item: any) => void;
 	selectedMenuItem: string;
 	handleAddLogClick: () => void;
 	month: number;
@@ -34,11 +33,14 @@ interface DesktopLayoutProps {
 	currentPage: number;
 	handlePagination: (value: { selected: number }) => void;
 	isSummaryList: boolean;
-	rightBarContent: React.ReactNode;
+	setIsSummaryList: Dispatch<SetStateAction<boolean>>;
+	rightBarContent: React.ReactNode | null;
+	setRightBarContent: Dispatch<SetStateAction<JSX.Element | null>>;
 	isPopupOpen: boolean;
 	isLoading: boolean;
 	mobile: boolean;
 	title: string;
+	displayedFavoriteLogDates: string[];
 }
 
 export default function DesktopLayout({
@@ -58,11 +60,14 @@ export default function DesktopLayout({
 	currentPage,
 	handlePagination,
 	isSummaryList,
+	setIsSummaryList, // Add this prop
 	rightBarContent,
+	setRightBarContent, // Add this prop
 	isPopupOpen,
 	isLoading,
 	mobile,
 	title,
+	displayedFavoriteLogDates,
 }: DesktopLayoutProps) {
 	return (
 		<div className='grid-container'>
@@ -132,7 +137,11 @@ export default function DesktopLayout({
 							currentPage={currentPage}
 							handlePagination={handlePagination}
 							isSummaryList={isSummaryList}
-							// mobile={mobile}
+							setIsSummaryList={setIsSummaryList}
+							selectedMenuItem={selectedMenuItem}
+							rightBarContent={rightBarContent}
+							setRightBarContent={setRightBarContent}
+							displayedFavoriteLogDates={displayedFavoriteLogDates}
 						>
 							{rightBarContent}
 						</Rightbar>

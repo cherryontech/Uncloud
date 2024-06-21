@@ -8,7 +8,7 @@ type Props = {
 
 const Avatar: React.FC<Props> = ({
 	// src = './moods/sunny.svg',
-	image = '/profileIcon.jpg',
+	image = '/avatars/AvatarDefault.svg',
 	size = '2.5rem',
 }) => (
 	<div
@@ -16,7 +16,7 @@ const Avatar: React.FC<Props> = ({
 		style={{ width: size, height: size, border: '1px solid #DEE9F5' }}
 	>
 		<Image
-			src={image || '/profileIcon.jpg'}
+			src={image || '/avatars/AvatarDefault.svg'}
 			alt='User Avatar'
 			width={100}
 			height={100}

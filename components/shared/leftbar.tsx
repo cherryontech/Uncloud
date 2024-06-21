@@ -123,7 +123,7 @@ const Leftbar = ({
 						<div className='flex h-16  items-center justify-center'>
 							<div
 								onClick={() => setSelectedMenuItem('Calendar')}
-								className='cursor-pointer'
+								className='w-[7.66rem] cursor-pointer'
 							>
 								<Image
 									src='Uncloud_Logo_2.svg'

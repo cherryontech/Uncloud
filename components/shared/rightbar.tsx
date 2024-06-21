@@ -5,6 +5,7 @@ import { formatValueTypeToYYYYMMDD } from '../utils/reusableFunctions';
 import { MoodEntry, Value } from '../home/calendar';
 import Image from 'next/image';
 import LogSummaryList from './logSummaryList';
+import LogSummary from './logSummary';
 import { ReflectionsType } from '../home/newLogPopup';
 import CustomPagination from './customPagination';
 import { Win } from '../home/moodPrompts';
@@ -28,8 +29,13 @@ interface RightbarProps {
 	handlePagination: (value: { selected: number }) => void;
 	month?: number;
 	isSummaryList: boolean;
+	setIsSummaryList: React.Dispatch<React.SetStateAction<boolean>>;
 	isPopupOpen: boolean;
 	children?: React.ReactNode;
+	selectedMenuItem: string;
+	rightBarContent: React.ReactNode | null;
+	setRightBarContent: React.Dispatch<React.SetStateAction<JSX.Element | null>>;
+	displayedFavoriteLogDates: string[];
 }
 
 const Rightbar: React.FC<RightbarProps> = ({
@@ -45,7 +51,12 @@ const Rightbar: React.FC<RightbarProps> = ({
 	handlePagination,
 	month,
 	isSummaryList,
+	setIsSummaryList,
 	children,
+	selectedMenuItem,
+	rightBarContent,
+	setRightBarContent,
+	displayedFavoriteLogDates,
 }) => {
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 	const [mobile, setMobile] = useState(window.innerWidth < 768);
@@ -55,8 +66,10 @@ const Rightbar: React.FC<RightbarProps> = ({
 			mood: string;
 			reflections: ReflectionsType[];
 			favorite: boolean;
+			wins: Win[];
 		};
 	}>({});
+
 	useEffect(() => {
 		if (user) {
 			getUser(user.uid);
@@ -69,7 +82,6 @@ const Rightbar: React.FC<RightbarProps> = ({
 
 		window.addEventListener('resize', handleResize);
 
-		// Cleanup
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
@@ -89,7 +101,6 @@ const Rightbar: React.FC<RightbarProps> = ({
 		currentMonth = selectedDate.getUTCMonth();
 		currentYear = selectedDate.getUTCFullYear();
 	} else if (Array.isArray(selectedDate)) {
-		// You can handle the array case here if needed
 		const [startDate, endDate] = selectedDate;
 		if (startDate instanceof Date) {
 			currentMonth = startDate.getUTCMonth();
@@ -137,6 +148,7 @@ const Rightbar: React.FC<RightbarProps> = ({
 							mood: string;
 							reflections: ReflectionsType[];
 							favorite: boolean;
+							wins: Win[];
 						};
 					} = {};
 
@@ -149,6 +161,7 @@ const Rightbar: React.FC<RightbarProps> = ({
 							mood: moodEntry.mood,
 							reflections: moodEntry.reflections,
 							favorite: moodEntry.favorite,
+							wins: moodEntry.wins || [],
 						};
 					});
 					setMoods(moodMap);
@@ -166,11 +179,25 @@ const Rightbar: React.FC<RightbarProps> = ({
 					className={`h-full ${mobile ? 'mobile-right-bar-container' : 'right-bar-container'}`}
 				>
 					{/* Content */}
-					{children ? (
-						children
-					) : (
+					{selectedMenuItem === 'Calendar' && isSummaryList ? (
 						<LogSummaryList
-							handleLogClick={handleLogClick}
+							handleLogClick={(log) => {
+								setIsSummaryList(false);
+								setRightBarContent(
+									<LogSummary
+										log={{
+											...log,
+											reflections: log.reflections || [],
+											wins: log.wins || [],
+										}}
+										handleGoBack={() => setIsSummaryList(true)}
+										onFavoriteToggle={() => {}}
+										favoriteLogs={{}}
+										fromFavorites={false}
+										displayedFavoriteLogDates={displayedFavoriteLogDates}
+									/>
+								);
+							}}
 							selectedDate={selectedDate}
 							value={value}
 							setValue={setValue}
@@ -179,6 +206,8 @@ const Rightbar: React.FC<RightbarProps> = ({
 							handlePagination={handlePagination}
 							mobile={mobile}
 						/>
+					) : (
+						rightBarContent
 					)}
 
 					{/* Bottom Bar */}
@@ -210,22 +239,24 @@ const Rightbar: React.FC<RightbarProps> = ({
 								</button>
 							)}
 
-							{isSummaryList && filteredMoods.length > pageSize && (
-								<CustomPagination
-									breakLabel='...'
-									nextLabel='Next'
-									onPageChange={handlePagination}
-									pageRangeDisplayed={5}
-									pageCount={Math.ceil(filteredMoods.length / pageSize)}
-									previousLabel='Prev'
-									containerClassName='flex items-end gap-2 py-2  px-5 h-fit w-full justify-end items-center'
-									activeClassName='button--primary rounded-full text-white w-8 h-8'
-									pageLinkClassName='flex items-center justify-center text-sm'
-									disabledClassName='opacity-50 cursor-not-allowed'
-									previousClassName='text-sm'
-									nextClassName='text-sm'
-								/>
-							)}
+							{isSummaryList &&
+								selectedMenuItem !== 'Favorites' &&
+								filteredMoods.length > pageSize && (
+									<CustomPagination
+										breakLabel='...'
+										nextLabel='Next'
+										onPageChange={handlePagination}
+										pageRangeDisplayed={5}
+										pageCount={Math.ceil(filteredMoods.length / pageSize)}
+										previousLabel='Prev'
+										containerClassName='flex items-end gap-2 py-2  px-5 h-fit w-full justify-end items-center'
+										activeClassName='button--primary rounded-full text-white w-8 h-8'
+										pageLinkClassName='flex items-center justify-center text-sm'
+										disabledClassName='opacity-50 cursor-not-allowed'
+										previousClassName='text-sm'
+										nextClassName='text-sm'
+									/>
+								)}
 						</div>
 					</div>
 				</div>
