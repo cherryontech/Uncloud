@@ -177,13 +177,10 @@
 	font-size: 0.75rem;
 	font-weight: 400;
 	overflow: visible !important;
-	/* padding: revert !important; */
-	/* padding: 0.1rem; */
-	/* max-height: 6rem; */
 	height: 100%;
 	width: 100%;
 }
-@media screen and (max-height: 1200px) {
+@media screen and (max-height: 2000px) {
 	.big-calendar .react-calendar__tile {
 		height: 6.5rem;
 		width: 6.5rem;
