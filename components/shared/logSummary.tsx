@@ -74,6 +74,10 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 		};
 	}, [favoriteLogs, logDate]);
 
+	useEffect(() => {
+		setOpenReflections([]); // Reset reflections box state whenever a new log is accessed
+	}, [log]);
+
 	const favoriteLog = async () => {
 		const newFavorite = !favorite;
 		onFavoriteToggle(logDate, log.mood, log.reflections);
@@ -193,7 +197,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 									{nonEmptyReflections.map((reflection, index) => (
 										<div
 											key={index}
-											className={`grid gap-x-5 px-4 py-2 ${openReflections.includes(index) ? 'question-opened grid-cols-[1fr_min-content] grid-rows-2 items-center' : 'question-closed grid-cols-[1fr_min-content] grid-rows-1 rounded-lg border border-[#DEE9F5] bg-[#FAFCFF]'}`}
+											className={`grid gap-x-5 px-4 py-2 ${openReflections.includes(index) ? 'question-opened grid-cols-[1fr_min-content] grid-rows-[min-content_1fr] items-center' : 'question-closed grid-cols-[1fr_min-content] grid-rows-1 rounded-lg border border-[#DEE9F5] bg-[#FAFCFF]'}`}
 										>
 											<div
 												className={`question-div flex flex-row items-center justify-between text-sm text-[#706F6F] ${openReflections.includes(index) ? 'question-opened bg-white' : 'question-closed'}`}
@@ -329,7 +333,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 								{nonEmptyReflections.map((reflection, index) => (
 									<div
 										key={index}
-										className={`grid gap-x-5 px-4 py-2 ${openReflections.includes(index) ? 'question-opened grid-cols-[1fr_min-content] grid-rows-2 items-center' : 'question-closed grid-cols-[1fr_min-content] grid-rows-1 rounded-lg border border-[#DEE9F5] bg-[#FAFCFF]'}`}
+										className={`grid gap-x-5 px-4 py-2 ${openReflections.includes(index) ? 'question-opened grid-cols-[1fr_min-content] grid-rows-[min-content_1fr] items-center' : 'question-closed grid-cols-[1fr_min-content] grid-rows-1 rounded-lg border border-[#DEE9F5] bg-[#FAFCFF]'}`}
 									>
 										<div
 											className={`question-div flex flex-row items-center justify-between text-sm text-[#706F6F] ${openReflections.includes(index) ? 'question-opened bg-white' : 'question-closed'}`}
