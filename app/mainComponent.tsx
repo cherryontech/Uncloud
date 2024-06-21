@@ -139,11 +139,9 @@ export default function MainComponent({
 			const latestFavoritedLogDate = Object.keys(favoriteLogs).sort(
 				(a, b) => new Date(b).getTime() - new Date(a).getTime()
 			)[0];
-			console.log('latestFavoritedLogDate:', latestFavoritedLogDate);
-			console.log('favoriteLogs:', favoriteLogs);
+
 			if (latestFavoritedLogDate && favoriteLogs[latestFavoritedLogDate]) {
 				const latestLog = favoriteLogs[latestFavoritedLogDate];
-				console.log('latestLog:', latestLog);
 				const logDateParts = latestFavoritedLogDate
 					.split('-')
 					.map((part) => parseInt(part, 10));
@@ -365,7 +363,6 @@ export default function MainComponent({
 		setCurrentPage(value.selected + 1);
 	};
 
-	console.log('First login?', isFirstLogin);
 	return (
 		<>
 			{isFirstLogin && isConfirmationClosed && (

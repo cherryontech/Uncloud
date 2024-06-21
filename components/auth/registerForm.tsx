@@ -77,7 +77,6 @@ const RegisterForm = () => {
 	};
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		console.log('handleSubmit called');
 		e.preventDefault();
 		setError(null);
 
@@ -90,32 +89,23 @@ const RegisterForm = () => {
 			setErrorField(errors);
 			return; // Exit early, do not proceed with form submission
 		}
-		console.log('Before try block');
 		try {
-			console.log('Inside try block');
 			const authUser = await createUserWithEmailAndPassword(
 				auth,
 				emailAddress,
 				password
 			);
-			console.log('User created:', authUser.user); // Debugging log
 			if (authUser.user) {
 				await updateProfile(authUser.user, { displayName });
-				console.log('Profile updated'); // Debugging log
 				await setDoc(doc(db, 'authUsers', authUser.user.uid), {
 					email: emailAddress,
 					displayName: displayName,
 					closedConfirmationMessage: false,
 					isFirstLogin: true,
 				});
-				console.log('Document set'); // Debugging log
-				console.log(
-					'User registered successfully with isFirstLogin set to true'
-				);
 				router.push('/');
 			}
 		} catch (error) {
-			console.error('Error creating user:', error);
 			setError('This email is already registered');
 		}
 	};
