@@ -33,9 +33,9 @@ interface MobileLayoutProps {
 	currentPage: number;
 	handlePagination: (value: { selected: number }) => void;
 	isSummaryList: boolean;
-	setIsSummaryList: Dispatch<SetStateAction<boolean>>; // Add this prop
+	setIsSummaryList: Dispatch<SetStateAction<boolean>>;
 	rightBarContent: React.ReactNode | null;
-	setRightBarContent: Dispatch<SetStateAction<JSX.Element | null>>; // Add this prop
+	setRightBarContent: Dispatch<SetStateAction<JSX.Element | null>>;
 	isPopupOpen: boolean;
 	isLoading: boolean;
 	mobile: boolean;

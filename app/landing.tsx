@@ -34,7 +34,6 @@ const useIntersectionObserver = () => {
 			observer.observe(element);
 		});
 
-		// Cleanup observer on component unmount
 		return () => {
 			elements.forEach((element) => {
 				observer.unobserve(element);
@@ -88,7 +87,7 @@ const Landing: React.FC = () => {
 								alt='Uncloud Preview 1'
 								width={5760}
 								height={4096}
-								priority // Ensures this image is prioritized in Next.js
+								priority
 							/>
 						</div>
 					</div>

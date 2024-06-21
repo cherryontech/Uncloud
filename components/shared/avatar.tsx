@@ -7,7 +7,6 @@ type Props = {
 };
 
 const Avatar: React.FC<Props> = ({
-	// src = './moods/sunny.svg',
 	image = '/avatars/AvatarDefault.svg',
 	size = '2.5rem',
 }) => (

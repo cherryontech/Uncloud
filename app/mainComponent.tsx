@@ -128,7 +128,7 @@ export default function MainComponent({
 			setTooltipShake(true);
 			const timer = setTimeout(() => {
 				setTooltipShake(false);
-			}, 500); // Duration of the shake animation
+			}, 500);
 
 			return () => clearTimeout(timer);
 		}
@@ -190,7 +190,7 @@ export default function MainComponent({
 		if (selectedMenuItem === 'Calendar') {
 			setIsSummaryList(true);
 			setRightBarContent(null);
-			setRightBarOpen(true); // Ensure the right bar is open
+			setRightBarOpen(true);
 		}
 	}, [selectedMenuItem]);
 
@@ -221,7 +221,6 @@ export default function MainComponent({
 			}
 			return updatedFavoriteLogs;
 		});
-		// Update right bar content
 		updateRightBarContent();
 		return newFavorite;
 	};
@@ -235,7 +234,7 @@ export default function MainComponent({
 			favorite: boolean;
 			wins?: Win[];
 		},
-		fromFavorites: boolean = false // Add a default value for fromFavorites
+		fromFavorites: boolean = false
 	) => {
 		setIsSummaryList(false);
 		setRightBarHistory((prevHistory) =>
@@ -423,13 +422,13 @@ export default function MainComponent({
 					currentPage={currentPage}
 					handlePagination={handlePagination}
 					isSummaryList={isSummaryList}
-					setIsSummaryList={setIsSummaryList} // Pass this prop
+					setIsSummaryList={setIsSummaryList}
 					rightBarContent={rightBarContent}
-					setRightBarContent={setRightBarContent} // Pass this prop
+					setRightBarContent={setRightBarContent}
 					isPopupOpen={isPopupOpen}
 					mobile={mobile}
 					title={title}
-					displayedFavoriteLogDates={displayedFavoriteLogDates} // Pass this prop
+					displayedFavoriteLogDates={displayedFavoriteLogDates}
 				/>
 			) : (
 				<MobileLayout
@@ -450,13 +449,13 @@ export default function MainComponent({
 					currentPage={currentPage}
 					handlePagination={handlePagination}
 					isSummaryList={isSummaryList}
-					setIsSummaryList={setIsSummaryList} // Pass this prop
+					setIsSummaryList={setIsSummaryList}
 					rightBarContent={rightBarContent}
-					setRightBarContent={setRightBarContent} // Pass this prop
+					setRightBarContent={setRightBarContent}
 					isPopupOpen={isPopupOpen}
 					mobile={mobile}
 					title={title}
-					displayedFavoriteLogDates={displayedFavoriteLogDates} // Pass this prop
+					displayedFavoriteLogDates={displayedFavoriteLogDates}
 				/>
 			)}
 		</>

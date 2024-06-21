@@ -34,7 +34,7 @@ interface FavoriteLogsProps {
 			reflections?: ReflectionsType[];
 			favorite: boolean;
 		},
-		fromFavorites: boolean // Add fromFavorites argument
+		fromFavorites: boolean
 	) => void;
 	mobile?: boolean;
 	setMonth: React.Dispatch<React.SetStateAction<number>>;
@@ -148,8 +148,6 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 	const iconSize = mobile ? 8 : 16;
 	useEffect(() => {
 		const selectedMonth = new Date(selectedDate as Date).getMonth();
-
-		// Extract the selected moods
 		const activeFilters = Object.keys(selectedFilters).filter(
 			(mood) => selectedFilters[mood as keyof typeof selectedFilters]
 		);
@@ -173,7 +171,7 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 			);
 		});
 		setFavoriteLogDates(filteredDates);
-		setDisplayedFavoriteLogDates(filteredDates); // Update the displayed favorite log dates
+		setDisplayedFavoriteLogDates(filteredDates);
 	}, [
 		favoriteLogs,
 		selectedDate,
@@ -305,7 +303,7 @@ const FavoriteLogs: React.FC<FavoriteLogsProps> = ({
 												favorite: log.favorite,
 											},
 											true
-										); // Pass fromFavorites as true for Favorites
+										);
 									}}
 								>
 									<button

@@ -87,7 +87,7 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 							reflections: moodEntry.reflections,
 							favorite: moodEntry.favorite,
 							wins: moodEntry.wins,
-						}; // Update this line
+						};
 					});
 					setMoods(moodMap);
 				}
@@ -109,7 +109,6 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 		currentMonth = selectedDate.getUTCMonth();
 		currentYear = selectedDate.getUTCFullYear();
 	} else if (Array.isArray(selectedDate)) {
-		// You can handle the array case here if needed
 		const [startDate, endDate] = selectedDate;
 		if (startDate instanceof Date) {
 			currentMonth = startDate.getUTCMonth();
@@ -208,7 +207,6 @@ const LogSummaryList: React.FC<LogSummaryListProps> = ({
 													alt='Mood'
 													width={200}
 													height={200}
-													// className='w-full'
 												/>
 											</div>
 											<div className='items-left flex w-20 flex-col justify-center gap-[0.4rem]'>

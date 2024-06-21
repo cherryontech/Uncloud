@@ -60,9 +60,9 @@ export default function DesktopLayout({
 	currentPage,
 	handlePagination,
 	isSummaryList,
-	setIsSummaryList, // Add this prop
+	setIsSummaryList,
 	rightBarContent,
-	setRightBarContent, // Add this prop
+	setRightBarContent,
 	isPopupOpen,
 	isLoading,
 	mobile,

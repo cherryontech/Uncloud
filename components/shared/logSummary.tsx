@@ -96,7 +96,6 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 		(reflection) => reflection.answer.trim() !== ''
 	);
 
-	// Check if fromFavorites is true and there are no displayed favorite logs
 	if (fromFavorites && displayedFavoriteLogDates.length === 0) {
 		return (
 			<div className='flex h-full w-full flex-col items-center justify-center'>
@@ -250,7 +249,7 @@ const LogSummary: React.FC<LogSummaryProps> = ({
 							className={`flex min-h-12 w-full flex-row items-center ${fromFavorites ? 'justify-end' : 'justify-between'} gap-4 px-1 text-base font-semibold`}
 						>
 							{' '}
-							{!fromFavorites && ( // Conditionally render Back to Summary button
+							{!fromFavorites && (
 								<div className='flex flex-row gap-2 text-primary'>
 									<button
 										onClick={handleGoBack}
