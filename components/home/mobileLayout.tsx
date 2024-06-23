@@ -33,11 +33,14 @@ interface MobileLayoutProps {
 	currentPage: number;
 	handlePagination: (value: { selected: number }) => void;
 	isSummaryList: boolean;
-	rightBarContent: React.ReactNode;
+	setIsSummaryList: Dispatch<SetStateAction<boolean>>;
+	rightBarContent: React.ReactNode | null;
+	setRightBarContent: Dispatch<SetStateAction<JSX.Element | null>>;
 	isPopupOpen: boolean;
 	isLoading: boolean;
 	mobile: boolean;
 	title: string;
+	displayedFavoriteLogDates: string[];
 }
 
 export default function MobileLayout({
@@ -57,11 +60,14 @@ export default function MobileLayout({
 	currentPage,
 	handlePagination,
 	isSummaryList,
+	setIsSummaryList,
 	rightBarContent,
+	setRightBarContent,
 	isPopupOpen,
 	isLoading,
 	mobile,
 	title,
+	displayedFavoriteLogDates,
 }: MobileLayoutProps) {
 	return (
 		<div className='mobile-grid-container'>
@@ -111,7 +117,11 @@ export default function MobileLayout({
 							currentPage={currentPage}
 							handlePagination={handlePagination}
 							isSummaryList={isSummaryList}
-							// mobile={mobile}
+							setIsSummaryList={setIsSummaryList}
+							selectedMenuItem={selectedMenuItem}
+							rightBarContent={rightBarContent}
+							setRightBarContent={setRightBarContent}
+							displayedFavoriteLogDates={displayedFavoriteLogDates}
 						>
 							{rightBarContent}
 						</Rightbar>

@@ -34,7 +34,6 @@ const useIntersectionObserver = () => {
 			observer.observe(element);
 		});
 
-		// Cleanup observer on component unmount
 		return () => {
 			elements.forEach((element) => {
 				observer.unobserve(element);
@@ -88,7 +87,7 @@ const Landing: React.FC = () => {
 								alt='Uncloud Preview 1'
 								width={5760}
 								height={4096}
-								priority // Ensures this image is prioritized in Next.js
+								priority
 							/>
 						</div>
 					</div>
@@ -155,7 +154,7 @@ const Landing: React.FC = () => {
 						<MainFeatureCard
 							icon={<Lightbulb style={{ height: '3rem', width: '3rem' }} />}
 							title='Summary page'
-							description='The Summary page allows you to see a history of your moods and reflections, and you can also filter this section by a specific mood to gain deeper insights and track your progress more effectively. Additionally, you can favorite your reflections within the Summary page by selecting the desired reflection log. All favorited logs will be stored on the Favorites page, giving you quick and easy access to your most meaningful entries and helping you stay connected to your journey.'
+							description='The Summary page allows you to see a history of your moods and reflections, and you can also filter this section by a specific mood to gain deeper insights and track your progress more effectively.'
 							imageSrc='/landing/Preview_SummaryPage.png'
 							imageAlt='Summary Page Preview'
 						/>
@@ -163,14 +162,14 @@ const Landing: React.FC = () => {
 						<MainFeatureCard
 							icon={<FilmScript style={{ height: '3rem', width: '3rem' }} />}
 							title='Daily page'
-							description='Feeling stuck in a career rut? Traditional reflection prompts can be generic and leave you scratching your head. Our app goes beyond basic journaling by offering personalized career reflection prompts tailored specifically to your mood.'
+							description='On the Daily page, you can see your wins of the day and reflections in detail, providing a comprehensive overview of your achievements and thoughts. Additionally, you can favorite your reflections within the Daily page by selecting the desired reflection log.'
 							imageSrc='/landing/Preview_DailyPage.png'
 							imageAlt='Daily Page Preview'
 						/>
 					</div>
 				</div>
 				{/* Customer Testimonials */}
-				<div className='scroll-transition pl-[6rem] pr-[6.5rem] pt-[9rem]'>
+				{/* <div className='scroll-transition pl-[6rem] pr-[6.5rem] pt-[9rem]'>
 					<div className='flex flex-col gap-8'>
 						<div className='flex flex-col gap-8'>
 							<div className='flex flex-col gap-8'>
@@ -179,7 +178,7 @@ const Landing: React.FC = () => {
 									Unlock your career clarity.
 								</span>
 								<span className='text-center text-base font-semibold'>
-									Our customers say it best.
+									Our users say it best.
 								</span>
 							</div>
 							<div className='pl-[6rem] pr-[6rem]'>
@@ -193,7 +192,7 @@ const Landing: React.FC = () => {
 						</div>
 						<CustomerTestimonials />
 					</div>
-				</div>
+				</div> */}
 				{/* Common Questions */}
 				<div className='scroll-transition w-full pl-[6rem] pr-[6.5rem] '>
 					<div className='flex flex-col items-center justify-center gap-[5rem] pt-[11rem]'>

@@ -204,7 +204,7 @@ const Profile: React.FC<ProfileProps> = ({ mobile, ...props }) => {
 										/>
 									) : (
 										<Image
-											src='/profile.svg'
+											src='/avatars/AvatarDefault.svg'
 											width={600}
 											height={600}
 											className='h-full w-full rounded-full border border-[#D9D9D9] object-cover shadow-[0px_2px_8px_0px_rgba(0,0,0,0.05)]'
@@ -220,7 +220,7 @@ const Profile: React.FC<ProfileProps> = ({ mobile, ...props }) => {
 									onClick={() => {
 										setUserDataForm((prevState) => ({
 											...prevState,
-											photoURL: '/profile.svg',
+											photoURL: '/avatars/AvatarDefault.svg',
 										}));
 										setChangeFormUserData(true);
 									}}
